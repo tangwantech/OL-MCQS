@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="recycler_item_view_min_height">44dp</dimen>
+    <dimen name="weight_current_package_label">0.3</dimen>
+    <dimen name="weight_current_package_label_value">0.7</dimen>
+
+    <dimen name="divided_width_2">2dp</dimen>
+
+    <dimen name="text_size_24">24sp</dimen>
+    <dimen name="text_size_20">20sp</dimen>
+    <dimen name="text_size_18">18sp</dimen>
+    <dimen name="text_size_16">16sp</dimen>
+    <dimen name="text_size_14">14sp</dimen>
+    <dimen name="text_size_12">12sp</dimen>
+    <dimen name="text_size_10">10sp</dimen>
+    <dimen name="text_size_8">8sp</dimen>
+
+    <dimen name="margin_8">8dp</dimen>
+    <dimen name="margin_2">2dp</dimen>
+    <dimen name="margin_4">4dp</dimen>
+    <dimen name="margin_12">12dp</dimen>
+    <dimen name="margin_14">14dp</dimen>
+    <dimen name="margin_16">16dp</dimen>
+    <dimen name="margin_24">24dp</dimen>
+    <dimen name="margin_32">32dp</dimen>
+
+
+    <dimen name="card_corner_radius_4">4dp</dimen>
+    <dimen name="card_corner_radius_8">8dp</dimen>
+
+    <dimen name="card_elevation_4">4dp</dimen>
+    <dimen name="card_elevation_8">8dp</dimen>
+    <dimen name="card_elevation_12">12dp</dimen>
+    <dimen name="card_elevation_16">16dp</dimen>
+
+    <dimen name="transaction_status_icon_width">56dp</dimen>
+    <dimen name="transaction_status_icon_height">56dp</dimen>
+
+    <dimen name="button_minimum_height">56dp</dimen>
+    <dimen name="textView_minimum_height">46dp</dimen>
+    <dimen name="divider_width_4">4dp</dimen>
+    <dimen name="timer_bar_height">76dp</dimen>
+    <dimen name="option_letter_weight">0.05</dimen>
+    <dimen name="option_weight">0.95</dimen>
+
+    <dimen name="weight_statistics_label">0.5</dimen>
+    <dimen name="weight_statistics_value">0.5</dimen>
+
+    <dimen name="height_invoice_text">44dp</dimen>
+
+    <dimen name="weight_expires_label">0.35</dimen>
+    <dimen name="weight_expires_value">0.65</dimen>
+
+    <dimen name="weight_pending_transaction_amount_label">0.25</dimen>
+    <dimen name="weight_pending_transaction_amount_value">0.75</dimen>
+
+    <dimen name="weight_statistics_summary_value">0.25</dimen>
+    <dimen name="selectable_option_min_height">56dp</dimen>
+</resources>

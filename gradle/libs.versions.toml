@@ -1,0 +1,51 @@
+[versions]
+agp = "8.5.1"
+androidSdk = "latest.release"
+cardview = "1.0.0"
+kotlin = "1.9.0"
+coreKtx = "1.13.1"
+junit = "4.13.2"
+junitVersion = "1.2.1"
+espressoCore = "3.6.1"
+appcompat = "1.7.0"
+material = "1.12.0"
+activity = "1.9.2"
+constraintlayout = "2.1.4"
+
+coroutine = "1.7.1"
+liveData = "2.7.0"
+roomKtx = "2.6.0"
+rxjava = "3.0.0"
+viewModel = "2.8.6"
+gson = "2.10.1"
+okhttp3 = "4.10.0"
+parse = "1.26.0"
+
+[libraries]
+android-sdk = { module = "com.github.CamPay.android-sdk:android-sdk", version.ref = "androidSdk" }
+androidx-cardview = { module = "androidx.cardview:cardview", version.ref = "cardview" }
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomKtx" }
+androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomKtx" }
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomKtx" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
+androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+
+
+coroutine = {group ="org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutine" }
+liveData = {group ="androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "liveData" }
+rxjava = { module = "io.reactivex.rxjava3:rxjava", version.ref = "rxjava" }
+viewModel = {group ="androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "viewModel" }
+gson = {group ="com.google.code.gson", name = "gson", version.ref = "gson" }
+okhttp3 = {group ="com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp3" }
+parse = {group ="com.github.parse-community.Parse-SDK-Android", name = "parse", version.ref = "parse" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+

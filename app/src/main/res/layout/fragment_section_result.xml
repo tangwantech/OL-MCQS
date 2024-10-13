@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragments.SectionResultFragment">
+
+
+   <RelativeLayout
+       android:id="@+id/relativeLayout"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+       
+       <androidx.appcompat.widget.LinearLayoutCompat
+           android:id="@+id/linearLo"
+           android:layout_width="match_parent"
+           android:layout_height="56dp"
+           android:gravity="center"
+           android:background="@color/color_primary">
+           <androidx.cardview.widget.CardView
+               android:layout_width="wrap_content"
+               android:layout_height="match_parent"
+               android:minHeight="56dp"
+               app:cardCornerRadius="4dp"
+               android:layout_margin="2dp"
+               app:cardElevation="12dp"
+               app:contentPadding="8dp"
+               app:cardBackgroundColor="@color/color_primary">
+               <TextView
+                   android:id="@+id/tvSectionScore"
+                   android:layout_width="match_parent"
+                   android:layout_height="match_parent"
+                   android:gravity="center"
+                   android:text="@string/section_score"
+                   android:textSize="20sp"
+                   android:textColor="@color/color_on_primary"/>
+           </androidx.cardview.widget.CardView>
+       </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
+       <FrameLayout
+           android:id="@+id/rvFragmentHolder"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:layout_below="@id/linearLo"
+           android:layout_above="@id/layoutBtnRetry"/>
+
+       <LinearLayout
+           android:orientation="horizontal"
+           android:id="@+id/layoutBtnRetry"
+           android:layout_width="match_parent"
+           android:layout_height="@dimen/button_minimum_height"
+           android:layout_alignParentBottom="true"
+           android:paddingStart="@dimen/margin_12"
+           android:paddingEnd="@dimen/margin_12">
+
+
+           <LinearLayout
+               android:layout_width="0dp"
+               android:layout_height="match_parent"
+               android:layout_weight="0.2">
+
+               <Button
+                   android:id="@+id/btnRetry"
+                   style="?attr/borderlessButtonStyle"
+                   android:layout_width="match_parent"
+                   android:layout_height="match_parent"
+                   android:text="@string/retry"
+                   android:visibility="visible"
+                   android:textSize="@dimen/text_size_12"
+                   android:minWidth="70dp"/>
+           </LinearLayout>
+
+           <LinearLayout
+               android:orientation="horizontal"
+               android:layout_width="0dp"
+               android:layout_weight="0.8"
+               android:layout_height="match_parent">
+               <Button
+                   android:id="@+id/btnNextSection"
+                   style="?attr/borderlessButtonStyle"
+                   android:layout_width="0dp"
+                   android:layout_weight="0.55"
+                   android:layout_height="match_parent"
+                   android:enabled="false"
+                   android:text="@string/next_section"
+                   android:textSize="@dimen/text_size_12"
+                   />
+
+               <Button
+                   android:id="@+id/btnCorrection"
+                   style="?attr/borderlessButtonStyle"
+                   android:layout_width="0dp"
+                   android:layout_weight="0.45"
+                   android:layout_height="match_parent"
+                   android:text="@string/correction"
+                   android:textSize="@dimen/text_size_12" />
+           </LinearLayout>
+
+
+       </LinearLayout>
+   </RelativeLayout>
+
+</FrameLayout>
