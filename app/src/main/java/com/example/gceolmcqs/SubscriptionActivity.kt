@@ -264,6 +264,7 @@ class SubscriptionActivity: AppCompatActivity(),
         failedToActivatePackageDialog?.setView(view)
         failedToActivatePackageDialog?.setButton(AlertDialog.BUTTON_POSITIVE, "Ok") { _, _ ->
             cancelFailedToActivateDialog()
+            exitActivity()
 
         }
         failedToActivatePackageDialog?.show()

@@ -11,7 +11,7 @@ import com.example.gceolmcqs.datamodels.ExamTypeData
 import com.example.gceolmcqs.datamodels.SubjectData
 import com.example.gceolmcqs.datamodels.SubjectPackageData
 import com.example.gceolmcqs.repository.RemoteRepoManager
-import com.example.gceolmcqs.roomDB.GceOLMcqDatabase
+//import com.example.gceolmcqs.roomDB.GceOLMcqDatabase
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -24,14 +24,14 @@ class SubjectContentTableViewModel : ViewModel() {
     private val examContentsFileNames: HashMap<String, String> = HashMap()
     private val isSubjectPackageActive = MutableLiveData<Boolean>()
 
-    private lateinit var gceOLMcqDatabase: GceOLMcqDatabase
+//    private lateinit var gceOLMcqDatabase: GceOLMcqDatabase
 
     private val _subjectPackageData = MutableLiveData<SubjectPackageData>()
     val subjectPackageData: LiveData<SubjectPackageData> = _subjectPackageData
 
-    fun initDatabase(context: Context) {
-        gceOLMcqDatabase = GceOLMcqDatabase.getDatabase(context)
-    }
+//    fun initDatabase(context: Context) {
+//        gceOLMcqDatabase = GceOLMcqDatabase.getDatabase(context)
+//    }
 
     fun initSubjectContentsData(jsonFile: String) {
         subjectData = Gson().fromJson(jsonFile, SubjectData::class.java)

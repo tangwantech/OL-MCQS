@@ -58,7 +58,7 @@ class SubjectContentTableActivity : AppCompatActivity(), ExamTypeFragment.OnPack
 
         subjectContentTableViewModel.setSubjectName(subjectTitle!!)
 
-        subjectContentTableViewModel.initDatabase(this)
+//
 
         getJsonFromAssets(subjectAndFileNameData.fileName)?.let {
             subjectContentTableViewModel.initSubjectContentsData(it)

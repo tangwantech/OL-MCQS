@@ -9,7 +9,7 @@ class SubjectPackageActivator {
         fun activateTrialPackageForAllSubjectsAvailable(availableSubjects: List<String>?): List<SubjectPackageData>{
             val activationExpiryDates =
                 ActivationExpiryDatesGenerator.generateTrialActivationExpiryDates(
-                    MCQConstants.MINUTES,
+                    MCQConstants.HOURS,
                     MCQConstants.TRIAL_DURATION
                 )
 
@@ -34,7 +34,7 @@ class SubjectPackageActivator {
         fun activateSubjectPackage(tempSubjectName: String, tempSubjectIndex: Int, packageType: String, packageDuration: Int): SubjectPackageData {
             val activationExpiryDates =
                 ActivationExpiryDatesGenerator.generateTrialActivationExpiryDates(
-                    MCQConstants.MINUTES,
+                    MCQConstants.HOURS,
                     packageDuration
                 )
             val subjectPackageData = SubjectPackageData().apply {
