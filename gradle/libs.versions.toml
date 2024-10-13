@@ -14,7 +14,7 @@ constraintlayout = "2.1.4"
 
 coroutine = "1.7.1"
 liveData = "2.7.0"
-roomKtx = "2.6.0"
+#roomKtx = "2.6.0"
 rxjava = "3.0.0"
 viewModel = "2.8.6"
 gson = "2.10.1"
@@ -25,9 +25,9 @@ parse = "1.26.0"
 android-sdk = { module = "com.github.CamPay.android-sdk:android-sdk", version.ref = "androidSdk" }
 androidx-cardview = { module = "androidx.cardview:cardview", version.ref = "cardview" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
-androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomKtx" }
-androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomKtx" }
-androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomKtx" }
+#androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomKtx" }
+#androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomKtx" }
+#androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }

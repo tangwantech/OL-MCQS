@@ -94,7 +94,7 @@ class MCQConstants{
         const val HUMAN_BIOLOGY = "Human Biology"
         const val APP_LINK = "https://gce-ol-mcqs.en.uptodown.com/android"
 
-        val SUBJECTS_AVAILABLE = arrayListOf("Biology")
+        val SUBJECTS_AVAILABLE = arrayListOf("Biology", "Human Biology")
 
 
     }
