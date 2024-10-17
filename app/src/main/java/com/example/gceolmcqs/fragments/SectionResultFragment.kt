@@ -129,23 +129,13 @@ class SectionResultFragment : Fragment() {
         tvSectionScore.text = requireContext().getString(R.string.section_score, score)
 
 
-//        val tvSectionPercentage: TextView = view.findViewById(R.id.tvSectionPercentage)
-//        tvSectionPercentage.text =
-//            sectionResultFragmentViewModel.getScorePercentage().toString()
-
         btnRetry = view.findViewById(R.id.btnRetry)
         btnNextSection = view.findViewById(R.id.btnNextSection)
         btnCorrection = view.findViewById(R.id.btnCorrection)
     }
 
     private fun retrySection(){
-//        if(onRetrySectionListener.onGetCurrentSectionRetryCount().value == 0){
-//            Toast.makeText(requireContext(), requireContext().resources.getString(R.string.retry_limit_message), Toast.LENGTH_LONG).show()
-//            btnRetry.isEnabled = false
-//        }else{
-//
-//            retryDialog(sectionResultFragmentViewModel.getSectionIndex())
-//        }
+
         retryDialog(sectionResultFragmentViewModel.getSectionIndex())
     }
 
@@ -155,11 +145,7 @@ class SectionResultFragment : Fragment() {
         }
 
         btnNextSection.setOnClickListener {
-//            if(!onCheckPackageExpiredListener.onCheckPackageExpired()){
-//                onCheckPackageExpiredListener.onShowPackageExpiredDialog()
-//            }else{
-//                onNextSectionListener.onNextSection(sectionResultFragmentViewModel.getNextSectionIndex())
-//            }
+
             onCheckPackageExpiredListener.onCheckPackageExpired(sectionResultFragmentViewModel.getNextSectionIndex())
 
         }
@@ -173,8 +159,7 @@ class SectionResultFragment : Fragment() {
 //                        retrySection()
                         p0.dismiss()
                     }
-//                    setNegativeButton(resources.getString(R.string.cancel)){_, _ ->}
-//                    setCancelable(false)
+
                 }.create().show()
             } else {
                 onGotoSectionCorrectionListener.onGotoSectionCorrection(
