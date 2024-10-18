@@ -1,5 +1,6 @@
 package com.example.gceolmcqs.viewmodels
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -26,5 +27,7 @@ class SplashActivityViewModel : ViewModel() {
     fun verifyAppDataAvailability(): Boolean{
         return RemoteRepoManager.verifyAppDataAvailability()
     }
+
+
 
 }

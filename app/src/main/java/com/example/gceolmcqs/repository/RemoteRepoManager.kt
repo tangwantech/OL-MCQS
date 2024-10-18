@@ -101,8 +101,6 @@ class RemoteRepoManager(private val deviceId: String) {
             return getUserSubjectPackages().subjectPackageDataList[index]
         }
 
-<<<<<<< HEAD
-=======
         fun getOLMCQData(): AppData{
             val appDataString = ParseUser.getCurrentUser()?.getString(MCQConstants.APP_DATA)
 //            println(appDataString)
@@ -144,7 +142,6 @@ class RemoteRepoManager(private val deviceId: String) {
 
         }
 
->>>>>>> SecuringAppDataFilesFeature
     }
 
     interface OnUpdatePackageListener{
