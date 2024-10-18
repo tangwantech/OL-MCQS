@@ -15,73 +15,28 @@ import com.google.gson.Gson
 
 class SubjectContentTableViewModel : ViewModel() {
     private lateinit var subjectName: String
-    private lateinit var subjectData: SubjectData
-    private val examTitles: ArrayList<String?> = ArrayList()
-    private val examContents: HashMap<Int, ArrayList<String>?> = HashMap()
-    private val examContentsFileNames: HashMap<String, String> = HashMap()
     private val isSubjectPackageActive = MutableLiveData<Boolean>()
     private var subjectIndex: Int? = null
 
-//    private lateinit var gceOLMcqDatabase: GceOLMcqDatabase
-
     private val _subjectPackageData = MutableLiveData<SubjectPackageData>()
     val subjectPackageData: LiveData<SubjectPackageData> = _subjectPackageData
-
-    fun initSubjectContentsData(jsonFile: String) {
-        subjectData = Gson().fromJson(jsonFile, SubjectData::class.java)
-
-        setExamTitles()
-    }
 
     fun getSubjectPackageDataFromRemoteRepoAtIndex(index: Int){
         _subjectPackageData.value = RemoteRepoManager.getSubjectPackageDataAtIndex(index)
     }
 
-    private fun setExamTitles() {
-        subjectData.contents!!.forEachIndexed { index, examTypeData ->
-            examTitles.add(examTypeData.title)
-            setExamContents(examTypeData, index)
-        }
-
-
-    }
-
-    fun getExamTypeDataAt(position: Int): ExamTypeData {
-        return (subjectData.contents!![position])
-    }
-
     fun getExamTitles(): List<String?> {
-
         return AppDataRepository.getExamTitles(subjectIndex!!)
     }
 
     fun getExamTypesCount(): Int {
         return AppDataRepository.getExamTitles(subjectIndex!!).size
-//        return (subjectData.contents!!.size)
-    }
-
-    private fun setExamContents(examTypeData: ExamTypeData, index: Int) {
-        val examContents: ArrayList<String> = ArrayList()
-
-        examTypeData.examItems.forEach {
-            examContents.add(it.title)
-            setExamContentsFileNames(it)
-        }
-        this.examContents[index] = examContents
-
-    }
-
-    private fun setExamContentsFileNames(examItemData: ExamItemData) {
-        examContentsFileNames[examItemData.title] = examItemData.fileName
     }
 
     fun getIsPackageActive(): LiveData<Boolean> {
         return isSubjectPackageActive
     }
 
-    fun setSubjectName(subjectTitle: String) {
-        subjectName = subjectTitle
-    }
     fun getPackageStatus(): Boolean{
         return ActivationExpiryDatesGenerator().checkExpiry(_subjectPackageData.value!!.activatedOn!!, _subjectPackageData.value!!.expiresOn!!)
     }
@@ -90,7 +45,7 @@ class SubjectContentTableViewModel : ViewModel() {
         subjectIndex = index
     }
 
-    fun getSubjectIndex(): Int? {
-        return subjectIndex
+    fun getSubjectName(): String{
+        return AppDataRepository.getSubjectName(subjectIndex!!)
     }
 }

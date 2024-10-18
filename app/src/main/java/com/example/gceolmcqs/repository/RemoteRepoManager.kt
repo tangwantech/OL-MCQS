@@ -70,24 +70,6 @@ class RemoteRepoManager(private val deviceId: String) {
             user.put(MCQConstants.SUBJECTS_PACKAGES, jsonString)
             user.signUpInBackground { e ->
                 callback.done(e)
-
-            }
-        }
-
-        fun setUserAppData(saveCallback: SaveCallback){
-            val parseClass = ParseQuery.getQuery<ParseObject>(MCQConstants.OL_MCQ_DATA)
-            parseClass.getInBackground(MCQConstants.APP_DATA_OBJECT_KEY){parseObject, queryException ->
-                if (queryException == null){
-                    val appData = parseObject.getString(MCQConstants.APP_DATA)
-                    ParseUser.getCurrentUser().put(MCQConstants.APP_DATA, appData!!)
-
-                    ParseUser.getCurrentUser().saveInBackground {
-                        saveCallback.done(it)
-                    }
-                }
-                else{
-                    println(queryException.localizedMessage)
-                }
             }
         }
 
@@ -120,10 +102,45 @@ class RemoteRepoManager(private val deviceId: String) {
         }
 
         fun getOLMCQData(): AppData{
-            return ParseUser.getCurrentUser()?.get(MCQConstants.APP_DATA) as AppData
+            val appDataString = ParseUser.getCurrentUser()?.getString(MCQConstants.APP_DATA)
+//            println(appDataString)
+            val appData = Gson().fromJson<AppData>(appDataString!!, AppData::class.java)
+            return  appData
         }
 
+        fun getAppDataFromParse(appDataAvailableListener: OnAppDataAvailableListener){
+            val parseQuery = ParseQuery.getQuery<ParseObject>("OLMCQDATA")
+            parseQuery.getInBackground("K13A8pBeYh"){parseObject, e ->
+                if (e == null){
+                    val appData = parseObject.getString("appData")
+                    setCurrentUserAppData(appData!!, appDataAvailableListener)
+                }else{
+                    appDataAvailableListener.onError(e)
+                    println(e.localizedMessage)
+                }
+            }
+        }
 
+        private fun setCurrentUserAppData(data: String, appDataAvailableListener: OnAppDataAvailableListener){
+            ParseUser.getCurrentUser().put("appData", data)
+            ParseUser.getCurrentUser().saveInBackground {
+                if (it == null){
+                    println(ParseUser.getCurrentUser().getString("appData"))
+                    appDataAvailableListener.onAppDataAvailable()
+                }else{
+                    appDataAvailableListener.onError(it)
+                }
+            }
+        }
+
+        fun verifyAppDataAvailability(): Boolean{
+            val data = ParseUser.getCurrentUser().getString("appData")
+            return data != null
+        }
+
+        fun initAppData(){
+
+        }
 
     }
 
@@ -134,6 +151,11 @@ class RemoteRepoManager(private val deviceId: String) {
 
     interface OnVerifyDataExistsListener{
         fun onDeviceDataExists()
+        fun onError(e: ParseException)
+    }
+
+    interface OnAppDataAvailableListener{
+        fun onAppDataAvailable()
         fun onError(e: ParseException)
     }
 

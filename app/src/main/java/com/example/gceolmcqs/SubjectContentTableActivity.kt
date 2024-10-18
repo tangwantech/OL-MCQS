@@ -22,9 +22,7 @@ import java.nio.charset.Charset
 class SubjectContentTableActivity : AppCompatActivity(), ExamTypeFragment.OnPackageExpiredListener, ExamTypeFragment.OnContentAccessDeniedListener{
 
     private lateinit var viewModel: SubjectContentTableViewModel
-    private var subjectTitle: String? = null
     private lateinit var tabLayout: TabLayout
-    private var selectedTab: TabLayout.Tab? = null
     private lateinit var viewPager: ViewPager
     private lateinit var alertDialog: AlertDialog.Builder
     private lateinit var pref: SharedPreferences
@@ -48,22 +46,11 @@ class SubjectContentTableActivity : AppCompatActivity(), ExamTypeFragment.OnPack
     }
 
     private fun initViewModel(){
-        val subjectAndFileNameData = intent.getBundleExtra("subject_and_file_name_bundle")!!
-            .getSerializable("subject_and_file_name_data")!! as SubjectAndFileNameData
 
-        subjectTitle = subjectAndFileNameData.subject
-
-        viewModel =
-            ViewModelProvider(this)[SubjectContentTableViewModel::class.java]
-
-        viewModel.setSubjectName(subjectTitle!!)
-
+        viewModel = ViewModelProvider(this)[SubjectContentTableViewModel::class.java]
         viewModel.setSubjectIndex(intent.getIntExtra(MCQConstants.SUBJECT_INDEX, 0))
-//
+//        viewModel.setSubjectName(subjectTitle!!)
 
-//        getJsonFromAssets(subjectAndFileNameData.fileName)?.let {
-//            viewModel.initSubjectContentsData(it)
-//        }
 
     }
 
@@ -108,11 +95,7 @@ class SubjectContentTableActivity : AppCompatActivity(), ExamTypeFragment.OnPack
             val fragment =
                 ExamTypeFragment.newInstance(
                     fragmentIndex,
-                    viewModel.getExamTypeDataAt(
-                        fragmentIndex
-                    ),
-                    subjectTitle!!,
-
+                    viewModel.getSubjectName(),
                     subjectPackageData.expiresOn!!,
                     subjectPackageData.packageName!!,
                     subjectIndex
@@ -129,11 +112,6 @@ class SubjectContentTableActivity : AppCompatActivity(), ExamTypeFragment.OnPack
         viewPager.adapter = viewPagerAdapter
         viewPager.currentItem = tabIndex
         tabLayout.setupWithViewPager(viewPager)
-
-
-//         = viewPager.currentItem
-
-
     }
 
     private fun setupActivityViewListeners(){
@@ -167,32 +145,13 @@ class SubjectContentTableActivity : AppCompatActivity(), ExamTypeFragment.OnPack
 
     override fun onResume() {
         super.onResume()
-        title = subjectTitle
+        title = viewModel.getSubjectName()
         viewModel.getSubjectPackageDataFromRemoteRepoAtIndex(intent.getIntExtra(MCQConstants.SUBJECT_INDEX, 0))
-//        subjectContentTableViewModel.querySubjectPackageDataFromLocalDatabaseAtSubjectName(subjectTitle!!)
-
     }
 
     override fun onDestroy() {
         super.onDestroy()
         saveSelectedTab(0)
-    }
-
-    private fun getJsonFromAssets(fileName: String): String? {
-        val charset: Charset = Charsets.UTF_8
-
-        return try {
-            val jsonFile = assets.open(fileName)
-            val size = jsonFile.available()
-            val buffer = ByteArray(size)
-
-            jsonFile.read(buffer)
-            jsonFile.close()
-            String(buffer, charset)
-
-        } catch (e: IOException) {
-            null
-        }
     }
 
     override fun onShowPackageExpired() {
@@ -216,7 +175,6 @@ class SubjectContentTableActivity : AppCompatActivity(), ExamTypeFragment.OnPack
     private fun saveSelectedTab(index: Int){
         pref.edit().apply {
             putInt(TAB_INDEX, index)
-//            apply()
         }.apply()
     }
 

@@ -8,59 +8,24 @@ import com.example.gceolmcqs.datamodels.SubjectAndFileNameData
 import com.example.gceolmcqs.datamodels.SubjectAndFileNameDataListModel
 import com.example.gceolmcqs.repository.AppDataRepository
 import com.example.gceolmcqs.repository.RemoteRepoManager
+import com.example.gceolmcqs.repository.RemoteRepoManager.OnAppDataAvailableListener
 
 import com.google.gson.Gson
 import com.parse.SaveCallback
 
 class SplashActivityViewModel : ViewModel() {
 
-    private val iSubjectPackageAvailable = MutableLiveData<String>()
-    private val _liveSubjectNames = MutableLiveData<ArrayList<String>>()
-    val liveSubjectNames: LiveData<ArrayList<String>> = _liveSubjectNames
-
-
-    private lateinit var subjectAndFileNameDataListModel: SubjectAndFileNameDataListModel
-
-
     fun verifyDeviceIdInAppDatabase(callback: RemoteRepoManager.OnVerifyDataExistsListener){
         RemoteRepoManager.verifyDeviceIdInAppDatabase(callback)
     }
 
-    fun getSubjectAndFileNameDataAt(position: Int): SubjectAndFileNameData {
-        return subjectAndFileNameDataListModel.subjectAndFileNameDataList[position]
+
+    fun getAppData(appDataAvailableListener: OnAppDataAvailableListener){
+        RemoteRepoManager.getAppDataFromParse(appDataAvailableListener)
     }
 
-
-    fun setSubjectAndFileNameDataListModel(subjectsDataJsonString: String?) {
-        subjectAndFileNameDataListModel =
-            Gson().fromJson(subjectsDataJsonString!!, SubjectAndFileNameDataListModel::class.java)
-
-        setSubjectNames()
-
-    }
-
-    private fun setSubjectNames() {
-        val tempSubjectNames = ArrayList<String>()
-        val subjectAndFileList = subjectAndFileNameDataListModel.subjectAndFileNameDataList
-        subjectAndFileList.forEach {
-            tempSubjectNames.add(it.subject)
-        }
-
-        _liveSubjectNames.value = tempSubjectNames
-    }
-
-    fun initAppData(callBack: AppDataRepository.OnAppDataInitialiseListener){
-        AppDataRepository.initAppData(object: AppDataRepository.OnAppDataInitialiseListener{
-            override fun onAppDataInitialised() {
-                callBack.onAppDataInitialised()
-            }
-
-        })
-    }
-
-    fun setUserAppData(saveCallback: SaveCallback){
-        RemoteRepoManager.setUserAppData(saveCallback)
-
+    fun verifyAppDataAvailability(): Boolean{
+        return RemoteRepoManager.verifyAppDataAvailability()
     }
 
 

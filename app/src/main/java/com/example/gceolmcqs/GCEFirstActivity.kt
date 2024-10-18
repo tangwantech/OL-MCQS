@@ -7,6 +7,7 @@ import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
@@ -46,8 +47,10 @@ class GCEFirstActivity : AppCompatActivity() {
         setupObservers()
         val termsAccepted = pref.getBoolean(MCQConstants.TERMS_ACCEPTED, false)
         if(!termsAccepted){
+            binding.loProgressBar.visibility = View.GONE
             displayTermsOfServiceDialog()
         }else{
+
             verifyDeviceIdInAppDatabase()
         }
 
@@ -56,12 +59,22 @@ class GCEFirstActivity : AppCompatActivity() {
     private fun verifyDeviceIdInAppDatabase(){
         viewModel.verifyDeviceIdInAppDatabase(object: RemoteRepoManager.OnVerifyDataExistsListener{
             override fun onDeviceDataExists() {
-//                viewModel.initAppData(object: AppDataRepository.OnAppDataInitialiseListener{
-//                    override fun onAppDataInitialised() {
-//                        gotoMainActivity()
-//                    }
-//                })
-                gotoMainActivity()
+                val isAvailable = viewModel.verifyAppDataAvailability()
+//                gotoMainActivity()
+                if (isAvailable){
+                    gotoMainActivity()
+                }else{
+                    viewModel.getAppData(object: RemoteRepoManager.OnAppDataAvailableListener{
+                        override fun onAppDataAvailable() {
+                            gotoMainActivity()
+                        }
+
+                        override fun onError(e: ParseException) {
+                            e.localizedMessage?.let { displayErrorDialog(it)}
+                        }
+
+                    })
+                }
             }
 
             override fun onError(e: ParseException) {
@@ -82,7 +95,6 @@ class GCEFirstActivity : AppCompatActivity() {
 
     private fun setupViewModel() {
         viewModel = ViewModelProvider(this)[SplashActivityViewModel::class.java]
-        viewModel.setSubjectAndFileNameDataListModel(AssertReader.getJsonFromAssets(this, "subject_data.json"))
     }
 
 
@@ -111,6 +123,7 @@ class GCEFirstActivity : AppCompatActivity() {
         termsOfServiceDialog?.setTitle(resources.getString(R.string.agreement))
         termsOfServiceDialog?.setView(dialogBinding.root)
         termsOfServiceDialog?.setButton(AlertDialog.BUTTON_POSITIVE, resources.getString(R.string.accept)) { _, _ ->
+            binding.loProgressBar.visibility = View.VISIBLE
             saveTermsOfServiceAcceptedStatus()
             verifyDeviceIdInAppDatabase()
         }

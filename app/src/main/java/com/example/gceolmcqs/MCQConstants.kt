@@ -17,7 +17,7 @@ class MCQConstants{
         const val PACKAGE_PRICE = "packagePrice"
         const val NA = "NA"
         const val TERMS_ACCEPTED = "termsAccepted"
-        const val TRIAL_DURATION = 24
+        const val TRIAL_DURATION = 12
         const val DELAY_DURATION = 3000
         const val STATUS_CHECK_DURATION = 5000L
         const val ACTIVE = "ACTIVE"
@@ -97,6 +97,9 @@ class MCQConstants{
         const val BIOLOGY = "Biology"
         const val HUMAN_BIOLOGY = "Human Biology"
         const val APP_LINK = "https://gce-ol-mcqs.en.uptodown.com/android"
+
+        const val EXAM_TYPE_INDEX = "examTypeIndex"
+        const val EXAM_ITEM_INDEX = "examItemIndex"
 
         val SUBJECTS_AVAILABLE = arrayListOf("Biology")
 

@@ -11,7 +11,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
 import com.example.gceolmcqs.adapters.SectionNavigationRecyclerViewAdapter
 import com.example.gceolmcqs.adapters.SectionRecyclerAdapter
-import com.example.gceolmcqs.datamodels.ExamItemData
 import com.example.gceolmcqs.datamodels.QuestionWithUserAnswerMarkedData
 import com.example.gceolmcqs.datamodels.SectionResultData
 import com.example.gceolmcqs.datamodels.UserMarkedAnswersSheetData
@@ -41,7 +40,11 @@ class PaperActivity : AppCompatActivity(),
 
     private var currentSectionFragment: Fragment? = null
     private var subjectName: String? = null
-    private var paperDataJsonString: String? = null
+
+    private var subjectIndex: Int = 0
+    private var examTypeIndex: Int = 0
+    private var examItemIndex: Int = 0
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,32 +52,35 @@ class PaperActivity : AppCompatActivity(),
         setContentView(R.layout.activity_paper)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         setupViewModel()
+        setActivityTitle()
 //        displayPaperInstructionDialog()
         loadFragment()
 
     }
 
     private fun setupViewModel(){
-        val bundle = intent.getBundleExtra("paperData")
-        val examItemData = bundle!!.getSerializable("paperSerializable") as ExamItemData
 
         _viewModel = ViewModelProvider(this)[PaperActivityViewModel::class.java]
-        _viewModel.setExamItemData(examItemData)
-        _viewModel.setSubjectName(bundle.getString("subjectName")!!)
+        subjectIndex = intent.getIntExtra(MCQConstants.SUBJECT_INDEX, 0)
+        examTypeIndex = intent.getIntExtra(MCQConstants.EXAM_TYPE_INDEX, 0)
+        examItemIndex = intent.getIntExtra(MCQConstants.EXAM_ITEM_INDEX, 0)
 
-//        paperDataJsonString = getJsonFromAssets(_viewModel.getExamFileName())
-        paperDataJsonString = AssertReader.getJsonFromAssets(this, _viewModel.getExamFileName())
-        _viewModel.initPaperData(paperDataJsonString)
+        _viewModel.initPaperData(subjectIndex, examTypeIndex, examItemIndex)
+
+        _viewModel.setSubjectName(intent.getStringExtra(MCQConstants.SUBJECT_NAME)!!)
+
         _viewModel.setCurrentFragmentIndex(0)
 
-        subjectName = bundle.getString("subjectName")
-//        loadSubjectPackageDataFromLocalDbWhere(subjectName!!)
+        subjectName = intent.getStringExtra(MCQConstants.SUBJECT_NAME)
 
-        this.title = _viewModel.getExamTitle()
+    }
+
+    private fun setActivityTitle(){
+        this.title = _viewModel.getExamItemTitle(subjectIndex, examTypeIndex, examItemIndex)
     }
 
     private fun gotoSectionNavigationFragment() {
-        this.title = _viewModel.getExamTitle()
+        setActivityTitle()
         val sectionNavigationFragment = SectionNavigationFragment.newInstance()
         replaceFragment(sectionNavigationFragment, 0)
     }
@@ -90,14 +96,13 @@ class PaperActivity : AppCompatActivity(),
                 )
             replaceFragment(sectionFragment, 1)
         }
-        println("section data: ${_viewModel.getSectionData(sectionIndex)}")
     }
 
     private fun gotoResult(sectionResultData: SectionResultData) {
         _viewModel.setSectionResultData(sectionResultData)
         val sectionResultFragment = SectionResultFragment.newInstance(
             sectionResultData,
-            intent.getBundleExtra("paperData")!!.getString("expiresOn")!!
+            intent.getStringExtra(MCQConstants.EXPIRES_ON)!!
         )
         replaceFragment(sectionResultFragment, 2)
 
@@ -111,7 +116,7 @@ class PaperActivity : AppCompatActivity(),
         val sectionCorrectionFragment = CorrectionFragment.newInstance(
             sectionIndex,
             userMarkedAnswersSheetData,
-            intent.getBundleExtra("paperData")!!.getString("expiresOn")!!
+            intent.getStringExtra(MCQConstants.EXPIRES_ON)!!
         )
         replaceFragment(sectionCorrectionFragment, 3)
 
@@ -130,8 +135,7 @@ class PaperActivity : AppCompatActivity(),
 
     override fun onResume() {
         super.onResume()
-        title = _viewModel.getExamTitle()
-//        loadFragment()
+        setActivityTitle()
 
     }
 
@@ -156,21 +160,15 @@ class PaperActivity : AppCompatActivity(),
     }
 
     override fun onRecyclerItemClick(position: Int) {
-
         checkPackageExpiry(position)
     }
 
     private fun checkPackageExpiry(position: Int){
         resetCurrentSectionFragment()
         _viewModel.setCurrentSectionIndex(position)
-        val expiresOn = intent.getBundleExtra("paperData")!!.getString("expiresOn")!!
-        val subjectIndex = intent.getBundleExtra("paperData")!!.getInt(MCQConstants.SUBJECT_INDEX, 1)
         val isActive = _viewModel.isPackageActive(subjectIndex)
-//        val isExpired = ActivationExpiryDatesGenerator().
-
         if (!isActive) {
             showPackageExpiredDialog()
-//                    && !_viewModel.getIsSectionAnsweredAt(position)
         }else{
             gotoSection(position)
         }
@@ -253,25 +251,6 @@ class PaperActivity : AppCompatActivity(),
         return _viewModel.getIsSectionsAnswered()
     }
 
-//    override fun showPackageExpiredDialog() {
-//        val alertDialog = AlertDialog.Builder(this)
-//        alertDialog.apply {
-//            setMessage(resources.getString(R.string.package_expired_message))
-//            setPositiveButton(resources.getString(R.string.subscribe)) { _, _ ->
-//                val subjectIndex = intent.getIntExtra(MCQConstants.SUBJECT_INDEX, 0)
-////                val subjectPackageData = paperActivityViewModel.getSubjectPackageData()
-//                setSubjectPackageDataToActivate(subjectIndex, getSubjectPackageData())
-//            }
-//            setNegativeButton(resources.getString(R.string.cancel)){_, _ ->}
-//        }.create().show()
-//    }
-//
-//    override fun showPackageActivatedDialog() {
-//        super.showPackageActivatedDialog()
-//        loadSubjectPackageDataFromLocalDbWhere(subjectName!!)
-////        updateSubjectPackageData()
-//    }
-
     override fun onDecrementCurrentSectionRetryCount() {
         _viewModel.decrementCurrentSectionRetryCount()
     }
@@ -279,14 +258,6 @@ class PaperActivity : AppCompatActivity(),
     override fun onResetCurrentSectionRetryCount() {
         _viewModel.resetCurrentSectionRetryCount()
     }
-
-//    override fun onCheckPackageExpired(): Boolean {
-//        return getIsPackageActive()
-//    }
-
-//    override fun onShowPackageExpiredDialog() {
-//        showPackageExpiredDialog()
-//    }
 
     override fun onGetCurrentSectionRetryCount(): LiveData<Int> {
         return _viewModel.getCurrentSectionRetryCount()
@@ -301,8 +272,9 @@ class PaperActivity : AppCompatActivity(),
             val view = this.layoutInflater.inflate(R.layout.paper_instruction_dialog_lo, null)
             checkBox = view.findViewById(R.id.instructionCheckBox)
             tvInstruction = view.findViewById(R.id.tvPaperInstruction)
+            val examItemTitle = _viewModel.getExamItemTitle(subjectIndex, examTypeIndex, examItemIndex)
             val message: String =
-                "${_viewModel.getExamTitle()} ${resources.getStringArray(R.array.paper_instruction)[0]} ${_viewModel.getTotalNumberOfQuestions()} " +
+                "$examItemTitle ${resources.getStringArray(R.array.paper_instruction)[0]} ${_viewModel.getTotalNumberOfQuestions()} " +
                         "${resources.getStringArray(R.array.paper_instruction)[1]} ${_viewModel.getNumberOfSections()} ${resources.getStringArray(R.array.paper_instruction)[2]}"
             tvInstruction.text = message
             instruction.apply {
@@ -336,18 +308,10 @@ class PaperActivity : AppCompatActivity(),
     }
 
     override fun onExplanationClicked(questionData: QuestionWithUserAnswerMarkedData) {
-//        get explanation at position clicked
-//        println(questionData)
         showExplanationDialog(questionData)
-
     }
 
-//    override fun onRestartPaper() {
-//        resetPaperRepository()
-//        gotoSectionNavigationFragment()
-//    }
-
-        private fun showPackageExpiredDialog(){
+    private fun showPackageExpiredDialog(){
         val alertDialog = AlertDialog.Builder(this)
         alertDialog.apply {
             setMessage(resources.getString(R.string.package_expired_message))
