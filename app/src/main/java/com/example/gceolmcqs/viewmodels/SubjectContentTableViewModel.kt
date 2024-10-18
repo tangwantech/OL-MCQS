@@ -1,20 +1,17 @@
 package com.example.gceolmcqs.viewmodels
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.gceolmcqs.ActivationExpiryDatesGenerator
 import com.example.gceolmcqs.datamodels.ExamItemData
 import com.example.gceolmcqs.datamodels.ExamTypeData
 import com.example.gceolmcqs.datamodels.SubjectData
 import com.example.gceolmcqs.datamodels.SubjectPackageData
+import com.example.gceolmcqs.repository.AppDataRepository
 import com.example.gceolmcqs.repository.RemoteRepoManager
 //import com.example.gceolmcqs.roomDB.GceOLMcqDatabase
 import com.google.gson.Gson
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class SubjectContentTableViewModel : ViewModel() {
     private lateinit var subjectName: String
@@ -23,15 +20,12 @@ class SubjectContentTableViewModel : ViewModel() {
     private val examContents: HashMap<Int, ArrayList<String>?> = HashMap()
     private val examContentsFileNames: HashMap<String, String> = HashMap()
     private val isSubjectPackageActive = MutableLiveData<Boolean>()
+    private var subjectIndex: Int? = null
 
 //    private lateinit var gceOLMcqDatabase: GceOLMcqDatabase
 
     private val _subjectPackageData = MutableLiveData<SubjectPackageData>()
     val subjectPackageData: LiveData<SubjectPackageData> = _subjectPackageData
-
-//    fun initDatabase(context: Context) {
-//        gceOLMcqDatabase = GceOLMcqDatabase.getDatabase(context)
-//    }
 
     fun initSubjectContentsData(jsonFile: String) {
         subjectData = Gson().fromJson(jsonFile, SubjectData::class.java)
@@ -39,17 +33,9 @@ class SubjectContentTableViewModel : ViewModel() {
         setExamTitles()
     }
 
-    fun getSubjectPackageDataFroRemoteRepoAtIndex(index: Int){
+    fun getSubjectPackageDataFromRemoteRepoAtIndex(index: Int){
         _subjectPackageData.value = RemoteRepoManager.getSubjectPackageDataAtIndex(index)
     }
-
-//    fun querySubjectPackageDataFromLocalDatabaseAtSubjectName(subjectName: String) {
-//        viewModelScope.launch(Dispatchers.IO) {
-//            val subjectPackageData =
-//                gceOLMcqDatabase.subjectPackageDao().findBySubjectName(subjectName)
-//            _subjectPackageData.postValue(subjectPackageData)
-//        }
-//    }
 
     private fun setExamTitles() {
         subjectData.contents!!.forEachIndexed { index, examTypeData ->
@@ -64,12 +50,14 @@ class SubjectContentTableViewModel : ViewModel() {
         return (subjectData.contents!![position])
     }
 
-    fun getExamTitles(): ArrayList<String?> {
-        return examTitles
+    fun getExamTitles(): List<String?> {
+
+        return AppDataRepository.getExamTitles(subjectIndex!!)
     }
 
     fun getExamTypesCount(): Int {
-        return (subjectData.contents!!.size)
+        return AppDataRepository.getExamTitles(subjectIndex!!).size
+//        return (subjectData.contents!!.size)
     }
 
     private fun setExamContents(examTypeData: ExamTypeData, index: Int) {
@@ -96,5 +84,13 @@ class SubjectContentTableViewModel : ViewModel() {
     }
     fun getPackageStatus(): Boolean{
         return ActivationExpiryDatesGenerator().checkExpiry(_subjectPackageData.value!!.activatedOn!!, _subjectPackageData.value!!.expiresOn!!)
+    }
+
+    fun setSubjectIndex(index: Int) {
+        subjectIndex = index
+    }
+
+    fun getSubjectIndex(): Int? {
+        return subjectIndex
     }
 }

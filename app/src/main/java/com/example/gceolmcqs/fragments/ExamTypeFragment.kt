@@ -76,9 +76,12 @@ class ExamTypeFragment : Fragment(), ExamTypeRecyclerViewAdapter.OnRecyclerItemC
         )
 
         rvExamTypeFragment.layoutManager = rvLayoutMan
+        val subjectIndex = requireArguments().getInt(MCQConstants.SUBJECT_INDEX)
+        val fragmentIndex = requireArguments().getInt("fragmentIndex")
         val rvAdapter = ExamTypeRecyclerViewAdapter(
             requireContext(),
-            examTypeFragmentViewModel.getExamTypeItemsData(),
+//            examTypeFragmentViewModel.getExamTypeItemsData(),
+            examTypeFragmentViewModel.getExamItemTitles(subjectIndex, fragmentIndex),
             this
         )
         rvExamTypeFragment.adapter = rvAdapter
@@ -87,9 +90,10 @@ class ExamTypeFragment : Fragment(), ExamTypeRecyclerViewAdapter.OnRecyclerItemC
 
 
     companion object {
-        fun newInstance(examTypeData: ExamTypeData, subjectName: String, expiresOn: String, packageName: String, subjectIndex:Int): Fragment {
+        fun newInstance(fragmentIndex: Int, examTypeData: ExamTypeData, subjectName: String, expiresOn: String, packageName: String, subjectIndex:Int): Fragment {
             val examFragment = ExamTypeFragment()
             val bundle = Bundle()
+            bundle.putInt("fragmentIndex", fragmentIndex)
             bundle.putString("expiresOn", expiresOn)
             bundle.putSerializable("examTypeData", examTypeData)
             bundle.putString("subjectName", subjectName)

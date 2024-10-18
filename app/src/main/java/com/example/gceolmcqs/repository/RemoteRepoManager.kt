@@ -2,11 +2,15 @@ package com.example.gceolmcqs.repository
 
 import com.example.gceolmcqs.MCQConstants
 import com.example.gceolmcqs.SubjectPackageActivator
+import com.example.gceolmcqs.datamodels.AppData
 import com.example.gceolmcqs.datamodels.SubjectPackageData
 import com.example.gceolmcqs.datamodels.SubjectPackages
 import com.google.gson.Gson
 import com.parse.ParseException
+import com.parse.ParseObject
+import com.parse.ParseQuery
 import com.parse.ParseUser
+import com.parse.SaveCallback
 import com.parse.SignUpCallback
 
 class RemoteRepoManager(private val deviceId: String) {
@@ -66,6 +70,24 @@ class RemoteRepoManager(private val deviceId: String) {
             user.put(MCQConstants.SUBJECTS_PACKAGES, jsonString)
             user.signUpInBackground { e ->
                 callback.done(e)
+
+            }
+        }
+
+        fun setUserAppData(saveCallback: SaveCallback){
+            val parseClass = ParseQuery.getQuery<ParseObject>(MCQConstants.OL_MCQ_DATA)
+            parseClass.getInBackground(MCQConstants.APP_DATA_OBJECT_KEY){parseObject, queryException ->
+                if (queryException == null){
+                    val appData = parseObject.getString(MCQConstants.APP_DATA)
+                    ParseUser.getCurrentUser().put(MCQConstants.APP_DATA, appData!!)
+
+                    ParseUser.getCurrentUser().saveInBackground {
+                        saveCallback.done(it)
+                    }
+                }
+                else{
+                    println(queryException.localizedMessage)
+                }
             }
         }
 
@@ -95,6 +117,10 @@ class RemoteRepoManager(private val deviceId: String) {
 
         fun getSubjectPackageDataAtIndex(index: Int): SubjectPackageData{
             return getUserSubjectPackages().subjectPackageDataList[index]
+        }
+
+        fun getOLMCQData(): AppData{
+            return ParseUser.getCurrentUser()?.get(MCQConstants.APP_DATA) as AppData
         }
 
 

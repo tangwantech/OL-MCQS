@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.provider.Settings
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.gceolmcqs.AssertReader
 import com.example.gceolmcqs.MCQConstants
@@ -17,6 +18,7 @@ import com.example.gceolmcqs.viewmodels.SplashActivityViewModel
 import com.example.gceolmcqs.R
 import com.example.gceolmcqs.databinding.ActivitySplashBinding
 import com.example.gceolmcqs.databinding.TermsOfUseLayoutBinding
+import com.example.gceolmcqs.repository.AppDataRepository
 import com.example.gceolmcqs.repository.RemoteRepoManager
 import com.parse.ParseException
 import kotlinx.coroutines.*
@@ -54,13 +56,28 @@ class GCEFirstActivity : AppCompatActivity() {
     private fun verifyDeviceIdInAppDatabase(){
         viewModel.verifyDeviceIdInAppDatabase(object: RemoteRepoManager.OnVerifyDataExistsListener{
             override fun onDeviceDataExists() {
+//                viewModel.initAppData(object: AppDataRepository.OnAppDataInitialiseListener{
+//                    override fun onAppDataInitialised() {
+//                        gotoMainActivity()
+//                    }
+//                })
                 gotoMainActivity()
             }
 
             override fun onError(e: ParseException) {
-
+                e.localizedMessage?.let { displayErrorDialog(it)}
             }
         })
+    }
+
+    fun displayErrorDialog(error: String){
+        val alertDialog = AlertDialog.Builder(this).apply {
+            setMessage(error)
+            setNegativeButton("Exit"){_, _ ->
+                finish()
+            }
+
+        }
     }
 
     private fun setupViewModel() {

@@ -2,6 +2,10 @@ package com.example.gceolmcqs
 
 class MCQConstants{
     companion object{
+        const val OL_MCQ_DATA = "OLMCQDATA"
+        const val APP_DATA = "appData"
+        const val APP_DATA_OBJECT_KEY = "K13A8pBeYh"
+
         const val A = "A"
         const val B = "B"
         const val C = "C"

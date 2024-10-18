@@ -6,9 +6,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.gceolmcqs.datamodels.SubjectAndFileNameData
 import com.example.gceolmcqs.datamodels.SubjectAndFileNameDataListModel
+import com.example.gceolmcqs.repository.AppDataRepository
 import com.example.gceolmcqs.repository.RemoteRepoManager
 
 import com.google.gson.Gson
+import com.parse.SaveCallback
 
 class SplashActivityViewModel : ViewModel() {
 
@@ -45,6 +47,20 @@ class SplashActivityViewModel : ViewModel() {
         }
 
         _liveSubjectNames.value = tempSubjectNames
+    }
+
+    fun initAppData(callBack: AppDataRepository.OnAppDataInitialiseListener){
+        AppDataRepository.initAppData(object: AppDataRepository.OnAppDataInitialiseListener{
+            override fun onAppDataInitialised() {
+                callBack.onAppDataInitialised()
+            }
+
+        })
+    }
+
+    fun setUserAppData(saveCallback: SaveCallback){
+        RemoteRepoManager.setUserAppData(saveCallback)
+
     }
 
 

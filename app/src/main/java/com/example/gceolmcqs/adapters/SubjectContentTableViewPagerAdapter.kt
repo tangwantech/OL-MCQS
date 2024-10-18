@@ -7,7 +7,7 @@ import androidx.fragment.app.FragmentPagerAdapter
 class SubjectContentTableViewPagerAdapter(
     private val supportFragmentManager: FragmentManager,
     private val tabFragments: ArrayList<Fragment>,
-    private val tabTitles: ArrayList<String?>
+    private val tabTitles: List<String?>
 ) : FragmentPagerAdapter(supportFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
 
