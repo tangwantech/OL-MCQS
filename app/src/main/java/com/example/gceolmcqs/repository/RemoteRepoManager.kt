@@ -6,6 +6,8 @@ import com.example.gceolmcqs.datamodels.SubjectPackageData
 import com.example.gceolmcqs.datamodels.SubjectPackages
 import com.google.gson.Gson
 import com.parse.ParseException
+import com.parse.ParseObject
+import com.parse.ParseQuery
 import com.parse.ParseUser
 import com.parse.SignUpCallback
 
@@ -96,8 +98,6 @@ class RemoteRepoManager(private val deviceId: String) {
         fun getSubjectPackageDataAtIndex(index: Int): SubjectPackageData{
             return getUserSubjectPackages().subjectPackageDataList[index]
         }
-
-
 
     }
 
