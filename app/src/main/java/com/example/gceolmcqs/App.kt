@@ -36,11 +36,9 @@ class App: Application() {
 
 
     private fun initCampay() {
-        val jsonString = AssertReader.getJsonFromAssets(this, "campay_credentials.json")
-        val campayCredential = Gson().fromJson(jsonString, CampayCredential::class.java)
         CamPay.init(
-            campayCredential.username,
-            campayCredential.password,
+            getString(R.string.campay_app_user_name),
+            getString(R.string.campay_app_pass_word),
             CamPay.Environment.DEV // environment
         )
     }

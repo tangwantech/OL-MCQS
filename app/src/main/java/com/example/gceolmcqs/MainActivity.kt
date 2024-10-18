@@ -41,15 +41,15 @@ class MainActivity : AppCompatActivity(),
         setupViewModel()
         setupRecyclerView()
 
+
     }
 
 
 
     private fun setupViewModel() {
         viewModel = ViewModelProvider(this)[MainActivityViewModel::class.java]
-//        viewModel.setSubjectAndFileNameDataListModel(getJsonFromAssets())
-        viewModel.setSubjectAndFileNameDataListModel(AssertReader.getJsonFromAssets(this, MCQConstants.SUBJECT_FILE_DATA_NAME))
         viewModel.updateSubjectPackageDataList()
+        viewModel.initAppData()
 //
     }
 
@@ -71,16 +71,9 @@ class MainActivity : AppCompatActivity(),
 
     private fun gotoSubjectContentTableActivity(position: Int) {
         val intent = Intent(this, SubjectContentTableActivity::class.java)
-        val bundle = Bundle()
-        bundle.putSerializable(
-            "subject_and_file_name_data",
-            viewModel.getSubjectAndFileNameDataAt(position)
 
-        )
         intent.apply {
-            putExtra("subject_and_file_name_bundle", bundle)
             putExtra(MCQConstants.SUBJECT_INDEX, position)
-
         }
         startActivity(intent)
     }

@@ -35,12 +35,10 @@ class PaperRepository {
         private val areAllSectionsAnswered = MutableLiveData<Boolean>(false)
 
 
-        fun initPaperData(paperDataJsonString: String?){
-            if(paperDataJsonString != null){
-                paperData = Gson().fromJson(paperDataJsonString, PaperData::class.java)
-                initSectionsAnswered()
-                initSectionScores()
-            }
+        fun initPaperData(subjectIndex: Int, examTypeIndex: Int, examItemIndex: Int){
+            paperData = AppDataRepository.getPaperData(subjectIndex, examTypeIndex, examItemIndex)
+            initSectionsAnswered()
+            initSectionScores()
 
         }
 

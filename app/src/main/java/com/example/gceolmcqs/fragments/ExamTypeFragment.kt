@@ -16,7 +16,6 @@ import com.example.gceolmcqs.PaperActivity
 import com.example.gceolmcqs.R
 //import com.example.gceolmcq.activities.OnPackageExpiredListener
 import com.example.gceolmcqs.adapters.ExamTypeRecyclerViewAdapter
-import com.example.gceolmcqs.datamodels.ExamTypeData
 import com.example.gceolmcqs.viewmodels.ExamTypeFragmentViewModel
 
 
@@ -29,11 +28,9 @@ class ExamTypeFragment : Fragment(), ExamTypeRecyclerViewAdapter.OnRecyclerItemC
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-
         if(context is OnPackageExpiredListener){
             onPackageExpiredListener = context
         }
-
         if(context is OnContentAccessDeniedListener){
             onContentAccessDeniedListener = context
         }
@@ -61,8 +58,6 @@ class ExamTypeFragment : Fragment(), ExamTypeRecyclerViewAdapter.OnRecyclerItemC
 
     private fun initVieModel(){
         examTypeFragmentViewModel = ViewModelProvider(this)[ExamTypeFragmentViewModel::class.java]
-        val examTypeData = requireArguments().getSerializable("examTypeData") as ExamTypeData
-        examTypeFragmentViewModel.setExamTypeData(examTypeData)
     }
 
     private fun setupRecyclerView(){
@@ -76,9 +71,11 @@ class ExamTypeFragment : Fragment(), ExamTypeRecyclerViewAdapter.OnRecyclerItemC
         )
 
         rvExamTypeFragment.layoutManager = rvLayoutMan
+        val subjectIndex = requireArguments().getInt(MCQConstants.SUBJECT_INDEX)
+        val examTypeIndex = requireArguments().getInt(MCQConstants.EXAM_TYPE_INDEX)
         val rvAdapter = ExamTypeRecyclerViewAdapter(
             requireContext(),
-            examTypeFragmentViewModel.getExamTypeItemsData(),
+            examTypeFragmentViewModel.getExamItemTitles(subjectIndex, examTypeIndex),
             this
         )
         rvExamTypeFragment.adapter = rvAdapter
@@ -87,14 +84,15 @@ class ExamTypeFragment : Fragment(), ExamTypeRecyclerViewAdapter.OnRecyclerItemC
 
 
     companion object {
-        fun newInstance(examTypeData: ExamTypeData, subjectName: String, expiresOn: String, packageName: String, subjectIndex:Int): Fragment {
+        fun newInstance(examTypeIndex: Int, subjectName: String, expiresOn: String, packageName: String, subjectIndex:Int): Fragment {
             val examFragment = ExamTypeFragment()
-            val bundle = Bundle()
-            bundle.putString("expiresOn", expiresOn)
-            bundle.putSerializable("examTypeData", examTypeData)
-            bundle.putString("subjectName", subjectName)
-            bundle.putString("packageName", packageName)
-            bundle.putInt(MCQConstants.SUBJECT_INDEX, subjectIndex)
+            val bundle = Bundle().apply {
+                putString(MCQConstants.SUBJECT_NAME, subjectName)
+                putInt(MCQConstants.SUBJECT_INDEX, subjectIndex)
+                putInt(MCQConstants.EXAM_TYPE_INDEX, examTypeIndex)
+                putString(MCQConstants.EXPIRES_ON, expiresOn)
+                putString(MCQConstants.PACKAGE_NAME, packageName)
+            }
             examFragment.arguments = bundle
             return examFragment
         }
@@ -113,14 +111,13 @@ class ExamTypeFragment : Fragment(), ExamTypeRecyclerViewAdapter.OnRecyclerItemC
     private fun gotoPaperActivity(examYearIndex: Int){
         val subjectIndex = requireArguments().getInt(MCQConstants.SUBJECT_INDEX)
         val intent = Intent(requireContext(), PaperActivity::class.java)
-        val bundle = Bundle().apply {
-            putInt(MCQConstants.SUBJECT_INDEX, subjectIndex)
-            putString("expiresOn", requireArguments().getString("expiresOn"))
-            putString("subjectName", requireArguments().getString("subjectName"))
-            putSerializable("paperSerializable", examTypeFragmentViewModel.getExamItemDataAt(examYearIndex))
+        intent.apply {
+            putExtra(MCQConstants.SUBJECT_INDEX, subjectIndex)
+            putExtra(MCQConstants.EXPIRES_ON, requireArguments().getString(MCQConstants.EXPIRES_ON))
+            putExtra(MCQConstants.SUBJECT_NAME, requireArguments().getString(MCQConstants.SUBJECT_NAME))
+            putExtra(MCQConstants.EXAM_TYPE_INDEX, requireArguments().getInt(MCQConstants.EXAM_TYPE_INDEX))
+            putExtra(MCQConstants.EXAM_ITEM_INDEX, examYearIndex)
         }
-
-        intent.putExtra("paperData", bundle)
         startActivity(intent)
     }
 

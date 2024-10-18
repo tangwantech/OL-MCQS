@@ -2,6 +2,7 @@ package com.example.gceolmcqs.repository
 
 import com.example.gceolmcqs.MCQConstants
 import com.example.gceolmcqs.SubjectPackageActivator
+import com.example.gceolmcqs.datamodels.AppData
 import com.example.gceolmcqs.datamodels.SubjectPackageData
 import com.example.gceolmcqs.datamodels.SubjectPackages
 import com.google.gson.Gson
@@ -9,6 +10,7 @@ import com.parse.ParseException
 import com.parse.ParseObject
 import com.parse.ParseQuery
 import com.parse.ParseUser
+import com.parse.SaveCallback
 import com.parse.SignUpCallback
 
 class RemoteRepoManager(private val deviceId: String) {
@@ -99,6 +101,50 @@ class RemoteRepoManager(private val deviceId: String) {
             return getUserSubjectPackages().subjectPackageDataList[index]
         }
 
+<<<<<<< HEAD
+=======
+        fun getOLMCQData(): AppData{
+            val appDataString = ParseUser.getCurrentUser()?.getString(MCQConstants.APP_DATA)
+//            println(appDataString)
+            val appData = Gson().fromJson<AppData>(appDataString!!, AppData::class.java)
+            return  appData
+        }
+
+        fun getAppDataFromParse(appDataAvailableListener: OnAppDataAvailableListener){
+            val parseQuery = ParseQuery.getQuery<ParseObject>("OLMCQDATA")
+            parseQuery.getInBackground("K13A8pBeYh"){parseObject, e ->
+                if (e == null){
+                    val appData = parseObject.getString("appData")
+                    setCurrentUserAppData(appData!!, appDataAvailableListener)
+                }else{
+                    appDataAvailableListener.onError(e)
+                    println(e.localizedMessage)
+                }
+            }
+        }
+
+        private fun setCurrentUserAppData(data: String, appDataAvailableListener: OnAppDataAvailableListener){
+            ParseUser.getCurrentUser().put("appData", data)
+            ParseUser.getCurrentUser().saveInBackground {
+                if (it == null){
+                    println(ParseUser.getCurrentUser().getString("appData"))
+                    appDataAvailableListener.onAppDataAvailable()
+                }else{
+                    appDataAvailableListener.onError(it)
+                }
+            }
+        }
+
+        fun verifyAppDataAvailability(): Boolean{
+            val data = ParseUser.getCurrentUser().getString("appData")
+            return data != null
+        }
+
+        fun initAppData(){
+
+        }
+
+>>>>>>> SecuringAppDataFilesFeature
     }
 
     interface OnUpdatePackageListener{
@@ -108,6 +154,11 @@ class RemoteRepoManager(private val deviceId: String) {
 
     interface OnVerifyDataExistsListener{
         fun onDeviceDataExists()
+        fun onError(e: ParseException)
+    }
+
+    interface OnAppDataAvailableListener{
+        fun onAppDataAvailable()
         fun onError(e: ParseException)
     }
 

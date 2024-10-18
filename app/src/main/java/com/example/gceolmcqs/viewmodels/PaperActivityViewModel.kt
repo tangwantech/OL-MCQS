@@ -4,24 +4,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.example.gceolmcqs.ActivationExpiryDatesGenerator
 import com.example.gceolmcqs.datamodels.*
+import com.example.gceolmcqs.repository.AppDataRepository
 import com.example.gceolmcqs.repository.PaperRepository
 import com.example.gceolmcqs.repository.RemoteRepoManager
 
 class PaperActivityViewModel:ViewModel() {
     private var currentFragmentIndex: Int? = null
     private lateinit var subjectName: String
-    private var examItemData: ExamItemData? = null
 
-    fun setExamItemData(examItemData: ExamItemData){
-        this.examItemData = examItemData
-    }
-
-    fun getExamFileName(): String{
-        return examItemData!!.fileName
-    }
-
-    fun getExamTitle(): String{
-        return examItemData!!.title
+    fun getExamItemTitle(subjectIndex: Int, examTypeIndex: Int, examItemIndex: Int): String{
+        return AppDataRepository.getExamItemTitle(subjectIndex, examTypeIndex, examItemIndex)
     }
 
     fun setCurrentFragmentIndex(index: Int){
@@ -36,12 +28,8 @@ class PaperActivityViewModel:ViewModel() {
         this.subjectName = subjectName
     }
 
-//    fun updateSubjectPackageData(subjectPackageData: SubjectPackageData){
-//        _subjectPackage.value = subjectPackageData
-//    }
-
-    fun initPaperData(paperDataJsonString: String?){
-        PaperRepository.initPaperData(paperDataJsonString)
+    fun initPaperData(subjectIndex: Int, examTypeIndex: Int, examItemIndex: Int){
+        PaperRepository.initPaperData(subjectIndex, examTypeIndex, examItemIndex)
 
     }
 
@@ -86,15 +74,6 @@ class PaperActivityViewModel:ViewModel() {
         return PaperRepository.getSectionsAnswered()
     }
 
-
-    fun getSectionNumberAt(position: Int): String {
-        return PaperRepository.getSectionNumberAt(position)
-    }
-
-    fun getIsSectionAnsweredAt(position: Int): Boolean {
-        return PaperRepository.getSectionAnsweredAt(position)
-    }
-
     fun decrementCurrentSectionRetryCount(){
         PaperRepository.decrementCurrentSectionRetryCount()
 
@@ -131,8 +110,6 @@ class PaperActivityViewModel:ViewModel() {
     fun isPackageActive(subjectIndex: Int): Boolean{
         val activatedOn = RemoteRepoManager.getSubjectPackageDataAtIndex(subjectIndex).activatedOn
         val expiresOn = RemoteRepoManager.getSubjectPackageDataAtIndex(subjectIndex).expiresOn
-
-
         return ActivationExpiryDatesGenerator().checkExpiry(activatedOn!!, expiresOn!!)
     }
 

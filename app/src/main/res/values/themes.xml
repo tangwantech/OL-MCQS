@@ -15,13 +15,7 @@
 
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/color_primary_variant</item>
-        <!-- Customize your theme here. -->
-<!--        <item name="android:windowBackground">@color/white</item>-->
 
-<!--        <item name="background">@color/background</item>-->
-<!--        <item name="cardBackgroundColor">#CCFFFFFF</item>-->
-
-<!--        <item name="android:textColor">@color/primary_text_default_material_light</item>-->
         <item name="android:textViewStyle">@style/TextAppearance.MaterialComponents.Subtitle1</item>
 
 
@@ -46,14 +40,17 @@
 
 
 
-    <style name="Theme.GCEOLMCQ.Fullscreen" parent="Theme.MaterialComponents.NoActionBar">
-<!--        <item name="colorPrimary">@color/color_primary</item>-->
-<!--        <item name="colorPrimaryVariant">@color/color_primary_variant</item>-->
-<!--        <item name="colorOnPrimary">@color/white</item>-->
+    <style name="Theme.GCEOLMCQ.Fullscreen" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorPrimaryVariant">@color/color_primary_variant</item>
+        <item name="colorOnPrimary">@color/color_on_primary</item>
+        <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowBackground">@color/white</item>
         <item name="colorPrimarySurface">@color/white</item>
+        <item name="android:statusBarColor">@color/color_primary_variant</item>
         <!--        <item name="android:background">@color/black_overlay</item>-->
     </style>
+
     <style name="SelectableOptionCard" parent="CardView">
         <item name="cardCornerRadius">@dimen/margin_8</item>
         <item name="cardElevation">@dimen/card_elevation_8</item>

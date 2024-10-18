@@ -21,10 +21,8 @@ import java.nio.charset.Charset
 
 class SubjectContentTableActivity : AppCompatActivity(), ExamTypeFragment.OnPackageExpiredListener, ExamTypeFragment.OnContentAccessDeniedListener{
 
-    private lateinit var subjectContentTableViewModel: SubjectContentTableViewModel
-    private var subjectTitle: String? = null
+    private lateinit var viewModel: SubjectContentTableViewModel
     private lateinit var tabLayout: TabLayout
-    private var selectedTab: TabLayout.Tab? = null
     private lateinit var viewPager: ViewPager
     private lateinit var alertDialog: AlertDialog.Builder
     private lateinit var pref: SharedPreferences
@@ -48,32 +46,22 @@ class SubjectContentTableActivity : AppCompatActivity(), ExamTypeFragment.OnPack
     }
 
     private fun initViewModel(){
-        val subjectAndFileNameData = intent.getBundleExtra("subject_and_file_name_bundle")!!
-            .getSerializable("subject_and_file_name_data")!! as SubjectAndFileNameData
 
-        subjectTitle = subjectAndFileNameData.subject
+        viewModel = ViewModelProvider(this)[SubjectContentTableViewModel::class.java]
+        viewModel.setSubjectIndex(intent.getIntExtra(MCQConstants.SUBJECT_INDEX, 0))
+//        viewModel.setSubjectName(subjectTitle!!)
 
-        subjectContentTableViewModel =
-            ViewModelProvider(this)[SubjectContentTableViewModel::class.java]
-
-        subjectContentTableViewModel.setSubjectName(subjectTitle!!)
-
-//
-
-        getJsonFromAssets(subjectAndFileNameData.fileName)?.let {
-            subjectContentTableViewModel.initSubjectContentsData(it)
-        }
 
     }
 
     private fun setupViewObservers(){
-        subjectContentTableViewModel.getIsPackageActive().observe(this, Observer {
+        viewModel.getIsPackageActive().observe(this, Observer {
             if (!it) {
                 showAlertDialog()
             }
         })
 
-        subjectContentTableViewModel.subjectPackageData.observe(this, Observer{subjectPackageData ->
+        viewModel.subjectPackageData.observe(this, Observer{ subjectPackageData ->
             setUpSubjectContentTab(subjectPackageData)
         })
     }
@@ -103,13 +91,11 @@ class SubjectContentTableActivity : AppCompatActivity(), ExamTypeFragment.OnPack
         val tabIndex = pref.getInt(TAB_INDEX, 0)
         val tabFragments: ArrayList<Fragment> = ArrayList()
 
-        for (fragmentIndex in 0 until subjectContentTableViewModel.getExamTypesCount()) {
+        for (fragmentIndex in 0 until viewModel.getExamTypesCount()) {
             val fragment =
                 ExamTypeFragment.newInstance(
-                    subjectContentTableViewModel.getExamTypeDataAt(
-                        fragmentIndex
-                    ),
-                    subjectTitle!!,
+                    fragmentIndex,
+                    viewModel.getSubjectName(),
                     subjectPackageData.expiresOn!!,
                     subjectPackageData.packageName!!,
                     subjectIndex
@@ -121,16 +107,11 @@ class SubjectContentTableActivity : AppCompatActivity(), ExamTypeFragment.OnPack
         val viewPagerAdapter = SubjectContentTableViewPagerAdapter(
             this.supportFragmentManager,
             tabFragments,
-            subjectContentTableViewModel.getExamTitles()
+            viewModel.getExamTitles()
         )
         viewPager.adapter = viewPagerAdapter
         viewPager.currentItem = tabIndex
         tabLayout.setupWithViewPager(viewPager)
-
-
-//         = viewPager.currentItem
-
-
     }
 
     private fun setupActivityViewListeners(){
@@ -164,10 +145,8 @@ class SubjectContentTableActivity : AppCompatActivity(), ExamTypeFragment.OnPack
 
     override fun onResume() {
         super.onResume()
-        title = subjectTitle
-        subjectContentTableViewModel.getSubjectPackageDataFroRemoteRepoAtIndex(intent.getIntExtra(MCQConstants.SUBJECT_INDEX, 0))
-//        subjectContentTableViewModel.querySubjectPackageDataFromLocalDatabaseAtSubjectName(subjectTitle!!)
-
+        title = viewModel.getSubjectName()
+        viewModel.getSubjectPackageDataFromRemoteRepoAtIndex(intent.getIntExtra(MCQConstants.SUBJECT_INDEX, 0))
     }
 
     override fun onDestroy() {
@@ -175,29 +154,12 @@ class SubjectContentTableActivity : AppCompatActivity(), ExamTypeFragment.OnPack
         saveSelectedTab(0)
     }
 
-    private fun getJsonFromAssets(fileName: String): String? {
-        val charset: Charset = Charsets.UTF_8
-
-        return try {
-            val jsonFile = assets.open(fileName)
-            val size = jsonFile.available()
-            val buffer = ByteArray(size)
-
-            jsonFile.read(buffer)
-            jsonFile.close()
-            String(buffer, charset)
-
-        } catch (e: IOException) {
-            null
-        }
-    }
-
     override fun onShowPackageExpired() {
         showAlertDialog()
     }
 
     override fun onCheckIfPackageHasExpired(): Boolean {
-        return subjectContentTableViewModel.getPackageStatus()
+        return viewModel.getPackageStatus()
     }
 
     override fun onContentAccessDenied() {
@@ -213,7 +175,6 @@ class SubjectContentTableActivity : AppCompatActivity(), ExamTypeFragment.OnPack
     private fun saveSelectedTab(index: Int){
         pref.edit().apply {
             putInt(TAB_INDEX, index)
-//            apply()
         }.apply()
     }
 

@@ -13,7 +13,7 @@ import com.example.gceolmcqs.datamodels.ExamItemData
 
 class ExamTypeRecyclerViewAdapter(
     private val context: Context,
-    private val examItemsData: ArrayList<ExamItemData>,
+    private val examItemsData: ArrayList<String>,
     private val listener: OnRecyclerItemClickListener
     ) : RecyclerView.Adapter<ExamTypeRecyclerViewAdapter.ViewHolder>(){
 
@@ -37,7 +37,7 @@ class ExamTypeRecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-      holder.tvItem.text = examItemsData[position].title
+      holder.tvItem.text = examItemsData[position]
     }
 
     override fun getItemCount(): Int {
