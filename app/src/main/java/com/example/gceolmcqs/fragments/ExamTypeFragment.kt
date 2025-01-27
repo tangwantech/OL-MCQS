@@ -100,12 +100,13 @@ class ExamTypeFragment : Fragment(), ExamTypeRecyclerViewAdapter.OnRecyclerItemC
 
     override fun onRecyclerItemClick(position: Int) {
 
-        if(!onPackageExpiredListener.onCheckIfPackageHasExpired()){
-            onPackageExpiredListener.onShowPackageExpired()
-        }else{
-
-            gotoPaperActivity(position)
-        }
+//        if(!onPackageExpiredListener.onCheckIfPackageHasExpired()){
+//            onPackageExpiredListener.onShowPackageExpired()
+//        }else{
+//
+//            gotoPaperActivity(position)
+//        }
+        gotoPaperActivity(position)
 
     }
     private fun gotoPaperActivity(examYearIndex: Int){

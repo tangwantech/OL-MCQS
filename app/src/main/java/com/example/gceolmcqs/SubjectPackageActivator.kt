@@ -1,6 +1,5 @@
 package com.example.gceolmcqs
 
-import androidx.lifecycle.LiveData
 import com.example.gceolmcqs.datamodels.SubjectPackageData
 
 class SubjectPackageActivator {
@@ -8,7 +7,7 @@ class SubjectPackageActivator {
 
         fun activateTrialPackageForAllSubjectsAvailable(availableSubjects: List<String>?): List<SubjectPackageData>{
             val activationExpiryDates =
-                ActivationExpiryDatesGenerator.generateTrialActivationExpiryDates(
+                ActivationExpiryDatesGenerator.generateActivationExpiryDates(
                     MCQConstants.HOURS,
                     MCQConstants.TRIAL_DURATION
                 )
@@ -33,10 +32,13 @@ class SubjectPackageActivator {
 
         fun activateSubjectPackage(tempSubjectName: String, tempSubjectIndex: Int, packageType: String, packageDuration: Int): SubjectPackageData {
             val activationExpiryDates =
-                ActivationExpiryDatesGenerator.generateTrialActivationExpiryDates(
+                ActivationExpiryDatesGenerator.generateActivationExpiryDates(
                     MCQConstants.HOURS,
                     packageDuration
                 )
+
+//            println(activationExpiryDates)
+
             val subjectPackageData = SubjectPackageData().apply {
                 subjectIndex = tempSubjectIndex
                 subjectName = tempSubjectName

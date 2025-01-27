@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.provider.Settings
 import android.view.View
 import androidx.appcompat.app.AlertDialog
@@ -25,6 +26,7 @@ import com.parse.ParseException
 import kotlinx.coroutines.*
 import java.io.IOException
 import java.nio.charset.Charset
+import java.util.Timer
 
 class GCEFirstActivity : AppCompatActivity() {
     private val serverRetryLimit = 2
@@ -50,26 +52,33 @@ class GCEFirstActivity : AppCompatActivity() {
             binding.loProgressBar.visibility = View.GONE
             displayTermsOfServiceDialog()
         }else{
-
             verifyDeviceIdInAppDatabase()
         }
 
     }
 
     private fun verifyDeviceIdInAppDatabase(){
+        NetworkTimeout.checkTimeout(MCQConstants.NETWORK_TIME_OUT_DURATION, object: NetworkTimeout.OnNetWorkTimeoutListener{
+            override fun onNetworkTimeout() {
+                displayErrorDialog(getString(R.string.network_timeout))
+            }
+        })
         viewModel.verifyDeviceIdInAppDatabase(object: RemoteRepoManager.OnVerifyDataExistsListener{
             override fun onDeviceDataExists() {
                 val isAvailable = viewModel.verifyAppDataAvailability()
 //                gotoMainActivity()
                 if (isAvailable){
+                    NetworkTimeout.stopTimer()
                     gotoMainActivity()
                 }else{
                     viewModel.getAppData(object: RemoteRepoManager.OnAppDataAvailableListener{
                         override fun onAppDataAvailable() {
+                            NetworkTimeout.stopTimer()
                             gotoMainActivity()
                         }
 
                         override fun onError(e: ParseException) {
+//                            println("exception raised")
                             e.localizedMessage?.let { displayErrorDialog(it)}
                         }
 
@@ -78,9 +87,10 @@ class GCEFirstActivity : AppCompatActivity() {
             }
 
             override fun onError(e: ParseException) {
-                e.localizedMessage?.let { displayErrorDialog(it)}
+//                e.localizedMessage?.let { displayErrorDialog(it)}
             }
         })
+
     }
 
     fun displayErrorDialog(error: String){
@@ -90,7 +100,8 @@ class GCEFirstActivity : AppCompatActivity() {
                 finish()
             }
 
-        }
+        }.create()
+        alertDialog.show()
     }
 
     private fun setupViewModel() {
@@ -146,7 +157,6 @@ class GCEFirstActivity : AppCompatActivity() {
                     Intent.FLAG_ACTIVITY_NEW_DOCUMENT or
                     Intent.FLAG_ACTIVITY_MULTIPLE_TASK
         )
-
         try {
             startActivity(intent)
         } catch (e: ActivityNotFoundException) {

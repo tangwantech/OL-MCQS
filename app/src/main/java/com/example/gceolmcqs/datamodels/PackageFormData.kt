@@ -1,10 +1,10 @@
 package com.example.gceolmcqs.datamodels
 
 data class PackagesData(
-    var packages: ArrayList<PackageData>
+    var packages: ArrayList<PackageFormData>
 )
 
-data class PackageData(
+data class PackageFormData(
     var packageName: String,
     var price: String,
     var duration: Int,

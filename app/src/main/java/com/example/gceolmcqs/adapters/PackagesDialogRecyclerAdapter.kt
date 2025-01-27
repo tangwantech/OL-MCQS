@@ -9,11 +9,11 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.gceolmcqs.R
-import com.example.gceolmcqs.datamodels.PackageData
+import com.example.gceolmcqs.datamodels.PackageFormData
 
 class PackagesDialogRecyclerAdapter(
     private val context: Context,
-    private val packages: ArrayList<PackageData>,
+    private val packages: ArrayList<PackageFormData>,
     private val itemSelectListener: ItemSelectListener
 ): RecyclerView.Adapter<PackagesDialogRecyclerAdapter.ViewHolder>() {
     inner class ViewHolder(val view: View): RecyclerView.ViewHolder(view){

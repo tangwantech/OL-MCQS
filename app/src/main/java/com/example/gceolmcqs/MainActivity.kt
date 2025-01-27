@@ -7,7 +7,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -78,6 +77,11 @@ class MainActivity : AppCompatActivity(),
         startActivity(intent)
     }
 
+    private fun gotoSpinActivity(position: Int){
+        val intent = SpinActivity.getIntent(this, position)
+        startActivity(intent)
+    }
+
     private fun shareApp() {
 //        val uri = Uri.parse(MCQConstants.APP_URL)
         val appMsg = "${resources.getString(R.string.share_message)}\nLink: ${MCQConstants.APP_URL}"
@@ -103,39 +107,118 @@ class MainActivity : AppCompatActivity(),
         }
     }
 
-    private fun privacyPolicy() {
-        val uri = Uri.parse(MCQConstants.PRIVACY_POLICY)
-        val intent = Intent(Intent.ACTION_VIEW, uri)
-        intent.addFlags(
-            Intent.FLAG_ACTIVITY_NO_HISTORY or
-                    Intent.FLAG_ACTIVITY_NEW_DOCUMENT or
-                    Intent.FLAG_ACTIVITY_MULTIPLE_TASK
-        )
+//    private fun privacyPolicy() {
+//        val uri = Uri.parse(MCQConstants.PRIVACY_POLICY)
+//        val intent = Intent(Intent.ACTION_VIEW, uri)
+//        intent.addFlags(
+//            Intent.FLAG_ACTIVITY_NO_HISTORY or
+//                    Intent.FLAG_ACTIVITY_NEW_DOCUMENT or
+//                    Intent.FLAG_ACTIVITY_MULTIPLE_TASK
+//        )
+//
+//        try {
+//            startActivity(intent)
+//        } catch (e: ActivityNotFoundException) {
+//            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(MCQConstants.PRIVACY_POLICY)))
+//        }
+//    }
 
-        try {
-            startActivity(intent)
-        } catch (e: ActivityNotFoundException) {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(MCQConstants.PRIVACY_POLICY)))
-        }
+    private fun updateAppData(){
+
+        val checkingDialog = checkingForUpdateDialog()
+        checkingDialog.show()
+        viewModel.updateAppData(object: AppDataUpdater.AppDataUpdateListener{
+            override fun onAppDataUpdated() {
+                NetworkTimeout.stopTimer()
+                checkingDialog.dismiss()
+                appDataUpDatedDialog()
+            }
+
+            override fun onError() {
+                NetworkTimeout.stopTimer()
+            }
+
+            override fun onAppDataUpToDate() {
+                NetworkTimeout.stopTimer()
+                checkingDialog.dismiss()
+                appDataUpToDateDialog()
+            }
+        })
+
+        NetworkTimeout.checkTimeout(MCQConstants.NETWORK_TIME_OUT_DURATION, object: NetworkTimeout.OnNetWorkTimeoutListener{
+            override fun onNetworkTimeout() {
+                checkingDialog.dismiss()
+                displayErrorDialog(getString(R.string.network_timeout))
+            }
+        })
     }
+
+    private fun displayErrorDialog(message: String){
+        val dialog = AlertDialog.Builder(this).apply {
+            setMessage(message)
+            setPositiveButton(getString(R.string.ok)){d, _ ->
+                d.dismiss()
+            }
+        }.create()
+        dialog.show()
+    }
+
+    private fun  appDataUpToDateDialog(){
+        val dialog = AlertDialog.Builder(this).apply {
+            setMessage("App data is up to date.")
+            setPositiveButton(getString(R.string.ok)){d, _ ->
+                d.dismiss()
+            }
+        }.create()
+        dialog.show()
+    }
+
+    private fun checkingForUpdateDialog(): AlertDialog{
+        val dialog = AlertDialog.Builder(this).apply {
+            setMessage(getString(R.string.checking_for_latest_update))
+            setCancelable(false)
+        }.create()
+        return dialog
+    }
+
+    private fun appDataUpDatedDialog(){
+        val dialog = AlertDialog.Builder(this).apply {
+            setMessage(getString(R.string.app_data_updated_successfully))
+            setPositiveButton(getString(R.string.exit)){_, _ ->
+                finish()
+            }
+            setCancelable(false)
+        }.create()
+        dialog.show()
+    }
+
+
 
     private fun gotoAboutUs(){
         val intent = Intent(this, AboutActivity::class.java)
         startActivity(intent)
     }
 
-    private fun gotoTermsOfServiceActivity(){
-        startActivity(TermsOfServiceActivity.getIntent(this))
+//    private fun gotoTermsOfServiceActivity(){
+//        startActivity(TermsOfServiceActivity.getIntent(this))
+//    }
+
+    private fun setTitle(){
+        title = ""
     }
 
 
     override fun onResume() {
         super.onResume()
+        setTitle()
         viewModel.updateSubjectPackageDataList()
         homeRecyclerViewAdapter.notifyDataSetChanged()
 
 
+
     }
+
+
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu, menu)
@@ -156,15 +239,21 @@ class MainActivity : AppCompatActivity(),
             R.id.rateUs -> {
                 rateUs()
             }
-            R.id.terms -> {
-                gotoTermsOfServiceActivity()
-            }
+//            R.id.terms -> {
+//                gotoTermsOfServiceActivity()
+//            }
 
-            R.id.privacyPolicy -> {
-                privacyPolicy()
-            }
+//            R.id.privacyPolicy -> {
+//                privacyPolicy()
+//            }
             R.id.about -> {
                 gotoAboutUs()
+            }
+            R.id.updateAppData -> {
+                updateAppData()
+            }
+            R.id.exit -> {
+                showExitDialog()
             }
         }
         return super.onOptionsItemSelected(item)
@@ -184,18 +273,19 @@ class MainActivity : AppCompatActivity(),
             Toast.makeText(this, "Please activate your Trial Package", Toast.LENGTH_LONG).show()
         }else{
             isPackageActive?.let{
-                if (it) {
-                    gotoSubjectContentTableActivity(position)
-
-                } else {
-                    val alertDialog = AlertDialog.Builder(this)
-                    alertDialog.apply {
-                        setMessage(resources.getString(R.string.package_expired_message))
-                        setPositiveButton("Ok") { _, _ ->
-
-                        }
-                    }.create().show()
-                }
+                gotoSubjectContentTableActivity(position)
+//                if (it) {
+//                    gotoSubjectContentTableActivity(position)
+//
+//                } else {
+//                    val alertDialog = AlertDialog.Builder(this)
+//                    alertDialog.apply {
+//                        setMessage(resources.getString(R.string.package_expired_message))
+//                        setPositiveButton("Ok") { _, _ ->
+//
+//                        }
+//                    }.create().show()
+//                }
             }
 
         }
@@ -207,6 +297,14 @@ class MainActivity : AppCompatActivity(),
         gotoSubscriptionActivity(position, subjectName)
     }
 
+    override fun onSpinPointsButtonClicked(position: Int, subjectName: String) {
+        println("spin points...")
+        gotoSpinActivity(position)
+    }
+
+    override fun onBonusTimeButtonClicked(position: Int, subjectName: String) {
+
+    }
 
 
     private fun gotoSubscriptionActivity(subjectIndex: Int, subjectName: String){

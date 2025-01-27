@@ -166,11 +166,12 @@ class SectionRecyclerAdapter(
         holder.layoutUserAnswer.visibility = View.GONE
         holder.layoutCorrectAnswer.visibility = View.VISIBLE
         holder.tvCorrectAnswer.text = questionData.correctAnswer
-        if (questionData.explanation == null){
-            holder.layoutExplanationBtn.visibility = View.GONE
-        }else{
-            holder.layoutExplanationBtn.visibility = View.VISIBLE
-        }
+        holder.layoutExplanationBtn.visibility = View.GONE
+//        if (questionData.explanation == null){
+//            holder.layoutExplanationBtn.visibility = View.GONE
+//        }else{
+//            holder.layoutExplanationBtn.visibility = View.VISIBLE
+//        }
         if (questionData.fourOptions != null){
             holder.fourAlternativeCorrectionLayout.visibility = View.VISIBLE
             holder.fourAlternativesInCorrection.text = questionData.fourOptions
@@ -178,11 +179,11 @@ class SectionRecyclerAdapter(
             holder.fourAlternativeCorrectionLayout.visibility = View.GONE
         }
 
-        holder.explanationBtn.setOnClickListener {
-            if (context is OnExplanationClickListener && questionData.explanation != null){
-                context.onExplanationClicked(questionData)
-            }
-        }
+//        holder.explanationBtn.setOnClickListener {
+//            if (context is OnExplanationClickListener && questionData.explanation != null){
+//                context.onExplanationClicked(questionData)
+//            }
+//        }
     }
 
     private fun displayOrHideLayout(questionData: QuestionWithUserAnswerMarkedData, holder: ViewHolder, position: Int){

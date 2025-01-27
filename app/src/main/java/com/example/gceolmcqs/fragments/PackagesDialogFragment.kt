@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.gceolmcqs.AssertReader
 import com.example.gceolmcqs.R
 import com.example.gceolmcqs.adapters.PackagesDialogRecyclerAdapter
-import com.example.gceolmcqs.datamodels.PackageData
+import com.example.gceolmcqs.datamodels.PackageFormData
 import com.example.gceolmcqs.viewmodels.PackageDialogViewModel
 
 class PackagesDialogFragment : DialogFragment(), PackagesDialogRecyclerAdapter.ItemSelectListener {
@@ -103,6 +103,6 @@ class PackagesDialogFragment : DialogFragment(), PackagesDialogRecyclerAdapter.I
     interface PackageDialogListener{
         fun onPackageDialogNextButtonClicked()
         fun onPackageDialogCancelButtonClicked()
-        fun onPackageItemSelected(packageData: PackageData)
+        fun onPackageItemSelected(packageFormData: PackageFormData)
     }
 }

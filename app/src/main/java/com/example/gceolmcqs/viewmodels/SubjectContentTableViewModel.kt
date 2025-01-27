@@ -4,14 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.gceolmcqs.ActivationExpiryDatesGenerator
-import com.example.gceolmcqs.datamodels.ExamItemData
-import com.example.gceolmcqs.datamodels.ExamTypeData
-import com.example.gceolmcqs.datamodels.SubjectData
+
 import com.example.gceolmcqs.datamodels.SubjectPackageData
 import com.example.gceolmcqs.repository.AppDataRepository
 import com.example.gceolmcqs.repository.RemoteRepoManager
-//import com.example.gceolmcqs.roomDB.GceOLMcqDatabase
-import com.google.gson.Gson
+
 
 class SubjectContentTableViewModel : ViewModel() {
     private lateinit var subjectName: String

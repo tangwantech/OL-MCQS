@@ -12,6 +12,13 @@ import com.parse.ParseQuery
 import com.parse.ParseUser
 import com.parse.SaveCallback
 import com.parse.SignUpCallback
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.TimeoutCancellationException
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withTimeout
+import kotlinx.coroutines.withTimeoutOrNull
 
 class RemoteRepoManager(private val deviceId: String) {
     companion object{
@@ -53,7 +60,6 @@ class RemoteRepoManager(private val deviceId: String) {
                 }
 
             }
-
         }
 
 
@@ -109,23 +115,23 @@ class RemoteRepoManager(private val deviceId: String) {
         }
 
         fun getAppDataFromParse(appDataAvailableListener: OnAppDataAvailableListener){
-            val parseQuery = ParseQuery.getQuery<ParseObject>("OLMCQDATA")
-            parseQuery.getInBackground("K13A8pBeYh"){parseObject, e ->
+            val parseQuery = ParseQuery.getQuery<ParseObject>(MCQConstants.OL_MCQ_DATA)
+            parseQuery.getInBackground(MCQConstants.APP_DATA_OBJECT_KEY){parseObject, e ->
                 if (e == null){
-                    val appData = parseObject.getString("appData")
+                    val appData = parseObject.getString(MCQConstants.APP_DATA)
                     setCurrentUserAppData(appData!!, appDataAvailableListener)
                 }else{
                     appDataAvailableListener.onError(e)
-                    println(e.localizedMessage)
+//                    println(e.localizedMessage)
                 }
             }
         }
 
         private fun setCurrentUserAppData(data: String, appDataAvailableListener: OnAppDataAvailableListener){
-            ParseUser.getCurrentUser().put("appData", data)
+            ParseUser.getCurrentUser().put(MCQConstants.APP_DATA, data)
             ParseUser.getCurrentUser().saveInBackground {
                 if (it == null){
-                    println(ParseUser.getCurrentUser().getString("appData"))
+                    println(ParseUser.getCurrentUser().getString(MCQConstants.APP_DATA))
                     appDataAvailableListener.onAppDataAvailable()
                 }else{
                     appDataAvailableListener.onError(it)

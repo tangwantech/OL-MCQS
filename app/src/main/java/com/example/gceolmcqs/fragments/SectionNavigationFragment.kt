@@ -23,9 +23,11 @@ import com.example.gceolmcqs.R
 import com.example.gceolmcqs.adapters.SectionNavigationRecyclerViewAdapter
 //import com.example.gceolmcq.datamodels.SectionAnsweredScoreData
 import com.example.gceolmcqs.viewmodels.SectionNavigationFragmentViewModel
-class SectionNavigationFragment : Fragment(){
-    private lateinit var onRecyclerItemClickListener: SectionNavigationRecyclerViewAdapter.OnRecyclerItemClickListener
+class SectionNavigationFragment : Fragment(), SectionNavigationRecyclerViewAdapter.OnRecyclerItemClickListener{
+//    private lateinit var onRecyclerItemClickListener: SectionNavigationRecyclerViewAdapter.OnRecyclerItemClickListener
 //    private lateinit var onRestartPaperListener: OnRestartPaperListener
+    private lateinit var onSectionNAvFragmentRecyclerItemClickListener: OnSectionNAvFragmentRecyclerItemClickListener
+//    private lateinit var onShowPackageExpiredDialogListener: OnShowPackageExpiredDialogListener
 
     private lateinit var viewModel: SectionNavigationFragmentViewModel
 
@@ -74,9 +76,17 @@ class SectionNavigationFragment : Fragment(){
     }
 
     private fun initHelperListeners(context: Context){
-        if (context is SectionNavigationRecyclerViewAdapter.OnRecyclerItemClickListener) {
-            onRecyclerItemClickListener = context
+//        if (context is SectionNavigationRecyclerViewAdapter.OnRecyclerItemClickListener) {
+//            onRecyclerItemClickListener = context
+//        }
+
+        if (context is OnSectionNAvFragmentRecyclerItemClickListener){
+            onSectionNAvFragmentRecyclerItemClickListener = context
         }
+
+//        if (context is OnShowPackageExpiredDialogListener){
+//            onShowPackageExpiredDialogListener = context
+//        }
 
 //        if (context is OnRestartPaperListener){
 //            onRestartPaperListener = context
@@ -114,7 +124,7 @@ class SectionNavigationFragment : Fragment(){
             SectionNavigationRecyclerViewAdapter(
                 requireContext(),
                 sectionNameBundleList!!,
-                onRecyclerItemClickListener,
+                this,
                 viewModel.getSectionsAnswered()
             )
         rvSectionNav.adapter = sectionNavigationRecyclerViewAdapter
@@ -193,8 +203,17 @@ class SectionNavigationFragment : Fragment(){
 
     }
 
-//    interface OnRestartPaperListener{
-//        fun onRestartPaper()
+
+    override fun onRecyclerItemClick(position: Int) {
+        onSectionNAvFragmentRecyclerItemClickListener.onSectionNavFragmentRecyclerItemClick(position)
+    }
+
+    interface OnSectionNAvFragmentRecyclerItemClickListener {
+        fun onSectionNavFragmentRecyclerItemClick(position: Int)
+    }
+
+//    interface OnShowPackageExpiredDialogListener{
+//        fun onShowPackageExpiredDialog()
 //    }
 
 }

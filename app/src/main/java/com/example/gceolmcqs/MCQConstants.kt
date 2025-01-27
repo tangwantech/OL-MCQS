@@ -10,28 +10,36 @@ class MCQConstants{
         const val B = "B"
         const val C = "C"
         const val D = "D"
+
+        const val NA = "NA"
+        const val TERMS_ACCEPTED = "termsAccepted"
+
         const val PACKAGE_DURATION = "packageDuration"
         const val TRANSACTION_STATUS = "transactionStatus"
         const val IS_ACTIVE = "isActive"
         const val MOMO_PARTNER = "momoPartner"
         const val PACKAGE_PRICE = "packagePrice"
-        const val NA = "NA"
-        const val TERMS_ACCEPTED = "termsAccepted"
-        const val TRIAL_DURATION = 12
-        const val DELAY_DURATION = 3000
-        const val STATUS_CHECK_DURATION = 5000L
         const val ACTIVE = "ACTIVE"
         const val EXPIRED = "EXPIRED"
         const val TRIAL = "TRIAL"
         const val SUBJECTS = "subjects"
         const val DURATION = "duration"
         const val PARSE_CLASS = "MCQPackages"
+        const val MOBILE_ID = "mobileId"
+        const val PACKAGE_INDEX = "packageIndex"
+        const val PACKAGE_DATA = "packageData"
+        const val SUBJECT_NAMES = "subjectNames"
+        const val SUBJECT_EXPIRY_LIST = "subjectExpiryList"
+        const val SUBJECT_PACKAGE_DATA_LIST = "subjectPackageDataList"
+        const val INIT_DATA_BUNDLE = "initDataBundle"
+        const val SUBJECT_FILENAME_LIST = "subjectAndFileNameList"
+        const val SUBJECT_DATA_FILE = "subject_data.json"
+
         const val SUBJECT_NAME = "subjectName"
         const val PACKAGE_NAME = "packageName"
         const val ACTIVATED_ON = "activatedOn"
         const val EXPIRES_ON = "expiresOn"
-        const val MOBILE_ID = "mobileId"
-        const val PACKAGE_INDEX = "packageIndex"
+
         const val SUBJECTS_PACKAGES = "subjectPackages"
         const val SECONDS = "seconds"
         const val MINUTES = "minutes"
@@ -45,14 +53,7 @@ class MCQConstants{
         const val SUBJECT_INDEX = "subjectIndex"
         const val MINIMUM_PERCENT_SCORE = 0
         const val SECTION_RETRY_LIMIT = 3
-        const val PACKAGE_DATA = "packageData"
 
-        const val SUBJECT_NAMES = "subjectNames"
-        const val SUBJECT_EXPIRY_LIST = "subjectExpiryList"
-        const val SUBJECT_PACKAGE_DATA_LIST = "subjectPackageDataList"
-        const val INIT_DATA_BUNDLE = "initDataBundle"
-        const val SUBJECT_FILENAME_LIST = "subjectAndFileNameList"
-        const val SUBJECT_DATA_FILE = "subject_data.json"
 
         const val TYPE = "text/plain"
         const val APP_URL = "https://gce-ol-mcqs.en.uptodown.com/android/download"
@@ -88,6 +89,11 @@ class MCQConstants{
         const val COUNT_DOWN_INTERVAL = 1000L
         const val TIME_TO_ANIMATE_TIMER = 60000L
 
+        const val TRIAL_DURATION = 12
+        const val DELAY_DURATION = 3000
+        const val STATUS_CHECK_DURATION = 5000L
+        const val NETWORK_TIME_OUT_DURATION = 20000L
+
         const val SUBJECT_FILE_DATA_NAME = "subject_data.json"
         const val TERMS_URL = "file:///android_asset/Terms of Use of Service.html"
         const val MTN = "MTN"
@@ -102,6 +108,7 @@ class MCQConstants{
         const val EXAM_ITEM_INDEX = "examItemIndex"
 
         val SUBJECTS_AVAILABLE = arrayListOf("Biology")
+
 
 
     }

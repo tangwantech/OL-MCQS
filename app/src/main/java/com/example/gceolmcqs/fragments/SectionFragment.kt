@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.gceolmcqs.OnCheckPackageExpiredListener
 import com.example.gceolmcqs.OnRequestToGoToResultListener
 import com.example.gceolmcqs.R
 import com.example.gceolmcqs.adapters.SectionQuestionsRecyclerAdapter
@@ -25,8 +26,12 @@ import com.example.gceolmcqs.viewmodels.SectionFragmentViewModel
 
 private const val SECTION_DATA = "Section data"
 private const val SECTION_INDEX = "Section index"
-class SectionFragment : Fragment(), SectionQuestionsRecyclerAdapter.OnAlternativeItemRadioButtonCheckStateChangeListener{
+class SectionFragment : Fragment(),
+    SectionQuestionsRecyclerAdapter.OnAlternativeItemRadioButtonCheckStateChangeListener
+{
     private lateinit var onRequestToGoToResultListener: OnRequestToGoToResultListener
+//    private lateinit var onSectionResultButtonClickListener: OnSectionResultButtonClickListener
+//    private lateinit var onOnCheckPackageExpiredListener: OnCheckPackageExpiredListener
 
     private lateinit var viewModel: SectionFragmentViewModel
 
@@ -51,6 +56,14 @@ class SectionFragment : Fragment(), SectionQuestionsRecyclerAdapter.OnAlternativ
         if(context is OnRequestToGoToResultListener){
             onRequestToGoToResultListener = context
         }
+
+//        if (context is OnSectionResultButtonClickListener){
+//            onSectionResultButtonClickListener = context
+//        }
+
+//        if (context is OnCheckPackageExpiredListener){
+//            onOnCheckPackageExpiredListener = context
+//        }
 
     }
 
@@ -197,7 +210,7 @@ class SectionFragment : Fragment(), SectionQuestionsRecyclerAdapter.OnAlternativ
         super.onResume()
         requireActivity().title = viewModel.getSectionTitle()
         setupSectionRecyclerView()
-        startTimer()
+//        startTimer()
 //        displayDirectionsDialog()
 
 
@@ -210,6 +223,16 @@ class SectionFragment : Fragment(), SectionQuestionsRecyclerAdapter.OnAlternativ
             startTimer()
         }
     }
+
+//    private fun checkPackageExpiry(){
+//        val isActive = _viewModel.isPackageActive(subjectIndex)
+//        if (!isActive) {
+//            showPackageExpiredDialog()
+//        }else{
+//            gotoSection(position)
+//        }
+////        gotoSection(position)
+//    }
 
 //    private fun setAnimationOnQuestionViewItems(){
 ////        svQuestion.startAnimation(fadeTransition)
@@ -262,6 +285,10 @@ class SectionFragment : Fragment(), SectionQuestionsRecyclerAdapter.OnAlternativ
     ) {
         viewModel.updateUserSelection(questionIndex, selectableOptionIndex)
     }
+
+//    interface OnSectionResultButtonClickListener{
+//        fun onSectionResultButtonClick()
+//    }
 
 
 }

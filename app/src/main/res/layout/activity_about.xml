@@ -45,9 +45,31 @@
                 android:layout_height="wrap_content"
                 android:minHeight="24dp"
                 android:text="@string/email"
-                android:gravity="center"/>
+                android:gravity="center"
+                android:visibility="gone"/>
         </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.cardview.widget.CardView>
+
+    <Button
+        android:id="@+id/btnTerms"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="56dp"
+        android:text="@string/terms_of_service"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+
+    <Button
+        android:id="@+id/btnPrivacyPolicy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="56dp"
+        android:text="@string/privacy_policy"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+
 
 
 </LinearLayout>

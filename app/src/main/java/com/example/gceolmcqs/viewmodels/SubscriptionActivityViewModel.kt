@@ -1,16 +1,13 @@
 package com.example.gceolmcqs.viewmodels
 
-import android.content.Context
-import android.os.Bundle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.gceolmcqs.ActivationExpiryDatesGenerator
 import com.example.gceolmcqs.MCQConstants
 import com.example.gceolmcqs.MomoPayService
 
 import com.example.gceolmcqs.SubjectPackageActivator
-import com.example.gceolmcqs.datamodels.PackageData
+import com.example.gceolmcqs.datamodels.PackageFormData
 import com.example.gceolmcqs.datamodels.SubjectPackageData
 import com.example.gceolmcqs.datamodels.SubscriptionFormData
 import com.example.gceolmcqs.repository.RemoteRepoManager
@@ -33,10 +30,10 @@ class SubscriptionActivityViewModel: ViewModel() {
         _subscriptionData.subject = subjectName
     }
 
-    fun updateSubscriptionPackageTypePriceAndDuration(packageData: PackageData){
-        _subscriptionData.packageType = packageData.packageName
-        _subscriptionData.packagePrice = packageData.price
-        _subscriptionData.packageDuration = packageData.duration
+    fun updateSubscriptionPackageTypePriceAndDuration(packageFormData: PackageFormData){
+        _subscriptionData.packageType = packageFormData.packageName
+        _subscriptionData.packagePrice = packageFormData.price
+        _subscriptionData.packageDuration = packageFormData.duration
     }
 
     fun updateMoMoPartner(momoPartner: String){

@@ -5,10 +5,11 @@ import android.text.format.Time
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.gceolmcqs.ActivationExpiryDatesGenerator
 import com.example.gceolmcqs.MCQConstants
 import com.example.gceolmcqs.datamodels.*
 import com.example.gceolmcqs.repository.PaperRepository
-
+import com.example.gceolmcqs.repository.RemoteRepoManager
 
 
 class SectionFragmentViewModel : ViewModel() {
@@ -303,6 +304,12 @@ class SectionFragmentViewModel : ViewModel() {
     fun getSectionIndex(): String {
         return sectionIndex.toString()
     }
+
+//    fun isPackageActive(subjectIndex: Int): Boolean{
+//        val activatedOn = RemoteRepoManager.getSubjectPackageDataAtIndex(subjectIndex).activatedOn
+//        val expiresOn = RemoteRepoManager.getSubjectPackageDataAtIndex(subjectIndex).expiresOn
+//        return ActivationExpiryDatesGenerator().checkExpiry(activatedOn!!, expiresOn!!)
+//    }
 
 
 }

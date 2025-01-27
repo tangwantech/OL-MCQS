@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -13,7 +12,7 @@ import androidx.fragment.app.DialogFragment
 
 import androidx.lifecycle.ViewModelProvider
 
-import com.example.gceolmcqs.datamodels.PackageData
+import com.example.gceolmcqs.datamodels.PackageFormData
 
 import com.example.gceolmcqs.fragments.PackagesDialogFragment
 import com.example.gceolmcqs.fragments.PaymentMethodDialogFragment
@@ -369,8 +368,8 @@ class SubscriptionActivity: AppCompatActivity(),
         exitActivity()
     }
 
-    override fun onPackageItemSelected(packageData: PackageData) {
-        viewModel.updateSubscriptionPackageTypePriceAndDuration(packageData)
+    override fun onPackageItemSelected(packageFormData: PackageFormData) {
+        viewModel.updateSubscriptionPackageTypePriceAndDuration(packageFormData)
     }
 
     private fun exitActivity(){

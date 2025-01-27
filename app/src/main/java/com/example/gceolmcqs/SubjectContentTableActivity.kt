@@ -10,7 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager.widget.ViewPager
 import com.example.gceolmcqs.adapters.SubjectContentTableViewPagerAdapter
-import com.example.gceolmcqs.datamodels.SubjectAndFileNameData
+
 import com.example.gceolmcqs.datamodels.SubjectPackageData
 import com.example.gceolmcqs.fragments.ExamTypeFragment
 import com.example.gceolmcqs.viewmodels.SubjectContentTableViewModel
@@ -19,7 +19,9 @@ import java.io.IOException
 import java.nio.charset.Charset
 
 
-class SubjectContentTableActivity : AppCompatActivity(), ExamTypeFragment.OnPackageExpiredListener, ExamTypeFragment.OnContentAccessDeniedListener{
+class SubjectContentTableActivity : AppCompatActivity(),
+    ExamTypeFragment.OnPackageExpiredListener,
+    ExamTypeFragment.OnContentAccessDeniedListener{
 
     private lateinit var viewModel: SubjectContentTableViewModel
     private lateinit var tabLayout: TabLayout
@@ -150,8 +152,9 @@ class SubjectContentTableActivity : AppCompatActivity(), ExamTypeFragment.OnPack
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         saveSelectedTab(0)
+        super.onDestroy()
+
     }
 
     override fun onShowPackageExpired() {
@@ -160,6 +163,7 @@ class SubjectContentTableActivity : AppCompatActivity(), ExamTypeFragment.OnPack
 
     override fun onCheckIfPackageHasExpired(): Boolean {
         return viewModel.getPackageStatus()
+//        return true
     }
 
     override fun onContentAccessDenied() {

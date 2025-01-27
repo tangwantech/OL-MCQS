@@ -11,7 +11,8 @@
 
         <include
             android:id="@+id/timerLayout"
-            layout="@layout/timer_bar"/>
+            layout="@layout/timer_bar"
+            android:visibility="gone"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"

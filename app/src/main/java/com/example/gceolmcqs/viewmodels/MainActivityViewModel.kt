@@ -3,15 +3,13 @@ package com.example.gceolmcqs.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.gceolmcqs.AppDataUpdater
+import com.example.gceolmcqs.UsageTimer
 import com.example.gceolmcqs.datamodels.*
 import com.example.gceolmcqs.repository.AppDataRepository
 import com.example.gceolmcqs.repository.RemoteRepoManager
-import com.google.gson.Gson
 
 class MainActivityViewModel : ViewModel() {
-    private val _liveSubjectsAvailable = MutableLiveData<ArrayList<String>>()
-    val liveSubjectsAvailable: LiveData<ArrayList<String>> = _liveSubjectsAvailable
-    private lateinit var subjectAndFileNameDataListModel: SubjectAndFileNameDataListModel
     private val subjectPackageDataList = ArrayList<SubjectPackageData>()
 
     fun updateSubjectPackageDataList() {
@@ -23,27 +21,6 @@ class MainActivityViewModel : ViewModel() {
     fun getSubjectPackageDataList(): ArrayList<SubjectPackageData>{
         return subjectPackageDataList
     }
-
-//    fun getSubjectAndFileNameDataAt(position: Int): SubjectAndFileNameData {
-//        return subjectAndFileNameDataListModel.subjectAndFileNameDataList[position]
-//    }
-
-//    fun setSubjectAndFileNameDataListModel(subjectsDataJsonString: String?) {
-//        subjectAndFileNameDataListModel =
-//            Gson().fromJson(subjectsDataJsonString!!, SubjectAndFileNameDataListModel::class.java)
-//        val subjectAndFile = subjectAndFileNameDataListModel.subjectAndFileNameDataList
-//        setSubjectNames(subjectAndFile)
-//
-//    }
-
-//    private fun setSubjectNames(temp: ArrayList<SubjectAndFileNameData>) {
-//        val tempSubjectNames = ArrayList<String>()
-//        temp.forEach {
-//            tempSubjectNames.add(it.subject)
-//        }
-//
-//        _liveSubjectsAvailable.value = tempSubjectNames
-//    }
 
     fun updatePackageStatusAt(index: Int, updateCallBack: RemoteRepoManager.OnUpdatePackageListener){
         subjectPackageDataList[index].isPackageActive = false
@@ -66,7 +43,13 @@ class MainActivityViewModel : ViewModel() {
     fun initAppData(){
         AppDataRepository.initAppData()
 //        println(AppDataRepository.getSubjectNames())
-        println(AppDataRepository.getExamTitles(0))
+//        println(AppDataRepository.getExamTitles(0))
     }
+
+    fun updateAppData(appDataUpdateListener: AppDataUpdater.AppDataUpdateListener) {
+        AppDataUpdater.update(appDataUpdateListener)
+    }
+
+
 }
 

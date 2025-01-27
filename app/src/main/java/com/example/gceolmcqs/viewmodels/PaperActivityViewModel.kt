@@ -3,6 +3,7 @@ package com.example.gceolmcqs.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.example.gceolmcqs.ActivationExpiryDatesGenerator
+import com.example.gceolmcqs.UsageTimer
 import com.example.gceolmcqs.datamodels.*
 import com.example.gceolmcqs.repository.AppDataRepository
 import com.example.gceolmcqs.repository.PaperRepository
@@ -111,6 +112,19 @@ class PaperActivityViewModel:ViewModel() {
         val activatedOn = RemoteRepoManager.getSubjectPackageDataAtIndex(subjectIndex).activatedOn
         val expiresOn = RemoteRepoManager.getSubjectPackageDataAtIndex(subjectIndex).expiresOn
         return ActivationExpiryDatesGenerator().checkExpiry(activatedOn!!, expiresOn!!)
+    }
+
+    fun startUsageTime() {
+
+        UsageTimer.startTimer(0, 0, 45000, 5000, 15000)
+    }
+
+    fun stopUsageTimer(){
+        UsageTimer.stopTimer()
+    }
+
+    fun resetUsageTimerData() {
+        UsageTimer.resetUsageTimerData()
     }
 
 }

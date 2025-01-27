@@ -20,7 +20,7 @@ import com.example.gceolmcqs.viewmodels.PaperActivityViewModel
 private const val SHOW_INSTRUCTION = "showInstruction"
 
 class PaperActivity : AppCompatActivity(),
-    SectionNavigationRecyclerViewAdapter.OnRecyclerItemClickListener,
+//    SectionNavigationRecyclerViewAdapter.OnRecyclerItemClickListener,
     OnCheckPackageExpiredListener,
     OnRetrySectionListener,
     OnNextSectionListener,
@@ -29,7 +29,9 @@ class PaperActivity : AppCompatActivity(),
     OnRequestToGoToResultListener,
     OnPaperScoreListener,
     OnIsSectionAnsweredListener,
-    SectionRecyclerAdapter.OnExplanationClickListener
+    SectionRecyclerAdapter.OnExplanationClickListener,
+    SectionNavigationFragment.OnSectionNAvFragmentRecyclerItemClickListener
+//    SectionNavigationFragment.OnShowPackageExpiredDialogListener
 {
 
     private lateinit var _viewModel: PaperActivityViewModel
@@ -99,6 +101,7 @@ class PaperActivity : AppCompatActivity(),
     }
 
     private fun gotoResult(sectionResultData: SectionResultData) {
+
         _viewModel.setSectionResultData(sectionResultData)
         val sectionResultFragment = SectionResultFragment.newInstance(
             sectionResultData,
@@ -136,6 +139,7 @@ class PaperActivity : AppCompatActivity(),
     override fun onResume() {
         super.onResume()
         setActivityTitle()
+        _viewModel.startUsageTime()
 
     }
 
@@ -159,9 +163,9 @@ class PaperActivity : AppCompatActivity(),
         currentSectionFragment = null
     }
 
-    override fun onRecyclerItemClick(position: Int) {
-        checkPackageExpiry(position)
-    }
+//    override fun onRecyclerItemClick(position: Int) {
+//        checkPackageExpiry(position)
+//    }
 
     private fun checkPackageExpiry(position: Int){
         resetCurrentSectionFragment()
@@ -172,7 +176,10 @@ class PaperActivity : AppCompatActivity(),
         }else{
             gotoSection(position)
         }
+//        gotoSection(position)
     }
+
+
 
 
     @Deprecated("Deprecated in Java")
@@ -187,6 +194,7 @@ class PaperActivity : AppCompatActivity(),
         }
 
     }
+
 
     override fun finish() {
         super.finish()
@@ -209,7 +217,13 @@ class PaperActivity : AppCompatActivity(),
     }
 
     override fun onRequestToGoToResult(sectionResultData: SectionResultData) {
-        gotoResult(sectionResultData)
+        val isActive = _viewModel.isPackageActive(subjectIndex)
+        if (!isActive) {
+            showPackageExpiredDialog()
+        }else{
+            gotoResult(sectionResultData)
+        }
+
     }
 
     override fun onRetrySection(sectionIndex: Int) {
@@ -331,9 +345,21 @@ class PaperActivity : AppCompatActivity(),
     }
 
     private fun gotoSubscriptionActivity(){
-        val subjectIndex = intent.getBundleExtra("paperData")!!.getInt(MCQConstants.SUBJECT_INDEX)
+//        val subjectIndex = intent.getBundleExtra("paperData")!!.getInt(MCQConstants.SUBJECT_INDEX)
+        val subjectIndex = intent.getIntExtra(MCQConstants.SUBJECT_INDEX, 0)
 
         startActivity(SubscriptionActivity.getIntent(this, subjectIndex, subjectName!!))
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _viewModel.stopUsageTimer()
+        _viewModel.resetUsageTimerData()
+    }
+
+    override fun onSectionNavFragmentRecyclerItemClick(position: Int) {
+//        checkPackageExpiry(position)
+        gotoSection(position)
     }
 }
 

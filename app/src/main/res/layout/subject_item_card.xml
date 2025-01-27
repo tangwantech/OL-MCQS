@@ -170,6 +170,16 @@
 
         </RelativeLayout>
 
+        <include
+            android:id="@+id/loBonuses"
+            layout="@layout/bonuses"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="gone"/>
+
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"

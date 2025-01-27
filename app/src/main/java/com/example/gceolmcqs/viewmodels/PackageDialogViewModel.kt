@@ -1,12 +1,12 @@
 package com.example.gceolmcqs.viewmodels
 
 import androidx.lifecycle.ViewModel
-import com.example.gceolmcqs.datamodels.PackageData
+import com.example.gceolmcqs.datamodels.PackageFormData
 import com.example.gceolmcqs.datamodels.PackagesData
 import com.google.gson.Gson
 
 class PackageDialogViewModel: ViewModel() {
-    private val packages = ArrayList<PackageData>()
+    private val packages = ArrayList<PackageFormData>()
 //    private var selectedPackage: PackageData? = null
 
     fun setPackages(jsonData: String){
@@ -16,7 +16,7 @@ class PackageDialogViewModel: ViewModel() {
 
     }
 
-    fun getPackages(): ArrayList<PackageData>{
+    fun getPackages(): ArrayList<PackageFormData>{
         return packages
     }
 
@@ -31,7 +31,7 @@ class PackageDialogViewModel: ViewModel() {
 //        println(packages)
     }
 
-    fun getSubjectPackageAtIndex(index: Int): PackageData{
+    fun getSubjectPackageAtIndex(index: Int): PackageFormData{
         return packages[index]
     }
 

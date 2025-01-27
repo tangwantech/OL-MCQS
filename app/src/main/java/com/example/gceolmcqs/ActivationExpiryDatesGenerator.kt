@@ -17,7 +17,7 @@ class ActivationExpiryDatesGenerator {
         const val MINUTES = "minutes"
         const val HOURS = "hours"
         const val DAYS = "days"
-        fun generateTrialActivationExpiryDates(timeType: String=MCQConstants.HOURS, duration: Int): ActivationExpiryDates {
+        fun generateActivationExpiryDates(timeType: String=MCQConstants.HOURS, duration: Int): ActivationExpiryDates {
 
             val activationDate = Date()
             val expiry = Date()
