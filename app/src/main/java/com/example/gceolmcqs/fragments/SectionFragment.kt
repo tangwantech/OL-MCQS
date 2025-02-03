@@ -82,6 +82,7 @@ class SectionFragment : Fragment(),
         super.onViewCreated(view, savedInstanceState)
         setupViewListeners()
         setupViewObservers()
+        setupSectionRecyclerView()
 //        displayDirectionsDialog()
     }
 
@@ -209,7 +210,7 @@ class SectionFragment : Fragment(),
     override fun onResume() {
         super.onResume()
         requireActivity().title = viewModel.getSectionTitle()
-        setupSectionRecyclerView()
+//        setupSectionRecyclerView()
 //        startTimer()
 //        displayDirectionsDialog()
 

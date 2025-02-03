@@ -14,7 +14,7 @@ class App: Application() {
         super.onCreate()
         initParse()
         initRemoteRepoManager()
-        initCampay()
+//        initCampay()
 
     }
 

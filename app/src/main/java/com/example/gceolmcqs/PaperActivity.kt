@@ -139,7 +139,7 @@ class PaperActivity : AppCompatActivity(),
     override fun onResume() {
         super.onResume()
         setActivityTitle()
-        _viewModel.startUsageTime()
+//        _viewModel.startUsageTime()
 
     }
 

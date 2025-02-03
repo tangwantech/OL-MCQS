@@ -59,7 +59,7 @@ class MCQConstants{
         const val APP_URL = "https://gce-ol-mcqs.en.uptodown.com/android/download"
         const val PRIVACY_POLICY = "https://gceolmcq-privacypolicy.w3spaces.com/Privacy_Policy_GCE_OL_MCQS.pdf"
 
-        const val TRANSACTION_STATUS_URL = "https://demo.campay.net/api/transaction/"
+        const val TRANSACTION_STATUS_URL = "https://www.campay.net/api/transaction/"
 
         const val AUTHORIZATION = "Authorization"
         const val CONTENT_TYPE = "Content-Type"

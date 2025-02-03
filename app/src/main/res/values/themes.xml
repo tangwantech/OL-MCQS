@@ -17,7 +17,7 @@
         <item name="android:statusBarColor">@color/color_primary_variant</item>
 
         <item name="android:textViewStyle">@style/TextAppearance.MaterialComponents.Subtitle1</item>
-<!--        <item name="cardViewStyle">@style/CustomCardViewStyle</item>-->
+        <item name="cardViewStyle">@style/CustomCardViewStyle</item>
 
 
     </style>

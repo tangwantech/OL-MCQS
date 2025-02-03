@@ -171,16 +171,18 @@ class SectionResultFragment : Fragment() {
     }
 
     private fun setupViewObservers(){
-//        sectionResultFragmentViewModel.nextButtonState.observe(viewLifecycleOwner){
-//            btnNextSection.isEnabled = it
-//        }
+
 
         sectionResultFragmentViewModel.getHasPerfectScore().observe(viewLifecycleOwner){
             btnRetry.isEnabled = !it
-            btnNextSection.isEnabled = it
+//            btnNextSection.isEnabled = it
             btnCorrection.isEnabled = !it
             if(it){
                 Toast.makeText(requireContext(), requireContext().getString(R.string.excellent), Toast.LENGTH_LONG).show()
+            }
+
+            sectionResultFragmentViewModel.nextButtonState.observe(viewLifecycleOwner){
+                btnNextSection.isEnabled = it
             }
         }
     }

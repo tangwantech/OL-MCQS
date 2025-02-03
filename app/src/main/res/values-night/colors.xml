@@ -2,13 +2,13 @@
 <resources>
     <color name="white">#FFFFFFFF</color>
 
-<!--    <color name="color_primary">#141414</color>-->
     <color name="color_primary">#141414</color>
-    <color name="color_primary_variant">#141414</color>
+<!--    <color name="color_primary">#FFC107</color>-->
+<!--    <color name="color_primary_variant">#206434</color>-->
 
     <color name="color_primary_light">#BE292929</color>
     <color name="color_on_primary">@color/white</color>
-    <color name="color_primary_text_default">@color/primary_text_default_material_light</color>
+<!--    <color name="color_primary_text_default">@color/primary_text_default_material_light</color>-->
 
     <color name="color_tab">#141414</color>
 
@@ -30,7 +30,9 @@
     <color name="color_red">#EF9A9A</color>
     <color name="color_green">#518F4D</color>
 <!--    <color name="color_green">#409EEB</color>-->
-    <color name="card_background">#FFF9FBFB</color>
+<!--    <color name="card_background">#202121</color>-->
+
+    <color name="background_round_top">#333333</color>
 
     <color name="tab_color">#E7C754</color>
 

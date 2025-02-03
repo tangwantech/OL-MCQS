@@ -266,6 +266,7 @@ class SubscriptionActivity: AppCompatActivity(),
             exitActivity()
 
         }
+        failedToActivatePackageDialog?.setCancelable(false)
         failedToActivatePackageDialog?.show()
 
     }

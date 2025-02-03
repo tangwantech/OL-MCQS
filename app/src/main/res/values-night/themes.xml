@@ -2,19 +2,20 @@
     <!-- Base application theme. -->
     <style name="Theme.GCEOLMCQS" parent="Theme.MaterialComponents.DayNight">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/color_primary</item>
-        <item name="colorPrimaryVariant">@color/color_primary_variant</item>
+<!--        <item name="colorPrimary">@color/color_primary</item>-->
+<!--        <item name="colorPrimaryVariant">@color/color_primary_variant</item>-->
         <item name="colorOnPrimary">@color/color_on_primary</item>
 
 
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/color_secondary</item>
-        <item name="colorSecondaryVariant">@color/color_secondary_dark</item>
-        <item name="colorOnSecondary">@color/color_on_secondary</item>
+<!--        <item name="colorSecondary">@color/color_secondary</item>-->
+<!--        <item name="colorSecondaryVariant">@color/color_secondary_dark</item>-->
+<!--        <item name="colorOnSecondary">@color/color_on_secondary</item>-->
 
         <item name="android:windowBackground">@color/dark_background</item>
         <item name="backgroundColor">@color/dark_background</item>
         <item name="android:textColor">@color/primary_text_default_material_dark</item>
+<!--        <item name="cardViewStyle">@style/CustomCardViewStyle</item>-->
 
     </style>
 
@@ -46,6 +47,10 @@
         <item name="android:layout_marginBottom">@dimen/margin_4</item>
 
     </style>
+
+<!--    <style name="CustomCardViewStyle" parent="Widget.MaterialComponents.CardView">-->
+<!--        <item name="cardBackgroundColor">@color/card_background</item> &lt;!&ndash; Replace with your desired color &ndash;&gt;-->
+<!--    </style>-->
 
 
 </resources>
