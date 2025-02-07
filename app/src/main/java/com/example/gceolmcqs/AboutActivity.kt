@@ -2,10 +2,12 @@ package com.example.gceolmcqs
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.core.text.HtmlCompat
 import com.example.gceolmcqs.databinding.ActivityAboutBinding
 
 class AboutActivity : AppCompatActivity() {
@@ -18,7 +20,24 @@ class AboutActivity : AppCompatActivity() {
         title = resources.getString(R.string.about)
 
         setupListener()
+        setVersionNumber()
+        setCopyWrite()
 
+
+    }
+
+    private fun setVersionNumber(){
+        val versionName = try {
+            packageManager.getPackageInfo(packageName, 0).versionName
+        } catch (e: PackageManager.NameNotFoundException){
+            "Unknown"
+        }
+        binding.tvVersion.text = getString(R.string.version, versionName)
+    }
+
+    private fun setCopyWrite(){
+        val tag = "<p>&copy; ${getString(R.string.currentYear)} ${getString(R.string.company)}</p>"
+        binding.tvCopyWrite.text = HtmlCompat.fromHtml(tag, HtmlCompat.FROM_HTML_MODE_COMPACT)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

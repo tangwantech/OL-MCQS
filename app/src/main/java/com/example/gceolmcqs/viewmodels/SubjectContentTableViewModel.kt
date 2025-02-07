@@ -18,7 +18,7 @@ class SubjectContentTableViewModel : ViewModel() {
     private val _subjectPackageData = MutableLiveData<SubjectPackageData>()
     val subjectPackageData: LiveData<SubjectPackageData> = _subjectPackageData
 
-    fun getSubjectPackageDataFromRemoteRepoAtIndex(index: Int){
+    fun loadSubjectPackageDataFromRemoteRepoAtIndex(index: Int){
         _subjectPackageData.value = RemoteRepoManager.getSubjectPackageDataAtIndex(index)
     }
 

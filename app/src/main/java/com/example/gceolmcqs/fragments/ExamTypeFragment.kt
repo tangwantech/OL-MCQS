@@ -49,7 +49,7 @@ class ExamTypeFragment : Fragment(), ExamTypeRecyclerViewAdapter.OnRecyclerItemC
         super.onViewCreated(view, savedInstanceState)
         initViews(view)
         initVieModel()
-        setupRecyclerView()
+
     }
 
     private fun initViews(view: View){
@@ -80,6 +80,11 @@ class ExamTypeFragment : Fragment(), ExamTypeRecyclerViewAdapter.OnRecyclerItemC
         )
         rvExamTypeFragment.adapter = rvAdapter
         rvExamTypeFragment.setHasFixedSize(true)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setupRecyclerView()
     }
 
 

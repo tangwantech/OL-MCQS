@@ -15,8 +15,6 @@ import com.example.gceolmcqs.datamodels.SubjectPackageData
 import com.example.gceolmcqs.fragments.ExamTypeFragment
 import com.example.gceolmcqs.viewmodels.SubjectContentTableViewModel
 import com.google.android.material.tabs.TabLayout
-import java.io.IOException
-import java.nio.charset.Charset
 
 
 class SubjectContentTableActivity : AppCompatActivity(),
@@ -117,6 +115,7 @@ class SubjectContentTableActivity : AppCompatActivity(),
     }
 
     private fun setupActivityViewListeners(){
+
         tabLayout.setOnTabSelectedListener(object: TabLayout.OnTabSelectedListener{
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 currentTabIndex = tab?.position!!
@@ -148,7 +147,7 @@ class SubjectContentTableActivity : AppCompatActivity(),
     override fun onResume() {
         super.onResume()
         title = viewModel.getSubjectName()
-        viewModel.getSubjectPackageDataFromRemoteRepoAtIndex(intent.getIntExtra(MCQConstants.SUBJECT_INDEX, 0))
+        viewModel.loadSubjectPackageDataFromRemoteRepoAtIndex(intent.getIntExtra(MCQConstants.SUBJECT_INDEX, 0))
     }
 
     override fun onDestroy() {
@@ -162,8 +161,8 @@ class SubjectContentTableActivity : AppCompatActivity(),
     }
 
     override fun onCheckIfPackageHasExpired(): Boolean {
-        return viewModel.getPackageStatus()
-//        return true
+//        return viewModel.getPackageStatus()
+        return true
     }
 
     override fun onContentAccessDenied() {

@@ -18,6 +18,7 @@
 
         <item name="android:textViewStyle">@style/TextAppearance.MaterialComponents.Subtitle1</item>
         <item name="cardViewStyle">@style/CustomCardViewStyle</item>
+        <item name="android:windowBackground">@color/card_background</item>
 
 
     </style>
