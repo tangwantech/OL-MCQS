@@ -89,7 +89,7 @@ class MCQConstants{
         const val COUNT_DOWN_INTERVAL = 1000L
         const val TIME_TO_ANIMATE_TIMER = 60000L
 
-        const val TRIAL_DURATION = 3
+        const val TRIAL_DURATION = 2
         const val DELAY_DURATION = 3000
         const val STATUS_CHECK_DURATION = 15000L
         const val NETWORK_TIME_OUT_DURATION = 30000L
