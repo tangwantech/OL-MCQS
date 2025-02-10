@@ -24,7 +24,7 @@
 
             <Button
                 android:id="@+id/btnRetryCorrection"
-                style="?attr/borderlessButtonStyle"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.4"
@@ -34,7 +34,7 @@
 
             <Button
                 android:id="@+id/btnNextSection"
-                style="?attr/borderlessButtonStyle"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.6"

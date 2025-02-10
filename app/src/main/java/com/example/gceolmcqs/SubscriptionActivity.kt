@@ -36,9 +36,11 @@ class SubscriptionActivity: AppCompatActivity(),
     private var activatingPackageDialog: AlertDialog? = null
     private var packageActivatedDialog: AlertDialog? = null
     private var paymentReceivedDialog: AlertDialog? = null
+    private var momoNumberInputDialog: AlertDialog? = null
+
     private var packagesDialog: DialogFragment? = null
     private var paymentMethodDialog: DialogFragment? = null
-    private var momoNumberInputDialog: AlertDialog? = null
+
     private var currentRefNum: String? = null
 
     private lateinit var viewModel: SubscriptionActivityViewModel
@@ -253,20 +255,29 @@ class SubscriptionActivity: AppCompatActivity(),
     }
 
     private fun showTransactionFailedDialog() {
-
+//        if(failedToActivatePackageDialog != null){
+//            failedToActivatePackageDialog?.cancel()
+//        }
         failedToActivatePackageDialog = AlertDialog.Builder(this).create()
-        val view = this.layoutInflater.inflate(R.layout.package_activation_failed_dialog, null)
+
+        val view = layoutInflater.inflate(R.layout.package_activation_failed_dialog, null)
         val tvFailedMessage: TextView = view.findViewById(R.id.tvPackageActivationFailed)
         tvFailedMessage.text =
             "${resources.getString(R.string.failed_to_activate_package)} ${viewModel.getSubjectPackageType()} "
 
-        failedToActivatePackageDialog?.setView(view)
+//        failedToActivatePackageDialog?.setView(view)
+
+        failedToActivatePackageDialog?.apply {
+            setView(view)
+            setCancelable(false)
+        }
+
         failedToActivatePackageDialog?.setButton(AlertDialog.BUTTON_POSITIVE, "Ok") { _, _ ->
             cancelFailedToActivateDialog()
             exitActivity()
 
         }
-        failedToActivatePackageDialog?.setCancelable(false)
+
         failedToActivatePackageDialog?.show()
 
     }

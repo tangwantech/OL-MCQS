@@ -30,7 +30,8 @@ class App: Application() {
     }
 
     private fun initRemoteRepoManager(){
-        val deviceId = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
+//        val deviceId = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
+        val deviceId = Settings.Secure.getString(applicationContext.contentResolver, Settings.Secure.ANDROID_ID)
         RemoteRepoManager.setDeviceID(deviceId)
     }
 

@@ -166,8 +166,15 @@ class PaperRepository {
         fun getSectionResultData(): SectionResultData = sectionResultData!!
 
         fun getTotalNumberOfQuestions():Int{
-            return paperData!!.numberOfQuestions
+            var tempNumOfQuestions = 0
+            for (index in 0..< paperData!!.numberOfSections){
+                tempNumOfQuestions += paperData!!.sections[index].questions.size
+            }
+//            return paperData!!.numberOfQuestions
+            println("Total number of questions: $tempNumOfQuestions")
+            return tempNumOfQuestions
         }
+
 
         fun getNumberOfSectionsAnswered():LiveData<Int> {
             return sectionsAnsweredCount
@@ -193,7 +200,9 @@ class PaperRepository {
                 it.sections.forEachIndexed { index, sectionDataModel ->
                     sectionNameBundleList!![index].apply {
                         putString("sectionName", sectionDataModel.title)
-                        putString("numberOfQuestions", sectionDataModel.numberOfQuestions.toString())
+                        sectionDataModel.questions.size
+//                        putString("numberOfQuestions", sectionDataModel.numberOfQuestions.toString())
+                        putString("numberOfQuestions", sectionDataModel.questions.size.toString())
                     }
 
                 }

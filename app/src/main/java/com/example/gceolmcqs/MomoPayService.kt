@@ -42,9 +42,9 @@ class MomoPayService(private val context: Context) {
     ) {
 
         this.subscriptionFormData = subscriptionFormData
-//        generateAccessToken(transactionStatusListener)
+        generateAccessToken(transactionStatusListener)
 
-        testUpdateTransactionSuccessful(transactionStatusListener)
+//        testUpdateTransactionSuccessful(transactionStatusListener)
 
     }
 
@@ -92,7 +92,7 @@ class MomoPayService(private val context: Context) {
             override fun onResponse(call: Call, response: Response) {
                 try {
                     val responseBody = response.body?.string()
-                    println(responseBody)
+//                    println(responseBody)
                     val json = JSONObject(responseBody!!)
                     val transaction = TransactionStatus()
                     val tokenString = json[TOKEN].toString()
@@ -205,6 +205,7 @@ class MomoPayService(private val context: Context) {
                     }
 
                 } catch (e: JSONException) {
+                    println("exception raised: ${e}")
                     transactionStatusListener.onTransactionFailed()
                 }
             }

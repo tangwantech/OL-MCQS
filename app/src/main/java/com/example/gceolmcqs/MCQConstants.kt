@@ -57,7 +57,7 @@ class MCQConstants{
 
         const val TYPE = "text/plain"
         const val APP_URL = "https://gce-ol-mcqs.en.uptodown.com/android/download"
-        const val PRIVACY_POLICY = "https://gceolmcqs.w3spaces.com/gce_ol_mcqs_privacy_policy.html"
+        const val PRIVACY_POLICY = "https://gceolmcqs.w3spaces.com/Privacy_Policy_GCE_OL_MCQS.pdf"
 
         const val TRANSACTION_STATUS_URL = "https://www.campay.net/api/transaction/"
 
@@ -89,10 +89,10 @@ class MCQConstants{
         const val COUNT_DOWN_INTERVAL = 1000L
         const val TIME_TO_ANIMATE_TIMER = 60000L
 
-        const val TRIAL_DURATION = 12
+        const val TRIAL_DURATION = 3
         const val DELAY_DURATION = 3000
-        const val STATUS_CHECK_DURATION = 5000L
-        const val NETWORK_TIME_OUT_DURATION = 20000L
+        const val STATUS_CHECK_DURATION = 15000L
+        const val NETWORK_TIME_OUT_DURATION = 30000L
 
         const val SUBJECT_FILE_DATA_NAME = "subject_data.json"
         const val TERMS_URL = "file:///android_asset/Terms of Use of Service.html"

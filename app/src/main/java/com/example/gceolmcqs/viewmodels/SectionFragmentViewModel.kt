@@ -73,14 +73,17 @@ class SectionFragmentViewModel : ViewModel() {
     }
 
     private fun shuffleSectionQuestions(){
-        for (i in 0..2){
-            sectionData?.questions?.shuffle()
-        }
+//        for (i in 0..2){
+//            sectionData?.questions?.shuffle()
+//        }
+        sectionData?.questions?.shuffle()
 
     }
 
+
     private fun setSectionDuration() {
-        sectionDuration = sectionData!!.numberOfQuestions * MCQConstants.MILLI_SEC_PER_QUESTION
+//        sectionDuration = sectionData!!.numberOfQuestions * MCQConstants.MILLI_SEC_PER_QUESTION
+        sectionDuration = getNumberOfQuestionsInSection() * MCQConstants.MILLI_SEC_PER_QUESTION
     }
 
     fun startTimer() {
@@ -118,7 +121,7 @@ class SectionFragmentViewModel : ViewModel() {
     }
 
     fun getNumberOfQuestionsInSection(): Int {
-        return sectionData!!.numberOfQuestions
+        return sectionData!!.questions.size
     }
 
 
@@ -135,7 +138,7 @@ class SectionFragmentViewModel : ViewModel() {
         initUserSelections()
         initSectionQuestionsScores()
         userMarkedAnswerSheet.clear()
-        for (index in 0..< sectionData!!.numberOfQuestions){
+        for (index in 0..< getNumberOfQuestionsInSection()){
             userMarkedAnswerSheet.add(QuestionWithUserAnswerMarkedData((index + 1).toString()))
         }
 
@@ -144,7 +147,7 @@ class SectionFragmentViewModel : ViewModel() {
 
     private fun initUserSelections() {
         userSelections.clear()
-        for (index in 0..< sectionData!!.numberOfQuestions){
+        for (index in 0..< getNumberOfQuestionsInSection()){
             userSelections.add(UserSelection())
         }
 
@@ -152,7 +155,7 @@ class SectionFragmentViewModel : ViewModel() {
 
     private fun initSectionQuestionsScores() {
         sectionQuestionsScores.clear()
-        for (index in 0..< sectionData!!.numberOfQuestions){
+        for (index in 0..< getNumberOfQuestionsInSection()){
             sectionQuestionsScores.add(QuestionScore())
         }
 
@@ -171,7 +174,7 @@ class SectionFragmentViewModel : ViewModel() {
     fun getSectionQuestions(): ArrayList<QuestionData>{
         when(sectionData!!.title){
             MCQConstants.SECTION_I, MCQConstants.SECTION_II, MCQConstants.SECTION_V, MCQConstants.SECTION_VI ->{
-                for (index in 0..< sectionData!!.numberOfQuestions){
+                for (index in 0..< getNumberOfQuestionsInSection()){
                     sectionData!!.questions[index].selectableOptions.shuffle()
                 }
             }
@@ -290,8 +293,8 @@ class SectionFragmentViewModel : ViewModel() {
 
     fun getSectionResultData():SectionResultData{
         setQuestionsCorrectAnswers()
-        val percentage = ((sectionScore.toDouble() / sectionData!!.numberOfQuestions.toDouble()) * 100).toInt()
-        val scoreData = ScoreData(sectionScore, sectionData!!.numberOfQuestions, percentage)
+        val percentage = ((sectionScore.toDouble() / getNumberOfQuestionsInSection().toDouble()) * 100).toInt()
+        val scoreData = ScoreData(sectionScore, getNumberOfQuestionsInSection(), percentage)
         val userMarkedAnswersSheetData = UserMarkedAnswersSheetData(userMarkedAnswerSheet)
         return SectionResultData(sectionIndex!!, scoreData, userMarkedAnswersSheetData)
     }

@@ -37,7 +37,9 @@ class SubjectContentTableActivity : AppCompatActivity(),
         initViewModel()
         setupActivityViewListeners()
         setupViewObservers()
+        loadSubjectPackageDataFromRemoteRepo()
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+
 
     }
     private fun initActivityViews(){
@@ -129,6 +131,10 @@ class SubjectContentTableActivity : AppCompatActivity(),
         })
     }
 
+    private fun loadSubjectPackageDataFromRemoteRepo(){
+        viewModel.loadSubjectPackageDataFromRemoteRepoAtIndex(intent.getIntExtra(MCQConstants.SUBJECT_INDEX, 0))
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         when (item.itemId) {
@@ -147,7 +153,7 @@ class SubjectContentTableActivity : AppCompatActivity(),
     override fun onResume() {
         super.onResume()
         title = viewModel.getSubjectName()
-        viewModel.loadSubjectPackageDataFromRemoteRepoAtIndex(intent.getIntExtra(MCQConstants.SUBJECT_INDEX, 0))
+//       loadSubjectPackageDataFromRemoteRepo()
     }
 
     override fun onDestroy() {
@@ -161,8 +167,8 @@ class SubjectContentTableActivity : AppCompatActivity(),
     }
 
     override fun onCheckIfPackageHasExpired(): Boolean {
-//        return viewModel.getPackageStatus()
-        return true
+        return viewModel.getPackageStatus()
+//        return true
     }
 
     override fun onContentAccessDenied() {

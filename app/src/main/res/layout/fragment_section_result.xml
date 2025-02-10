@@ -57,21 +57,20 @@
            android:paddingEnd="@dimen/margin_12">
 
 
-           <LinearLayout
-               android:layout_width="0dp"
-               android:layout_height="match_parent"
-               android:layout_weight="0.2">
+<!--           <LinearLayout-->
+<!--               android:layout_width="0dp"-->
+<!--               android:layout_height="match_parent"-->
+<!--               android:layout_weight="0.2">-->
 
-               <Button
-                   android:id="@+id/btnRetry"
-                   style="?attr/borderlessButtonStyle"
-                   android:layout_width="match_parent"
-                   android:layout_height="match_parent"
-                   android:text="@string/retry"
-                   android:visibility="visible"
-                   android:textSize="@dimen/text_size_12"
-                   android:minWidth="70dp"/>
-           </LinearLayout>
+<!--               <Button-->
+<!--                   android:id="@+id/btnRetry"-->
+<!--                   style="@style/Widget.MaterialComponents.Button.OutlinedButton"-->
+<!--                   android:layout_width="wrap_content"-->
+<!--                   android:layout_height="match_parent"-->
+<!--                   android:text="@string/retry"-->
+<!--                   android:visibility="visible"-->
+<!--                   android:textSize="@dimen/text_size_12" />-->
+<!--           </LinearLayout>-->
 
            <LinearLayout
                android:orientation="horizontal"
@@ -79,9 +78,17 @@
                android:layout_weight="0.8"
                android:layout_height="match_parent">
                <Button
+                   android:id="@+id/btnRetry"
+                   style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                   android:layout_width="wrap_content"
+                   android:layout_height="match_parent"
+                   android:text="@string/retry"
+                   android:visibility="visible"
+                   android:textSize="@dimen/text_size_12" />
+               <Button
                    android:id="@+id/btnNextSection"
-                   style="?attr/borderlessButtonStyle"
-                   android:layout_width="0dp"
+                   style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                   android:layout_width="wrap_content"
                    android:layout_weight="0.55"
                    android:layout_height="match_parent"
                    android:enabled="false"
@@ -91,8 +98,8 @@
 
                <Button
                    android:id="@+id/btnCorrection"
-                   style="?attr/borderlessButtonStyle"
-                   android:layout_width="0dp"
+                   style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                   android:layout_width="wrap_content"
                    android:layout_weight="0.45"
                    android:layout_height="match_parent"
                    android:text="@string/correction"
