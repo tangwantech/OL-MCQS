@@ -2,6 +2,7 @@ package com.example.gceolmcqs
 
 import com.example.gceolmcqs.datamodels.ActivationExpiryDates
 import java.util.*
+import kotlin.math.roundToInt
 
 class ActivationExpiryDatesGenerator {
 
@@ -10,7 +11,13 @@ class ActivationExpiryDatesGenerator {
         val activationDate = Date(Date.parse(activatedOn))
         val expiryDate = Date(Date.parse(expiresOn))
         return currentDate > activationDate && currentDate < expiryDate
-    }
+   }
+//    fun checkGraceExtensionExpiry(activatedOn: String, expiresOn: String): Boolean{
+//        val currentDate = Date()
+//        val activationDate = Date(Date.parse(activatedOn))
+//        val expiryDate = Date(Date.parse(expiresOn))
+//        return currentDate < expiryDate
+//    }
 
     companion object {
         const val SECONDS = "seconds"
@@ -50,9 +57,29 @@ class ActivationExpiryDatesGenerator {
                 expiry.time - dateNow.time
             }
 
+        }
 
+        fun extendExpiryDate(oldDate: String, packageType: String = MCQConstants.MCQ_DAY): ActivationExpiryDates{
+            val expiry = Date(Date.parse(oldDate))
+            var tempDuration = 0
+            when (packageType){
+                MCQConstants.TRIAL -> {
+                    tempDuration = (MCQConstants.TRIAL_DURATION * MCQConstants.GRACE_DURATION_DISCOUNT).roundToInt()
+                }
 
-
+                MCQConstants.MCQ_DAY ->{
+                    tempDuration = (24 * MCQConstants.GRACE_DURATION_DISCOUNT).roundToInt()
+                    println(tempDuration)
+                }
+                MCQConstants.MCQ_WEEK ->{
+                    tempDuration = (168 * MCQConstants.GRACE_DURATION_DISCOUNT).roundToInt()
+                }
+                MCQConstants.MCQ_MONTH ->{
+                    tempDuration = (720 * MCQConstants.GRACE_DURATION_DISCOUNT).roundToInt()
+                }
+            }
+            expiry.hours = expiry.hours.plus(tempDuration)
+            return ActivationExpiryDates( oldDate, expiry.toLocaleString())
         }
 
     }

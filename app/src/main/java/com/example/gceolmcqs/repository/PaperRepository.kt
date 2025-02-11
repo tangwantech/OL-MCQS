@@ -171,7 +171,7 @@ class PaperRepository {
                 tempNumOfQuestions += paperData!!.sections[index].questions.size
             }
 //            return paperData!!.numberOfQuestions
-            println("Total number of questions: $tempNumOfQuestions")
+//            println("Total number of questions: $tempNumOfQuestions")
             return tempNumOfQuestions
         }
 

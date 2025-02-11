@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.gceolmcqs.ActivationExpiryDatesGenerator
+import com.example.gceolmcqs.MCQConstants
+import com.example.gceolmcqs.datamodels.ActivationExpiryDates
 
 import com.example.gceolmcqs.datamodels.SubjectPackageData
 import com.example.gceolmcqs.repository.AppDataRepository
@@ -30,7 +32,7 @@ class SubjectContentTableViewModel : ViewModel() {
         return AppDataRepository.getExamTitles(subjectIndex!!).size
     }
 
-    fun getIsPackageActive(): LiveData<Boolean> {
+    fun getIsPackageActive(): LiveData<Boolean> {a
         return isSubjectPackageActive
     }
 
@@ -44,5 +46,10 @@ class SubjectContentTableViewModel : ViewModel() {
 
     fun getSubjectName(): String{
         return AppDataRepository.getSubjectName(subjectIndex!!)
+    }
+
+    fun getGraceExtension(): ActivationExpiryDates {
+//        println("packageName: ${subjectPackageData.value!!.packageName!!}")
+        return ActivationExpiryDatesGenerator.extendExpiryDate(subjectPackageData.value!!.expiresOn!!, subjectPackageData.value!!.packageName!!)
     }
 }

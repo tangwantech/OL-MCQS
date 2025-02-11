@@ -190,7 +190,7 @@ class SectionFragment : Fragment(),
         // Observe the number of answered questions and enable "Result" button if all questions are answered
         viewModel.numberOfQuestionsAnswered
             .observe(viewLifecycleOwner) {
-                println("Number of questions answered: $it")
+//                println("Number of questions answered: $it")
                 if (it == viewModel.getNumberOfQuestionsInSection()) {
                     binding.btnResult.isEnabled = true // Enable "Result" button
                 }

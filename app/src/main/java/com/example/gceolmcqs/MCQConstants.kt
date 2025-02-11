@@ -2,6 +2,7 @@ package com.example.gceolmcqs
 
 class MCQConstants{
     companion object{
+
         const val OL_MCQ_DATA = "OLMCQDATA"
         const val APP_DATA = "appData"
         const val APP_DATA_OBJECT_KEY = "K13A8pBeYh"
@@ -21,7 +22,6 @@ class MCQConstants{
         const val PACKAGE_PRICE = "packagePrice"
         const val ACTIVE = "ACTIVE"
         const val EXPIRED = "EXPIRED"
-        const val TRIAL = "TRIAL"
         const val SUBJECTS = "subjects"
         const val DURATION = "duration"
         const val PARSE_CLASS = "MCQPackages"
@@ -90,9 +90,12 @@ class MCQConstants{
         const val TIME_TO_ANIMATE_TIMER = 60000L
 
         const val TRIAL_DURATION = 2
+        const val GRACE_DURATION = 48
+        const val GRACE_DURATION_DISCOUNT = 0.12
         const val DELAY_DURATION = 3000
         const val STATUS_CHECK_DURATION = 15000L
         const val NETWORK_TIME_OUT_DURATION = 30000L
+
 
         const val SUBJECT_FILE_DATA_NAME = "subject_data.json"
         const val TERMS_URL = "file:///android_asset/Terms of Use of Service.html"
@@ -108,8 +111,10 @@ class MCQConstants{
         const val EXAM_ITEM_INDEX = "examItemIndex"
 
         val SUBJECTS_AVAILABLE = arrayListOf("Biology")
-
-
+        const val MCQ_DAY = "MCQ DAY"
+        const val MCQ_WEEK = "MCQ WEEK"
+        const val MCQ_MONTH = "MCQ MONTH"
+        const val TRIAL = "TRIAL"
 
     }
 }

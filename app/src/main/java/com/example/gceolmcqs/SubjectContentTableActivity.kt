@@ -1,5 +1,6 @@
 package com.example.gceolmcqs
 
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.MenuItem
@@ -19,7 +20,8 @@ import com.google.android.material.tabs.TabLayout
 
 class SubjectContentTableActivity : AppCompatActivity(),
     ExamTypeFragment.OnPackageExpiredListener,
-    ExamTypeFragment.OnContentAccessDeniedListener{
+    ExamTypeFragment.OnContentAccessDeniedListener,
+    ExamTypeFragment.OnGotoPaperActivityListener{
 
     private lateinit var viewModel: SubjectContentTableViewModel
     private lateinit var tabLayout: TabLayout
@@ -32,13 +34,15 @@ class SubjectContentTableActivity : AppCompatActivity(),
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_subject_content_table)
         pref = getSharedPreferences(SUBJECT_CONTENT_TABLE, MODE_PRIVATE)
-        setAlertDialog()
+//        setAlertDialog()
         initActivityViews()
         initViewModel()
         setupActivityViewListeners()
         setupViewObservers()
         loadSubjectPackageDataFromRemoteRepo()
+
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        checkIfGraceExtensionAvailable()
 
 
     }
@@ -58,8 +62,10 @@ class SubjectContentTableActivity : AppCompatActivity(),
 
     private fun setupViewObservers(){
         viewModel.getIsPackageActive().observe(this, Observer {
+
             if (!it) {
-                showAlertDialog()
+
+//                showAlertDialog()
             }
         })
 
@@ -68,8 +74,8 @@ class SubjectContentTableActivity : AppCompatActivity(),
         })
     }
 
-    private fun setAlertDialog(){
-        alertDialog = AlertDialog.Builder(this)
+    private fun showAlertDialog(){
+        val alertDialog = AlertDialog.Builder(this)
         alertDialog.apply {
             setMessage(resources.getString(R.string.package_expired_message))
             setPositiveButton("Ok") { _, _ ->
@@ -77,11 +83,15 @@ class SubjectContentTableActivity : AppCompatActivity(),
             }
             setCancelable(false)
         }.create()
-    }
-
-    private fun showAlertDialog(){
         alertDialog.show()
     }
+
+//    private fun showAlertDialog(){
+//        if (alertDialog == null){
+//            alertDialog.show()
+//        }
+//
+//    }
 
     private fun exitActivity() {
         this.finish()
@@ -187,9 +197,46 @@ class SubjectContentTableActivity : AppCompatActivity(),
         }.apply()
     }
 
+    private fun activateGraceExtension(){
+        val temp = viewModel.getGraceExtension()
+        pref.edit().apply{
+            putString(MCQConstants.ACTIVATED_ON, temp.activatedOn)
+            putString(MCQConstants.EXPIRES_ON, temp.expiresOn)
+        }.apply()
+
+    }
+
+    private fun checkIfGraceExtensionAvailable(){
+        val expiresOn = pref.getString(MCQConstants.EXPIRES_ON, null)
+        if (expiresOn == null){
+            activateGraceExtension()
+        }
+
+    }
+
+    private fun isGraceExtensionExpired(): Boolean{
+        val activatedOn = pref.getString(MCQConstants.ACTIVATED_ON, null)
+        val expiresOn = pref.getString(MCQConstants.EXPIRES_ON, null)
+//        println("GraceExtension activated on: $activatedOn")
+//        println("GraceExtension expires on: $expiresOn")
+        val isExpired = ActivationExpiryDatesGenerator().checkExpiry(activatedOn!!, expiresOn!!)
+        return isExpired
+    }
+
     companion object{
         private const val SUBJECT_CONTENT_TABLE = "subject content table"
         private const val TAB_INDEX = "tab index"
+    }
+
+    override fun onGotoPaperActivity(intent: Intent) {
+        val packageStatus = viewModel.getPackageStatus()
+        val graceExtensionStatus = isGraceExtensionExpired()
+//        println("Package status: $packageStatus, GraceExtension: $graceExtensionStatus")
+        if (packageStatus || graceExtensionStatus){
+            startActivity(intent)
+        }else{
+            showAlertDialog()
+        }
     }
 }
 

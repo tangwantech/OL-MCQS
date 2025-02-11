@@ -23,6 +23,7 @@ class ExamTypeFragment : Fragment(), ExamTypeRecyclerViewAdapter.OnRecyclerItemC
     private lateinit var examTypeFragmentViewModel: ExamTypeFragmentViewModel
     private lateinit var onPackageExpiredListener: OnPackageExpiredListener
     private lateinit var onContentAccessDeniedListener: OnContentAccessDeniedListener
+    private lateinit var onGotoPaperActivityListener: OnGotoPaperActivityListener
 
     private lateinit var rvExamTypeFragment: RecyclerView
 
@@ -33,6 +34,9 @@ class ExamTypeFragment : Fragment(), ExamTypeRecyclerViewAdapter.OnRecyclerItemC
         }
         if(context is OnContentAccessDeniedListener){
             onContentAccessDeniedListener = context
+        }
+        if (context is OnGotoPaperActivityListener){
+            onGotoPaperActivityListener = context
         }
 
     }
@@ -105,13 +109,13 @@ class ExamTypeFragment : Fragment(), ExamTypeRecyclerViewAdapter.OnRecyclerItemC
 
     override fun onRecyclerItemClick(position: Int) {
 
-        if(!onPackageExpiredListener.onCheckIfPackageHasExpired()){
-            onPackageExpiredListener.onShowPackageExpired()
-        }else{
-
-            gotoPaperActivity(position)
-        }
-//        gotoPaperActivity(position)
+//        if(!onPackageExpiredListener.onCheckIfPackageHasExpired()){
+//            onPackageExpiredListener.onShowPackageExpired()
+//        }else{
+//
+//            gotoPaperActivity(position)
+//        }
+        gotoPaperActivity(position)
 
     }
     private fun gotoPaperActivity(examYearIndex: Int){
@@ -124,7 +128,8 @@ class ExamTypeFragment : Fragment(), ExamTypeRecyclerViewAdapter.OnRecyclerItemC
             putExtra(MCQConstants.EXAM_TYPE_INDEX, requireArguments().getInt(MCQConstants.EXAM_TYPE_INDEX))
             putExtra(MCQConstants.EXAM_ITEM_INDEX, examYearIndex)
         }
-        startActivity(intent)
+//        startActivity(intent)
+        onGotoPaperActivityListener.onGotoPaperActivity(intent)
     }
 
 
@@ -134,6 +139,10 @@ class ExamTypeFragment : Fragment(), ExamTypeRecyclerViewAdapter.OnRecyclerItemC
     }
     interface OnContentAccessDeniedListener{
         fun onContentAccessDenied()
+    }
+
+    interface OnGotoPaperActivityListener{
+        fun onGotoPaperActivity(intent: Intent)
     }
 
 }
