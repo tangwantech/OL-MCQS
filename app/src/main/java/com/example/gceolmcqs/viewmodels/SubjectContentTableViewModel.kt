@@ -32,7 +32,7 @@ class SubjectContentTableViewModel : ViewModel() {
         return AppDataRepository.getExamTitles(subjectIndex!!).size
     }
 
-    fun getIsPackageActive(): LiveData<Boolean> {a
+    fun getIsPackageActive(): LiveData<Boolean> {
         return isSubjectPackageActive
     }
 
