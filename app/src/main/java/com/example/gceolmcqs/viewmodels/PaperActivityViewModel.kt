@@ -12,6 +12,7 @@ import com.example.gceolmcqs.repository.RemoteRepoManager
 class PaperActivityViewModel:ViewModel() {
     private var currentFragmentIndex: Int? = null
     private lateinit var subjectName: String
+    private var subjectIndex: Int = 0
 
     fun getExamItemTitle(subjectIndex: Int, examTypeIndex: Int, examItemIndex: Int): String{
         return AppDataRepository.getExamItemTitle(subjectIndex, examTypeIndex, examItemIndex)
@@ -109,14 +110,17 @@ class PaperActivityViewModel:ViewModel() {
     }
 
     fun isPackageActive(subjectIndex: Int): Boolean{
+
         val activatedOn = RemoteRepoManager.getSubjectPackageDataAtIndex(subjectIndex).activatedOn
         val expiresOn = RemoteRepoManager.getSubjectPackageDataAtIndex(subjectIndex).expiresOn
         return ActivationExpiryDatesGenerator().checkExpiry(activatedOn!!, expiresOn!!)
     }
 
-    fun startUsageTime() {
-
-        UsageTimer.startTimer(0, 0, 45000, 5000, 15000)
+    fun startUsageTime(subjectIndex: Int) {
+        val activatedOn = RemoteRepoManager.getSubjectPackageDataAtIndex(subjectIndex).activatedOn
+        val expiresOn = RemoteRepoManager.getSubjectPackageDataAtIndex(subjectIndex).expiresOn
+        val timeRemaining = ActivationExpiryDatesGenerator.getTimeRemaining(activatedOn!!, expiresOn!!)
+        UsageTimer.startUsageTimer(timeRemaining)
     }
 
     fun stopUsageTimer(){

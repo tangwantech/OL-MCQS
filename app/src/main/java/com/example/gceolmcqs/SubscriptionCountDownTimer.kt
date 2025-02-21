@@ -43,14 +43,14 @@ class SubscriptionCountDownTimer(private val position: Int ) {
         timeRemainingInSeconds %= secondsInMinutes
 
         return if(hoursRemaining > 0){
-            "${hoursRemaining.toString().padStart(2, '0')} Hrs : ${
+            "${hoursRemaining.toString().padStart(2, '0')} H : ${
                 minutesRemaining.toString().padStart(2, '0')
-            } Mins : ${timeRemainingInSeconds.toString().padStart(2, '0')} s"
+            } M : ${timeRemainingInSeconds.toString().padStart(2, '0')} S"
         }else if (minutesRemaining > 0){
             "${minutesRemaining.toString().padStart(2, '0')
-            } Mins : ${timeRemainingInSeconds.toString().padStart(2, '0')} s"
+            } M : ${timeRemainingInSeconds.toString().padStart(2, '0')} S"
         }else{
-            "${timeRemainingInSeconds.toString().padStart(2, '0')} s"
+            "${timeRemainingInSeconds.toString().padStart(2, '0')} S"
         }
     }
 

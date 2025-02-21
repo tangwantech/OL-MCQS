@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.gceolmcqs.ActivationExpiryDatesGenerator
-import com.example.gceolmcqs.MCQConstants
 import com.example.gceolmcqs.datamodels.ActivationExpiryDates
 
 import com.example.gceolmcqs.datamodels.SubjectPackageData
@@ -50,6 +49,6 @@ class SubjectContentTableViewModel : ViewModel() {
 
     fun getGraceExtension(): ActivationExpiryDates {
 //        println("packageName: ${subjectPackageData.value!!.packageName!!}")
-        return ActivationExpiryDatesGenerator.extendExpiryDate(subjectPackageData.value!!.expiresOn!!, subjectPackageData.value!!.packageName!!)
+        return ActivationExpiryDatesGenerator.getGraceActivatedAndExpiryDate(subjectPackageData.value!!.expiresOn!!, subjectPackageData.value!!.packageName!!)
     }
 }

@@ -173,12 +173,7 @@
         <include
             android:id="@+id/loBonuses"
             layout="@layout/bonuses"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:visibility="gone"/>
+            android:visibility="visible"/>
 
         <LinearLayout
             android:orientation="horizontal"
@@ -195,25 +190,6 @@
                 android:layout_height="match_parent"
                 android:text="@string/subscribe"
                 />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/activateButtonLo"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="52dp"
-            android:paddingStart="@dimen/margin_14"
-            android:paddingEnd="@dimen/margin_14"
-            android:gravity="end"
-            android:visibility="gone">
-
-            <Button
-                android:id="@+id/activateButton"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Activate Trial" />
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

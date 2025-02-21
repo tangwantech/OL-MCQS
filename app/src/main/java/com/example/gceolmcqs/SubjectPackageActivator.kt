@@ -37,8 +37,6 @@ class SubjectPackageActivator {
                     packageDuration
                 )
 
-//            println(activationExpiryDates)
-
             val subjectPackageData = SubjectPackageData().apply {
                 subjectIndex = tempSubjectIndex
                 subjectName = tempSubjectName

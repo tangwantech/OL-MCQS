@@ -91,6 +91,7 @@ class MCQConstants{
 
         const val TRIAL_DURATION = 24
         const val GRACE_DURATION_DISCOUNT = 0.2
+        const val BONUS_TIME_DISCOUNT = 0.075
         const val DELAY_DURATION = 3000
         const val STATUS_CHECK_DURATION = 15000L
         const val NETWORK_TIME_OUT_DURATION = 30000L

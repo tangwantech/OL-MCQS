@@ -1,73 +1,79 @@
 package com.example.gceolmcqs
 
 import android.os.CountDownTimer
+import android.text.format.Time
+import kotlin.math.roundToLong
 
 class UsageTimer {
     companion object{
-        private var spinPoints = 0
+
         private var sessionTime = 0L
-        private var cumulatedTime = 0L
         private var timer: CountDownTimer? = null
 
-        fun startTimer(oldCumulatedTime: Long, spinPoints: Int, packageTimeRemaining: Long, countInterval: Long, timeToEarnPoints: Long){
-           initCumulatedTimeAndSpinPoints(oldCumulatedTime, spinPoints)
+        fun startUsageTimer(packageTimeRemaining: Long, countInterval: Long = 1000){
             timer = object :CountDownTimer(packageTimeRemaining, countInterval){
                 override fun onTick(p0: Long) {
                     updateSessionTime(countInterval)
-                    updateCumulatedTime(oldCumulatedTime)
-                    calculateSpinPoints(timeToEarnPoints)
                 }
 
                 override fun onFinish() {
-                    calculateSpinPoints(timeToEarnPoints)
                 }
 
             }.start()
         }
 
+
         fun stopTimer(){
             timer?.cancel()
         }
 
-        private fun calculateSpinPoints(timeToEarnPoints: Long){
-            val tempSpinPoint  = ((this.cumulatedTime / timeToEarnPoints)).toInt()
-            this.spinPoints += tempSpinPoint
-            println("SpinPoints: ${this.spinPoints}")
-            val remainingTime = this.cumulatedTime % timeToEarnPoints
-            if(tempSpinPoint > 0){
-                resetSessionTime()
-                updateCumulatedTime(remainingTime)
-            }
-
-        }
-
-        private fun initCumulatedTimeAndSpinPoints(cumulatedTime: Long, spinPoints: Int){
-            this.cumulatedTime = cumulatedTime
-            this.spinPoints = spinPoints
-        }
 
         private fun updateSessionTime(checkDuration: Long){
             this.sessionTime += checkDuration
-            println("SessionTime: ${this.sessionTime}")
         }
 
-        private fun updateCumulatedTime(cumulatedTime: Long){
-            this.cumulatedTime = sessionTime + cumulatedTime
-            println("Cumulated Time: ${this.cumulatedTime}")
+        fun getNewBonusTime(oldBonusTime: Long, bonusTimeDiscount: Double): Long{
+
+            val newBonusTime = (sessionTime * bonusTimeDiscount).roundToLong() + oldBonusTime
+            return newBonusTime
         }
 
         private fun resetSessionTime(){
             this.sessionTime = 0
         }
 
-        private fun resetCumulatedTime(){
-            this.cumulatedTime = 0
-            println("Cumulated Time reset: ${this.cumulatedTime}")
-        }
-
         fun resetUsageTimerData(){
             resetSessionTime()
-            resetCumulatedTime()
         }
+
+        fun formatToHMS(bonusTime: Long): String{
+            val timeLeft = Time().apply { set(bonusTime) }
+            var timeRemainingInSeconds = timeLeft.toMillis(true) / 1000
+            val secondsInHours = 3600
+            val secondsInMinutes = 60
+
+            val hoursRemaining = timeRemainingInSeconds / secondsInHours
+            timeRemainingInSeconds %= secondsInHours
+            val minutesRemaining = timeRemainingInSeconds / secondsInMinutes
+            timeRemainingInSeconds %= secondsInMinutes
+
+            return if(hoursRemaining > 0){
+                "${hoursRemaining.toString().padStart(2, '0')} H : ${
+                    minutesRemaining.toString().padStart(2, '0')
+                } M : ${timeRemainingInSeconds.toString().padStart(2, '0')} S"
+            }else if (minutesRemaining > 0){
+                "${minutesRemaining.toString().padStart(2, '0')
+                } M : ${timeRemainingInSeconds.toString().padStart(2, '0')} S"
+            }else{
+                "${timeRemainingInSeconds.toString().padStart(2, '0')} S"
+            }
+        }
+
+        fun isBonusTimeAvailable(bonusTime: Long): Boolean{
+            val temp = (bonusTime / 1000) / 60
+            return temp > 0
+        }
+
     }
+
 }

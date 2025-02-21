@@ -21,8 +21,7 @@ import com.example.gceolmcqs.repository.RemoteRepoManager
 import com.example.gceolmcqs.viewmodels.MainActivityViewModel
 
 class MainActivity : AppCompatActivity(),
-    HomeRecyclerViewAdapter.OnHomeRecyclerItemClickListener,
-        HomeRecyclerViewAdapter.OnPackageExpireListener
+    HomeRecyclerViewAdapter.OnHomeRecyclerItemListener
 {
 
     private lateinit var viewModel: MainActivityViewModel
@@ -30,6 +29,7 @@ class MainActivity : AppCompatActivity(),
     private lateinit var pref: SharedPreferences
     private lateinit var binding: ActivityMainBinding
     private lateinit var homeRecyclerViewAdapter: HomeRecyclerViewAdapter
+    private var dialog: AlertDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +39,7 @@ class MainActivity : AppCompatActivity(),
         this.overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
         setupViewModel()
         setupRecyclerView()
+        setupObservers()
 
 
     }
@@ -64,8 +65,15 @@ class MainActivity : AppCompatActivity(),
         homeRecyclerViewAdapter = HomeRecyclerViewAdapter(
             this,
             viewModel.getSubjectPackageDataList(),
-            this, this)
+            this)
         binding.homeRecyclerView.adapter = homeRecyclerViewAdapter
+    }
+
+    private fun setupObservers(){
+        viewModel.usageTimeBonus.observe(this){
+            val subjectIndex = viewModel.getIndexOfCurrentSubject()
+            saveUsageBonusTime(it, subjectIndex)
+        }
     }
 
     private fun gotoSubjectContentTableActivity(position: Int) {
@@ -106,22 +114,6 @@ class MainActivity : AppCompatActivity(),
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(MCQConstants.APP_URL)))
         }
     }
-
-//    private fun privacyPolicy() {
-//        val uri = Uri.parse(MCQConstants.PRIVACY_POLICY)
-//        val intent = Intent(Intent.ACTION_VIEW, uri)
-//        intent.addFlags(
-//            Intent.FLAG_ACTIVITY_NO_HISTORY or
-//                    Intent.FLAG_ACTIVITY_NEW_DOCUMENT or
-//                    Intent.FLAG_ACTIVITY_MULTIPLE_TASK
-//        )
-//
-//        try {
-//            startActivity(intent)
-//        } catch (e: ActivityNotFoundException) {
-//            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(MCQConstants.PRIVACY_POLICY)))
-//        }
-//    }
 
     private fun updateAppData(){
 
@@ -207,14 +199,12 @@ class MainActivity : AppCompatActivity(),
         title = ""
     }
 
-
     override fun onResume() {
         super.onResume()
         setTitle()
         viewModel.updateSubjectPackageDataList()
+        updateUsageBonusTime()
         homeRecyclerViewAdapter.notifyDataSetChanged()
-
-
 
     }
 
@@ -228,24 +218,14 @@ class MainActivity : AppCompatActivity(),
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-//            android.R.id.home ->{
-//                showExitDialog()
-//            }
 
             R.id.share -> {
-//                Toast.makeText(this, "Share", Toast.LENGTH_SHORT).show()
+//
                 shareApp()
             }
             R.id.rateUs -> {
                 rateUs()
             }
-//            R.id.terms -> {
-//                gotoTermsOfServiceActivity()
-//            }
-
-//            R.id.privacyPolicy -> {
-//                privacyPolicy()
-//            }
             R.id.about -> {
                 gotoAboutUs()
             }
@@ -261,16 +241,15 @@ class MainActivity : AppCompatActivity(),
 
 
     override fun onBackPressed() {
-//        super.onBackPressed()
-//        super.onBackPressed()
         showExitDialog()
 
     }
 
 
     override fun onSubjectItemClicked(position: Int, isPackageActive: Boolean?, packageName: String?) {
+        setIndexOfCurrentSubject(position)
         if(packageName == MCQConstants.NA){
-            Toast.makeText(this, "Please activate your Trial Package", Toast.LENGTH_LONG).show()
+//            Toast.makeText(this, "Please activate your Trial Package", Toast.LENGTH_LONG).show()
         }else{
             isPackageActive?.let{
                 gotoSubjectContentTableActivity(position)
@@ -297,13 +276,11 @@ class MainActivity : AppCompatActivity(),
         gotoSubscriptionActivity(position, subjectName)
     }
 
-    override fun onSpinPointsButtonClicked(position: Int, subjectName: String) {
-        println("spin points...")
-        gotoSpinActivity(position)
-    }
+    override fun onActivateBonusButtonClicked(position: Int, subjectName: String) {
+//        println("Subject index: $position, Subject: $subjectName")
 
-    override fun onBonusTimeButtonClicked(position: Int, subjectName: String) {
-
+        activateBonus(position)
+        displayDialogActivatingBonus()
     }
 
 
@@ -329,7 +306,7 @@ class MainActivity : AppCompatActivity(),
     override fun onPackageExpired(index: Int) {
         viewModel.updatePackageStatusAt(index, object : RemoteRepoManager.OnUpdatePackageListener{
             override fun onUpDateSuccessful(index: Int) {
-//                homeRecyclerViewAdapter.notifyItemChanged(index)
+                homeRecyclerViewAdapter.notifyItemChanged(index)
             }
 
             override fun onError() {
@@ -340,5 +317,106 @@ class MainActivity : AppCompatActivity(),
 
     }
 
+
+    override fun onUsageBonusAvailable(subjectIndex: Int): Long {
+        val temp = pref.getLong("$subjectIndex", 0)
+        return temp
+    }
+
+    private fun setIndexOfCurrentSubject(position: Int){
+        viewModel.setIndexOfCurrentSubject(position)
+        viewModel.resetUsageTimer()
+    }
+
+    private fun updateUsageBonusTime(){
+        val subjectIndex = viewModel.getIndexOfCurrentSubject()
+        subjectIndex?.let{
+            val oldBonus = pref.getLong("$it", 0)
+            viewModel.calculateNewBonusTime(oldBonus, MCQConstants.BONUS_TIME_DISCOUNT)
+            updateBonusTimeInRecyclerAdapter(oldBonus, subjectIndex)
+        }
+
+
+    }
+
+    private fun saveUsageBonusTime(bonusTime: Long, subjectIndex: Int?){
+        subjectIndex?.let {
+            pref.edit().apply {
+                putLong("$it", bonusTime)
+            }.apply()
+            updateBonusTimeInRecyclerAdapter(bonusTime, it)
+        }
+
+
+
+    }
+
+    private fun updateBonusTimeInRecyclerAdapter(bonusTime: Long, subjectIndex: Int){
+        homeRecyclerViewAdapter.updateBonusTime(bonusTime)
+        homeRecyclerViewAdapter.notifyItemChanged(subjectIndex)
+    }
+
+    private fun consumeBonusTime(subjectIndex: Int){
+        saveUsageBonusTime(0L, subjectIndex)
+        viewModel.resetUsageTimer()
+
+    }
+
+    private fun activateBonus(subjectIndex: Int){
+        val bonusTime = pref.getLong("$subjectIndex", 0)
+        viewModel.extentSubjectPackageAt(subjectIndex, bonusTime, object: RemoteRepoManager.OnUpdatePackageListener{
+            override fun onUpDateSuccessful(index: Int) {
+                displayDialogBonusActivated(index)
+
+            }
+
+            override fun onError() {
+//
+                displayDialogFailToActivateBonus()
+            }
+
+        })
+    }
+
+    private fun displayDialogActivatingBonus(){
+        if (dialog != null){
+            dialog?.dismiss()
+        }
+
+        dialog = AlertDialog.Builder(this).apply {
+            setMessage(getString(R.string.activating_bonus))
+            setCancelable(false)
+        }.create()
+        dialog?.show()
+    }
+    private fun displayDialogBonusActivated(subjectIndex: Int){
+        if (dialog != null){
+            dialog?.dismiss()
+        }
+
+        dialog = AlertDialog.Builder(this).apply {
+            setMessage(getString(R.string.bonus_activated))
+            setPositiveButton(getString(R.string.ok)){_, _ ->
+                consumeBonusTime(subjectIndex)
+            }
+            setCancelable(false)
+        }.create()
+        dialog?.show()
+    }
+
+    private fun displayDialogFailToActivateBonus(){
+        if (dialog != null){
+            dialog?.dismiss()
+        }
+
+        dialog = AlertDialog.Builder(this).apply {
+            setMessage(getString(R.string.failed_to_activate_bonus))
+            setPositiveButton(getString(R.string.ok)){_, _ ->
+
+            }
+            setCancelable(false)
+        }.create()
+        dialog?.show()
+    }
 
 }

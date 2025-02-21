@@ -91,6 +91,16 @@ class ResourceImages {
             images["fore_arm_june_2023.jpg"] = R.drawable.fore_arm_june_2023
             images["graph_hormone_level_girl_june_2023.jpg"] = R.drawable.graph_hormone_level_girl_june_2023
 
+//            june 2024
+            images["graph_enzyme_june_2024.jpg"] = R.drawable.graph_enzyme_june_2024
+            images["bacterium_june_2024.jpg"] = R.drawable.bacterium_june_2024
+            images["hibiscus_june_2024.jpg"] = R.drawable.hibiscus_june_2024
+            images["mould_fungus_june_2024.jpg"] = R.drawable.mould_fungus_june_2024
+            images["lungs_june_2024.jpg"] = R.drawable.lungs_june_2024
+            images["yeast_june_2024.jpg"] = R.drawable.yeast_june_2024
+            images["life_cycle_june_2024.jpg"] = R.drawable.life_cycle_june_2024
+            images["gi_tract_june_2024.jpg"] = R.drawable.gi_tract_june_2024
+
 //            Mock images
 
 //            Northwest mock 2020

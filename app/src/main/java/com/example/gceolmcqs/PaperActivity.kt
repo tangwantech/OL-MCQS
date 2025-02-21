@@ -139,8 +139,14 @@ class PaperActivity : AppCompatActivity(),
     override fun onResume() {
         super.onResume()
         setActivityTitle()
+        startUsageTimer()
 //        _viewModel.startUsageTime()
 
+    }
+
+    override fun onPause() {
+        super.onPause()
+        stopUsageTimer()
     }
 
 
@@ -353,13 +359,21 @@ class PaperActivity : AppCompatActivity(),
 
     override fun onDestroy() {
         super.onDestroy()
-        _viewModel.stopUsageTimer()
-        _viewModel.resetUsageTimerData()
+        stopUsageTimer()
+//        _viewModel.resetUsageTimerData()
     }
 
     override fun onSectionNavFragmentRecyclerItemClick(position: Int) {
 //        checkPackageExpiry(position)
         gotoSection(position)
+    }
+
+    private fun startUsageTimer(){
+        _viewModel.startUsageTime(subjectIndex)
+    }
+
+    private fun stopUsageTimer(){
+        _viewModel.stopUsageTimer()
     }
 }
 

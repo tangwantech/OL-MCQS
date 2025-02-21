@@ -4,15 +4,12 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.LinearLayout
-import android.widget.TextView
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.gceolmcqs.ActivationExpiryDatesGenerator
 import com.example.gceolmcqs.SubscriptionCountDownTimer
 import com.example.gceolmcqs.MCQConstants
 import com.example.gceolmcqs.R
+import com.example.gceolmcqs.UsageTimer
 import com.example.gceolmcqs.databinding.SubjectItemCardBinding
 import com.example.gceolmcqs.datamodels.SubjectPackageData
 
@@ -20,28 +17,13 @@ import com.example.gceolmcqs.datamodels.SubjectPackageData
 class HomeRecyclerViewAdapter(
     private val context: Context,
     private var subjectPackageDataList: ArrayList<SubjectPackageData>,
-    private val onHomeRecyclerItemClickListener: OnHomeRecyclerItemClickListener,
-    private val onPackageExpireListener: OnPackageExpireListener
-
-//    private val onSubscribeButtonClickListener: OnSubscribeButtonClickListener
+    private val onHomeRecyclerItemListener: OnHomeRecyclerItemListener
 
 ) : RecyclerView.Adapter<HomeRecyclerViewAdapter.ViewHolder>() {
 
+    private var bonusTimeEarned: Long = 0
+
     inner class ViewHolder(val binding: SubjectItemCardBinding) : RecyclerView.ViewHolder(binding.root) {
-//        val titleLo: LinearLayout = view.findViewById(R.id.titleLo)
-//        val tvSubjectName: TextView = view.findViewById(R.id.subjectTitleTv)
-//        val tvSubjectStatus: TextView = view.findViewById(R.id.tvSubjectStatus)
-//        val btnSubscribe: Button = view.findViewById(R.id.btnSubscribe)
-//        val tvPackageType: TextView = view.findViewById(R.id.tvPackageType)
-//        val activatedOnTv: TextView = view.findViewById(R.id.activatedOnTv)
-//        val expiresOnTv: TextView = view.findViewById(R.id.expiresOnTv)
-//        val btnActivateTrial: Button = view.findViewById(R.id.activateButton)
-//        val activateButtonLo: LinearLayout = view.findViewById(R.id.activateButtonLo)
-//        val expiresInTv: TextView = view.findViewById(R.id.expiresInTv)
-//        val expireInLo: LinearLayout = view.findViewById(R.id.expireInLo)
-//
-//        private val layoutSubjectItem: CardView = view.findViewById(R.id.layoutSubjectNavItem)
-//
 
         init {
 
@@ -51,7 +33,7 @@ class HomeRecyclerViewAdapter(
                         subjectPackageDataList[adapterPosition].activatedOn!!,
                         subjectPackageDataList[adapterPosition].expiresOn!!
                     )
-                    onHomeRecyclerItemClickListener.onSubjectItemClicked(
+                    onHomeRecyclerItemListener.onSubjectItemClicked(
                         this.adapterPosition,
                         packageStatus,
                         subjectPackageDataList[adapterPosition].packageName
@@ -62,13 +44,12 @@ class HomeRecyclerViewAdapter(
             }
 
             binding.btnSubscribe.setOnClickListener {
-                onHomeRecyclerItemClickListener.onSubscribeButtonClicked(adapterPosition, subjectPackageDataList[adapterPosition].subjectName!!)
+                onHomeRecyclerItemListener.onSubscribeButtonClicked(adapterPosition, subjectPackageDataList[adapterPosition].subjectName!!)
             }
 
-            binding.loBonuses.cardSpinPoints.setOnClickListener {
-                onHomeRecyclerItemClickListener.onSpinPointsButtonClicked(adapterPosition, subjectPackageDataList[adapterPosition].subjectName!!)
+            binding.loBonuses.btnActivateBonus.setOnClickListener {
+                onHomeRecyclerItemListener.onActivateBonusButtonClicked(adapterPosition, subjectPackageDataList[adapterPosition].subjectName!!)
             }
-
 
         }
 
@@ -76,6 +57,10 @@ class HomeRecyclerViewAdapter(
 
     fun upSubjectPackageData(subjectPackageDataList: ArrayList<SubjectPackageData>){
         this.subjectPackageDataList = subjectPackageDataList
+    }
+
+    fun updateBonusTime(time: Long){
+        bonusTimeEarned = time
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -109,8 +94,14 @@ class HomeRecyclerViewAdapter(
             holder.binding.activatedOnTv.text = subjectPackageDataList[holder.adapterPosition].activatedOn
             holder.binding.expiresOnTv.text = subjectPackageDataList[holder.adapterPosition].expiresOn
 
+            bonusTimeEarned = onHomeRecyclerItemListener.onUsageBonusAvailable(holder.adapterPosition)
+            val formattedBonusTime = UsageTimer.formatToHMS(bonusTimeEarned)
+
+            holder.binding.loBonuses.tvBonusTime.text = context.getString(R.string.bonus_time, formattedBonusTime)
+
+            holder.binding.loBonuses.btnActivateBonus.isEnabled = UsageTimer.isBonusTimeAvailable(bonusTimeEarned)
+
             if(subjectPackageDataList[holder.adapterPosition].isPackageActive != null){
-                holder.binding.activateButtonLo.visibility = View.GONE
                 holder.binding.expireInLo.visibility = View.VISIBLE
 //                println("Subject package data list: ${subjectPackageDataList[position]}")
                 if (subjectPackageDataList[holder.adapterPosition].isPackageActive!!){
@@ -132,7 +123,7 @@ class HomeRecyclerViewAdapter(
                                 holder.binding.tvSubjectStatus.text = context.resources.getString(R.string.expired)
                                 holder.binding.tvSubjectStatus.setTextColor(context.resources.getColor(R.color.color_red))
                                 holder.binding.btnSubscribe.isEnabled = true
-                                onPackageExpireListener.onPackageExpired(holder.adapterPosition)
+                                onHomeRecyclerItemListener.onPackageExpired(holder.adapterPosition)
                             }
                         })
                     }
@@ -159,14 +150,12 @@ class HomeRecyclerViewAdapter(
         return subjectPackageDataList.size
     }
 
-    interface OnHomeRecyclerItemClickListener {
+    interface OnHomeRecyclerItemListener {
         fun onSubjectItemClicked(position: Int, isPackageActive: Boolean?, packageName: String?)
         fun onSubscribeButtonClicked(position: Int, subjectName: String)
-        fun onSpinPointsButtonClicked(position: Int, subjectName: String)
-        fun onBonusTimeButtonClicked(position: Int, subjectName: String)
-    }
-    interface OnPackageExpireListener{
+        fun onActivateBonusButtonClicked(position: Int, subjectName: String)
         fun onPackageExpired(index: Int)
+        fun onUsageBonusAvailable(subjectIndex: Int): Long
     }
 
 }

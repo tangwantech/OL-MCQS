@@ -78,6 +78,7 @@ class SectionQuestionsRecyclerAdapter(private val context: Context, val title: S
             binding.imageCardLayout.root.visibility = View.GONE
         } else {
             binding.imageCardLayout.root.visibility = View.VISIBLE
+            println("image: ${ResourceImages.images[questions[adapterPosition].image]}")
             binding.imageCardLayout.imgView.setImageResource(ResourceImages.images[questions[adapterPosition].image]!!)
 
         }

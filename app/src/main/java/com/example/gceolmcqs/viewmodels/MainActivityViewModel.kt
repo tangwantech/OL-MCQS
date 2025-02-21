@@ -3,6 +3,7 @@ package com.example.gceolmcqs.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.gceolmcqs.ActivationExpiryDatesGenerator
 import com.example.gceolmcqs.AppDataUpdater
 import com.example.gceolmcqs.UsageTimer
 import com.example.gceolmcqs.datamodels.*
@@ -10,12 +11,14 @@ import com.example.gceolmcqs.repository.AppDataRepository
 import com.example.gceolmcqs.repository.RemoteRepoManager
 import com.parse.ParseQuery
 import com.parse.ParseUser
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class MainActivityViewModel : ViewModel() {
     private val subjectPackageDataList = ArrayList<SubjectPackageData>()
+    private var indexOfCurrentSubject: Int? = null
+    private val _usageTimeBonus = MutableLiveData<Long>()
+    val usageTimeBonus: LiveData<Long> = _usageTimeBonus
+
+
 
 
     fun updateSubjectPackageDataList() {
@@ -48,11 +51,10 @@ class MainActivityViewModel : ViewModel() {
 
     fun initAppData(){
         AppDataRepository.initAppData()
-//        println(AppDataRepository.getSubjectNames())
-//        println(AppDataRepository.getExamTitles(0))
-        CoroutineScope(Dispatchers.IO).launch {
-            queryTest()
-        }
+
+//        CoroutineScope(Dispatchers.IO).launch {
+//            queryTest()
+//        }
 
     }
 
@@ -60,17 +62,42 @@ class MainActivityViewModel : ViewModel() {
         AppDataUpdater.update(appDataUpdateListener)
     }
 
-    private fun queryTest(){
-        val query = ParseQuery.getQuery<ParseUser>("_User")
-        query.findInBackground{users, e ->
-            if (e == null){
-                for (user in users){
-                    println("Back4App: User-> ${user.username}, subjectPackages: ${user.getString("subjectPackages")}")
-                }
-            }else{
-                println("Back4app error: ${e.message}")
-            }
-        }
+//    private fun queryTest(){
+//        val query = ParseQuery.getQuery<ParseUser>("_User")
+//        query.findInBackground{users, e ->
+//            if (e == null){
+//                for (user in users){
+//                    println("Back4App: User-> ${user.username}, subjectPackages: ${user.getString("subjectPackages")}")
+//                }
+//            }else{
+//                println("Back4app error: ${e.message}")
+//            }
+//        }
+//    }
+
+    fun setIndexOfCurrentSubject(index: Int){
+        indexOfCurrentSubject = index
+    }
+
+    fun getIndexOfCurrentSubject(): Int?{
+        return indexOfCurrentSubject
+    }
+
+    fun calculateNewBonusTime(oldBonus: Long, bonusTimeDiscount: Double){
+        _usageTimeBonus.value = UsageTimer.getNewBonusTime(oldBonus, bonusTimeDiscount)
+    }
+
+    fun resetUsageTimer(){
+        UsageTimer.resetUsageTimerData()
+    }
+
+    fun extentSubjectPackageAt(subjectIndex: Int, bonusTime: Long, updateCallBack: RemoteRepoManager.OnUpdatePackageListener){
+
+        val subjectPackageData = getSubjectPackageDataList()[subjectIndex]
+//        println(subjectPackageData)
+        val newExpiryDate = ActivationExpiryDatesGenerator.getNewExpiryDate(subjectPackageData.expiresOn!!, bonusTime)
+        subjectPackageData.expiresOn = newExpiryDate
+        updateSubjectPackageDataInRemoteDb(subjectPackageData, updateCallBack)
     }
 
 
