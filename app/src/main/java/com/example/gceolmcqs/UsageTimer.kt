@@ -64,8 +64,11 @@ class UsageTimer {
             }else if (minutesRemaining > 0){
                 "${minutesRemaining.toString().padStart(2, '0')
                 } M : ${timeRemainingInSeconds.toString().padStart(2, '0')} S"
-            }else{
+            }else if (timeRemainingInSeconds > 0){
                 "${timeRemainingInSeconds.toString().padStart(2, '0')} S"
+
+            }else{
+                "NA"
             }
         }
 

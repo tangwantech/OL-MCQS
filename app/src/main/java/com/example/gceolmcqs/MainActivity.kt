@@ -5,9 +5,9 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 
@@ -117,71 +117,83 @@ class MainActivity : AppCompatActivity(),
 
     private fun updateAppData(){
 
-        val checkingDialog = checkingForUpdateDialog()
-        checkingDialog.show()
+        checkingForUpdateDialog()
         viewModel.updateAppData(object: AppDataUpdater.AppDataUpdateListener{
             override fun onAppDataUpdated() {
-                NetworkTimeout.stopTimer()
-                checkingDialog.dismiss()
-                appDataUpDatedDialog()
+//                NetworkTimeout.stopTimer()
+//                checkingDialog.dismiss()
+                displayAppDataUpDatedDialog()
             }
 
             override fun onError() {
-                NetworkTimeout.stopTimer()
+//                NetworkTimeout.stopTimer()
+                displayErrorDialog(getString(R.string.network_timeout))
             }
 
             override fun onAppDataUpToDate() {
-                NetworkTimeout.stopTimer()
-                checkingDialog.dismiss()
-                appDataUpToDateDialog()
+//                NetworkTimeout.stopTimer()
+//                checkingDialog.dismiss()
+                displayAppDataIsUpToDateDialog()
             }
         })
 
-        NetworkTimeout.checkTimeout(MCQConstants.NETWORK_TIME_OUT_DURATION, object: NetworkTimeout.OnNetWorkTimeoutListener{
-            override fun onNetworkTimeout() {
-                checkingDialog.dismiss()
-                displayErrorDialog(getString(R.string.network_timeout))
-            }
-        })
+//        NetworkTimeout.checkTimeout(MCQConstants.NETWORK_TIME_OUT_DURATION, object: NetworkTimeout.OnNetWorkTimeoutListener{
+//            override fun onNetworkTimeout() {
+////                checkingDialog.dismiss()
+//                displayErrorDialog(getString(R.string.network_timeout))
+//            }
+//        })
     }
 
     private fun displayErrorDialog(message: String){
-        val dialog = AlertDialog.Builder(this).apply {
+        if (dialog != null){
+            dialog?.dismiss()
+        }
+        dialog = AlertDialog.Builder(this).apply {
             setMessage(message)
             setPositiveButton(getString(R.string.ok)){d, _ ->
                 d.dismiss()
             }
         }.create()
-        dialog.show()
+        dialog?.show()
     }
 
-    private fun  appDataUpToDateDialog(){
-        val dialog = AlertDialog.Builder(this).apply {
+    private fun  displayAppDataIsUpToDateDialog(){
+        if(dialog != null){
+            dialog?.dismiss()
+        }
+        dialog = AlertDialog.Builder(this).apply {
             setMessage("App data is up to date.")
             setPositiveButton(getString(R.string.ok)){d, _ ->
                 d.dismiss()
             }
         }.create()
-        dialog.show()
+        dialog?.show()
     }
 
-    private fun checkingForUpdateDialog(): AlertDialog{
-        val dialog = AlertDialog.Builder(this).apply {
+    private fun checkingForUpdateDialog(){
+        if(dialog != null){
+            dialog?.dismiss()
+        }
+        dialog = AlertDialog.Builder(this).apply {
             setMessage(getString(R.string.checking_for_latest_update))
             setCancelable(false)
         }.create()
-        return dialog
+        dialog?.show()
     }
 
-    private fun appDataUpDatedDialog(){
-        val dialog = AlertDialog.Builder(this).apply {
+    private fun displayAppDataUpDatedDialog(){
+        if(dialog != null){
+            dialog?.dismiss()
+        }
+        dialog = AlertDialog.Builder(this).apply {
             setMessage(getString(R.string.app_data_updated_successfully))
             setPositiveButton(getString(R.string.exit)){_, _ ->
                 finish()
             }
             setCancelable(false)
         }.create()
-        dialog.show()
+        dialog?.show()
     }
 
 
@@ -367,12 +379,12 @@ class MainActivity : AppCompatActivity(),
         viewModel.extentSubjectPackageAt(subjectIndex, bonusTime, object: RemoteRepoManager.OnUpdatePackageListener{
             override fun onUpDateSuccessful(index: Int) {
                 displayDialogBonusActivated(index)
-
             }
 
             override fun onError() {
 //
                 displayDialogFailToActivateBonus()
+
             }
 
         })
@@ -382,9 +394,10 @@ class MainActivity : AppCompatActivity(),
         if (dialog != null){
             dialog?.dismiss()
         }
-
+        val view = LayoutInflater.from(this).inflate(R.layout.circular_progress_bar, null)
         dialog = AlertDialog.Builder(this).apply {
             setMessage(getString(R.string.activating_bonus))
+            setView(view)
             setCancelable(false)
         }.create()
         dialog?.show()

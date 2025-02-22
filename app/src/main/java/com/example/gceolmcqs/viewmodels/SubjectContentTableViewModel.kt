@@ -14,7 +14,7 @@ import com.example.gceolmcqs.repository.RemoteRepoManager
 class SubjectContentTableViewModel : ViewModel() {
     private lateinit var subjectName: String
     private val isSubjectPackageActive = MutableLiveData<Boolean>()
-    private var subjectIndex: Int? = null
+    private var subjectIndex: Int? = 0
 
     private val _subjectPackageData = MutableLiveData<SubjectPackageData>()
     val subjectPackageData: LiveData<SubjectPackageData> = _subjectPackageData
@@ -24,6 +24,7 @@ class SubjectContentTableViewModel : ViewModel() {
     }
 
     fun getExamTitles(): List<String?> {
+
         return AppDataRepository.getExamTitles(subjectIndex!!)
     }
 

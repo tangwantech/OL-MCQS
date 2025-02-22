@@ -37,7 +37,7 @@
             android:id="@+id/btnActivateBonus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Activate bonus"
+            android:text="@string/redeem_bonus"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
 

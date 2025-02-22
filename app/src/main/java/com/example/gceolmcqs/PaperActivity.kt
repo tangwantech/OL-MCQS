@@ -188,6 +188,8 @@ class PaperActivity : AppCompatActivity(),
 
 
 
+
+
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
 
@@ -369,7 +371,11 @@ class PaperActivity : AppCompatActivity(),
     }
 
     private fun startUsageTimer(){
-        _viewModel.startUsageTime(subjectIndex)
+        val isActive = _viewModel.isPackageActive(subjectIndex)
+        if (isActive) {
+            _viewModel.startUsageTime(subjectIndex)
+        }
+
     }
 
     private fun stopUsageTimer(){

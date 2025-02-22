@@ -64,7 +64,7 @@ class HomeRecyclerViewAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(context).inflate(R.layout.subject_item_card, parent, false)
+//        val view = LayoutInflater.from(context).inflate(R.layout.subject_item_card, parent, false)
         val binding = SubjectItemCardBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
         return ViewHolder(binding)
@@ -116,7 +116,7 @@ class HomeRecyclerViewAdapter(
                     SubscriptionCountDownTimer(holder.adapterPosition).apply {
                         startTimer(timeLeft, object : SubscriptionCountDownTimer.OnTimeRemainingListener{
                             override fun onTimeRemaining(expiresIn: String) {
-                                holder.binding.expiresInTv.text = expiresIn
+                                holder.binding.expiresInTv.text = context.resources.getString(R.string.expires_in, expiresIn)
                             }
                             override fun onExpired() {
                                 holder.binding.expireInLo.visibility = View.GONE
