@@ -40,8 +40,8 @@ class SubscriptionActivity: AppCompatActivity(),
 
     private var dialog: AlertDialog? = null
 
-    private var packagesDialog: DialogFragment? = null
-    private var paymentMethodDialog: DialogFragment? = null
+//    private var packagesDialog: DialogFragment? = null
+    private var dialogFragment: DialogFragment? = null
 
     private var currentRefNum: String? = null
 
@@ -275,14 +275,20 @@ class SubscriptionActivity: AppCompatActivity(),
     }
 
     private fun showPackagesDialog(){
-        packagesDialog = PackagesDialogFragment.newInstance()
-        packagesDialog?.show(supportFragmentManager, null)
+        if (dialogFragment != null){
+            dialogFragment?.dismiss()
+        }
+        dialogFragment = PackagesDialogFragment.newInstance()
+        dialogFragment?.show(supportFragmentManager, null)
     }
 
     private fun showPaymentMethodDialog() {
-        paymentMethodDialog = PaymentMethodDialogFragment.newInstance()
-        paymentMethodDialog?.isCancelable = false
-        paymentMethodDialog?.show(supportFragmentManager, null)
+        if (dialogFragment != null){
+            dialogFragment?.dismiss()
+        }
+        dialogFragment = PaymentMethodDialogFragment.newInstance()
+        dialogFragment?.isCancelable = false
+        dialogFragment?.show(supportFragmentManager, null)
     }
 
     private fun displayEnterMomoNumberDialog(){
@@ -326,7 +332,6 @@ class SubscriptionActivity: AppCompatActivity(),
     }
 
     override fun onPackageDialogNextButtonClicked() {
-        packagesDialog?.dismiss()
         showPaymentMethodDialog()
     }
 
@@ -352,7 +357,6 @@ class SubscriptionActivity: AppCompatActivity(),
     }
 
     override fun onPaymentMethodNextButtonClicked() {
-        paymentMethodDialog?.dismiss()
         displayEnterMomoNumberDialog()
     }
 
