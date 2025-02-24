@@ -29,9 +29,11 @@ class RemoteRepoManager(private val deviceId: String) {
         fun verifyDeviceIdInAppDatabase(callback: OnVerifyDataExistsListener){
             if (ParseUser.getCurrentUser() != null){
 //            app is currently installed, user has accepted terms of use, and device is registered
+//                println("user exist")
                 callback.onDeviceDataExists()
             }else{
 //            app has just been installed. Checks if app was previously installed on device
+//                println("Signing up user")
                 signInUser(callback)
             }
 
@@ -48,6 +50,7 @@ class RemoteRepoManager(private val deviceId: String) {
                             callback.onDeviceDataExists()
                         }else{
 //                        error occurred during signup
+//                            println("signup error: ${it.localizedMessage}")
                             callback.onError(it)
                         }
                     }
@@ -56,6 +59,7 @@ class RemoteRepoManager(private val deviceId: String) {
 //                signIn was successful because device id exists in database
                     callback.onDeviceDataExists()
                 }else{
+//                    println("user error: ${e.localizedMessage}")
                     callback.onError(e)
                 }
 
@@ -66,6 +70,7 @@ class RemoteRepoManager(private val deviceId: String) {
         private fun signUpDevice(callback: SignUpCallback){
             val user = ParseUser()
             user.username = deviceId
+
             user.setPassword(deviceId)
 //        user.put(MCQConstants.SUBJECTS_PACKAGES, subjectPackages)
             val temp = ArrayList<SubjectPackageData>()
@@ -131,7 +136,7 @@ class RemoteRepoManager(private val deviceId: String) {
             ParseUser.getCurrentUser().put(MCQConstants.APP_DATA, data)
             ParseUser.getCurrentUser().saveInBackground {
                 if (it == null){
-                    println(ParseUser.getCurrentUser().getString(MCQConstants.APP_DATA))
+//                    println(ParseUser.getCurrentUser().getString(MCQConstants.APP_DATA))
                     appDataAvailableListener.onAppDataAvailable()
                 }else{
                     appDataAvailableListener.onError(it)

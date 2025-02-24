@@ -84,8 +84,10 @@ class MomoPayService(private val context: Context) {
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 println("failed generating token due to ${e.message}")
-                transactionStatusListener.onTransactionFailed()
+//                transactionStatusListener.onTransactionFailed()
+                transactionStatusListener.onNetWorkError()
                 call.cancel()
+
 
             }
 
@@ -105,7 +107,8 @@ class MomoPayService(private val context: Context) {
                         transactionStatusListener
                     )
                 } catch (e: JSONException) {
-                    transactionStatusListener.onTransactionFailed()
+//                    transactionStatusListener.onTransactionFailed()
+                    transactionStatusListener.onNetWorkError()
                     call.cancel()
                 }
 
@@ -138,18 +141,24 @@ class MomoPayService(private val context: Context) {
         client.newCall(request).enqueue(object : Callback {
 
             override fun onFailure(call: Call, e: IOException) {
-//                println("failed initiating request to pay ...... $transaction due to ${e.message}")
+                println("failed initiating request to pay ...... $transaction due to ${e.message}")
+//                transactionStatusListener.onNetWorkError()
 //                }
+
             }
 
             override fun onResponse(call: Call, response: Response) {
                 try {
                     val responseBody = response.body?.string()
+                    println("response body: $responseBody")
                     val json = JSONObject(responseBody!!)
                     val refIdString = json[REFERENCE_ID].toString()
+                    val ussdCode = json[MCQConstants.USSD_CODE].toString()
+                    val operator = json[MCQConstants.OPERATOR].toString()
                     transaction.refId = refIdString
-                    transactionStatusListener.onTransactionIdAvailable(refIdString)
+//                    transactionStatusListener.onTransactionAvailable(refIdString, ussdCode, operator)
                     runBlocking {
+                        transactionStatusListener.onTransactionAvailable(refIdString, ussdCode, operator)
                         transaction.status = MCQConstants.PENDING
                         while (transaction.status!! == MCQConstants.PENDING) {
                             checkTransactionStatus(transaction, transactionStatusListener)
@@ -158,8 +167,9 @@ class MomoPayService(private val context: Context) {
                     }
 
                 } catch (e: JSONException) {
-                    println("Inside json exception of on response of request to pay")
-                    transactionStatusListener.onTransactionFailed()
+                    println("Inside json exception of on response of request to pay: $e")
+//                    transactionStatusListener.onTransactionFailed()
+//                    transactionStatusListener.onNetWorkError()
                 }
 
             }
@@ -181,7 +191,8 @@ class MomoPayService(private val context: Context) {
 
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                transactionStatusListener.onTransactionFailed()
+//                transactionStatusListener.onTransactionFailed()
+//                transactionStatusListener.onNetWorkError()
             }
 
             override fun onResponse(call: Call, response: Response) {
@@ -192,7 +203,7 @@ class MomoPayService(private val context: Context) {
 //                    println(responseBody)
                     when (jsonResponse[STATUS].toString()) {
                         MCQConstants.PENDING -> {
-                            transactionStatusListener.onTransactionPending()
+//                            transactionStatusListener.onTransactionPending()
                         }
 
                         MCQConstants.SUCCESSFUL -> {
@@ -206,7 +217,8 @@ class MomoPayService(private val context: Context) {
 
                 } catch (e: JSONException) {
                     println("exception raised: ${e}")
-                    transactionStatusListener.onTransactionFailed()
+//                    transactionStatusListener.onTransactionFailed()
+                    transactionStatusListener.onNetWorkError()
                 }
             }
 
@@ -229,11 +241,13 @@ class MomoPayService(private val context: Context) {
 
     interface TransactionStatusListener{
         fun onTransactionTokenAvailable(token: String?)
-        fun onTransactionIdAvailable(transactionId: String?)
+        fun onTransactionAvailable(transactionId: String?, ussdCode: String, operator: String)
         fun onReferenceNumberAvailable(refNum:String?)
         fun onTransactionPending()
         fun onTransactionFailed()
         fun onTransactionSuccessful()
+        fun onNetWorkError()
+
     }
 
 

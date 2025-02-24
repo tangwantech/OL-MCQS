@@ -82,6 +82,18 @@ class SubscriptionActivity: AppCompatActivity(),
 
         }
 
+        viewModel.momoPartner.observe(this){
+            when (it){
+                MCQConstants.OPERATOR_MTN -> {
+                    println("MTN oooooooh")
+                    showRequestUserToPayDialog(MCQConstants.OPERATOR_MTN)
+                }
+                MCQConstants.OPERATOR_ORANGE -> {
+                    showRequestUserToPayDialog(MCQConstants.OPERATOR_ORANGE)
+                }
+            }
+        }
+
 
         setMomoPayFlow()
 
@@ -94,7 +106,7 @@ class SubscriptionActivity: AppCompatActivity(),
             it?.let{status ->
                 when(status) {
                     MCQConstants.PENDING -> {
-                        showRequestUserToPayDialog()
+//                        showRequestUserToPayDialog()
 
                     }
                     MCQConstants.SUCCESSFUL -> {
@@ -110,6 +122,9 @@ class SubscriptionActivity: AppCompatActivity(),
                     }
                     MCQConstants.FAILED -> {
                         showTransactionFailedDialog()
+                    }
+                    MCQConstants.NETWORK_ERROR -> {
+                        showNetWorkErrorDialog()
                     }
                 }
             }
@@ -144,7 +159,7 @@ class SubscriptionActivity: AppCompatActivity(),
 //        activateUserPackage()
     }
 
-    private fun showRequestUserToPayDialog() {
+    private fun showRequestUserToPayDialog(momoPartner: String) {
 
         val dialogView = layoutInflater.inflate(R.layout.fragment_request_to_pay, null)
         val tvRequestToPayTitle: TextView = dialogView.findViewById(R.id.tvRequestToPayTitle)
@@ -157,7 +172,8 @@ class SubscriptionActivity: AppCompatActivity(),
             dialogView.findViewById(R.id.tvRequestToPayAmount)
         val tvTransactionId: TextView = dialogView.findViewById(R.id.tvTransactionId)
 
-        if (viewModel.getMomoPartner() == MCQConstants.MTN_MOMO) {
+//        viewModel.getMomoPartner() == MCQConstants.MTN_MOMO
+        if (momoPartner == MCQConstants.OPERATOR_MTN) {
             tvRequestToPayTitle.setBackgroundColor(resources.getColor(R.color.mtn))
             tvRequestToPayMessage.text = resources.getString(R.string.mtn_request_to_pay_message)
 
@@ -228,6 +244,20 @@ class SubscriptionActivity: AppCompatActivity(),
 
         dialog?.show()
 
+    }
+
+    private fun showNetWorkErrorDialog(){
+        if (dialog != null){
+            dialog?.dismiss()
+        }
+        dialog = AlertDialog.Builder(this).apply {
+            setMessage(getString(R.string.verify_internet_connection))
+            setPositiveButton(getString(R.string.ok)){_, _ ->
+                exitActivity()
+                setCancelable(false)
+            }
+        }.create()
+        dialog?.show()
     }
 
 

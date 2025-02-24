@@ -78,7 +78,7 @@ class GCEFirstActivity : AppCompatActivity() {
                         }
 
                         override fun onError(e: ParseException) {
-//                            println("exception raised")
+                            println("exception raised: ${e.localizedMessage}")
                             e.localizedMessage?.let { displayErrorDialog(it)}
                         }
 

@@ -25,6 +25,9 @@ class SubscriptionActivityViewModel: ViewModel() {
     private val _packageUpdateStatus = MutableLiveData<Boolean>()
     val packageUpdateStatus: LiveData<Boolean> = _packageUpdateStatus
 
+    private val _momoPartner = MutableLiveData<String>()
+    val momoPartner: LiveData<String> = _momoPartner
+
     fun initSubscriptionFormData(subjectIndex: Int, subjectName: String){
         _subscriptionData.subjectPosition = subjectIndex
         _subscriptionData.subject = subjectName
@@ -87,8 +90,9 @@ class SubscriptionActivityViewModel: ViewModel() {
 //                updateCurrentTransactionToken(token!!)
             }
 
-            override fun onTransactionIdAvailable(transactionId: String?) {
+            override fun onTransactionAvailable(transactionId: String?, ussdCode: String, operator: String) {
 //                println("Transaction id: $transactionId")
+                _momoPartner.postValue(operator)
 
             }
 
@@ -115,6 +119,10 @@ class SubscriptionActivityViewModel: ViewModel() {
                 _transactionStatus.postValue(MCQConstants.SUCCESSFUL)
 //                updateCurrentTransactionStatus(MCQConstants.SUCCESSFUL)
 
+            }
+
+            override fun onNetWorkError() {
+                _transactionStatus.postValue(MCQConstants.NETWORK_ERROR)
             }
 
         })
