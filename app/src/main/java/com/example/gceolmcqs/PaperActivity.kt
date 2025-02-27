@@ -361,7 +361,7 @@ class PaperActivity : AppCompatActivity(),
 
     override fun onDestroy() {
         super.onDestroy()
-        stopUsageTimer()
+//        stopUsageTimer()
 //        _viewModel.resetUsageTimerData()
     }
 

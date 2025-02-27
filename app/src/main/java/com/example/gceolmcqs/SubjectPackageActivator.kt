@@ -49,6 +49,13 @@ class SubjectPackageActivator {
             return subjectPackageData
         }
 
+        fun activateBonus(subjectPackageData: SubjectPackageData, expiresOn: String): SubjectPackageData{
+            subjectPackageData.expiresOn = expiresOn
+            subjectPackageData.isPackageActive = true
+            return subjectPackageData
+        }
+
+
     }
 
 

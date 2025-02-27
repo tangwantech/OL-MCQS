@@ -5,12 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.gceolmcqs.ActivationExpiryDatesGenerator
 import com.example.gceolmcqs.AppDataUpdater
+import com.example.gceolmcqs.SubjectPackageActivator
 import com.example.gceolmcqs.UsageTimer
 import com.example.gceolmcqs.datamodels.*
 import com.example.gceolmcqs.repository.AppDataRepository
 import com.example.gceolmcqs.repository.RemoteRepoManager
-import com.parse.ParseQuery
-import com.parse.ParseUser
 
 class MainActivityViewModel : ViewModel() {
     private val subjectPackageDataList = ArrayList<SubjectPackageData>()
@@ -91,12 +90,11 @@ class MainActivityViewModel : ViewModel() {
         UsageTimer.resetUsageTimerData()
     }
 
-    fun extentSubjectPackageAt(subjectIndex: Int, bonusTime: Long, updateCallBack: RemoteRepoManager.OnUpdatePackageListener){
+    fun extentSubjectPackageAt(subjectIndex: Int, bonusTime: Long, isActive: Boolean, updateCallBack: RemoteRepoManager.OnUpdatePackageListener){
 
-        val subjectPackageData = getSubjectPackageDataList()[subjectIndex]
-//        println(subjectPackageData)
-        val newExpiryDate = ActivationExpiryDatesGenerator.getNewExpiryDate(subjectPackageData.expiresOn!!, bonusTime)
-        subjectPackageData.expiresOn = newExpiryDate
+        var subjectPackageData = getSubjectPackageDataList()[subjectIndex]
+        val newExpiryDate = ActivationExpiryDatesGenerator.generateNewExpiryDate(subjectPackageData.expiresOn!!, bonusTime)
+        subjectPackageData = SubjectPackageActivator.activateBonus(subjectPackageData, newExpiryDate)
         updateSubjectPackageDataInRemoteDb(subjectPackageData, updateCallBack)
     }
 

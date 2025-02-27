@@ -22,6 +22,7 @@ class HomeRecyclerViewAdapter(
 ) : RecyclerView.Adapter<HomeRecyclerViewAdapter.ViewHolder>() {
 
     private var bonusTimeEarned: Long = 0
+    private var isActive : Boolean? = null
 
     inner class ViewHolder(val binding: SubjectItemCardBinding) : RecyclerView.ViewHolder(binding.root) {
 
@@ -48,7 +49,7 @@ class HomeRecyclerViewAdapter(
             }
 
             binding.loBonuses.btnActivateBonus.setOnClickListener {
-                onHomeRecyclerItemListener.onActivateBonusButtonClicked(adapterPosition, subjectPackageDataList[adapterPosition].subjectName!!)
+                onHomeRecyclerItemListener.onActivateBonusButtonClicked(adapterPosition, subjectPackageDataList[adapterPosition].subjectName!!, isActive!!)
             }
 
         }
@@ -117,8 +118,10 @@ class HomeRecyclerViewAdapter(
                         startTimer(timeLeft, object : SubscriptionCountDownTimer.OnTimeRemainingListener{
                             override fun onTimeRemaining(expiresIn: String) {
                                 holder.binding.expiresInTv.text = context.resources.getString(R.string.expires_in, expiresIn)
+                                isActive = true
                             }
                             override fun onExpired() {
+                                isActive = false
                                 holder.binding.expireInLo.visibility = View.GONE
                                 holder.binding.tvSubjectStatus.text = context.resources.getString(R.string.expired)
                                 holder.binding.tvSubjectStatus.setTextColor(context.resources.getColor(R.color.color_red))
@@ -153,7 +156,7 @@ class HomeRecyclerViewAdapter(
     interface OnHomeRecyclerItemListener {
         fun onSubjectItemClicked(position: Int, isPackageActive: Boolean?, packageName: String?)
         fun onSubscribeButtonClicked(position: Int, subjectName: String)
-        fun onActivateBonusButtonClicked(position: Int, subjectName: String)
+        fun onActivateBonusButtonClicked(position: Int, subjectName: String, isActive: Boolean)
         fun onPackageExpired(index: Int)
         fun onUsageBonusAvailable(subjectIndex: Int): Long
     }

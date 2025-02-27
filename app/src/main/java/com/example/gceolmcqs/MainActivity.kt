@@ -288,10 +288,10 @@ class MainActivity : AppCompatActivity(),
         gotoSubscriptionActivity(position, subjectName)
     }
 
-    override fun onActivateBonusButtonClicked(position: Int, subjectName: String) {
+    override fun onActivateBonusButtonClicked(position: Int, subjectName: String, isActive: Boolean) {
 //        println("Subject index: $position, Subject: $subjectName")
 
-        activateBonus(position)
+        activateBonus(position, isActive)
         displayDialogActivatingBonus()
     }
 
@@ -374,9 +374,9 @@ class MainActivity : AppCompatActivity(),
 
     }
 
-    private fun activateBonus(subjectIndex: Int){
+    private fun activateBonus(subjectIndex: Int, isActive: Boolean){
         val bonusTime = pref.getLong("$subjectIndex", 0)
-        viewModel.extentSubjectPackageAt(subjectIndex, bonusTime, object: RemoteRepoManager.OnUpdatePackageListener{
+        viewModel.extentSubjectPackageAt(subjectIndex, bonusTime, isActive, object: RemoteRepoManager.OnUpdatePackageListener{
             override fun onUpDateSuccessful(index: Int) {
                 displayDialogBonusActivated(index)
             }

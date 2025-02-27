@@ -82,13 +82,18 @@ class ActivationExpiryDatesGenerator {
             return ActivationExpiryDates( oldDate, expiry.toLocaleString())
         }
 
-        fun getNewExpiryDate(oldDate: String, duration: Long, timeType: String = SECONDS): String{
-            val expiry = Date(Date.parse(oldDate))
+        fun generateNewExpiryDate(oldDate: String, duration: Long, timeType: String = SECONDS): String{
+            val now = Date()
+            var expiry = Date(Date.parse(oldDate))
             val tempDuration = (duration / 1000).toInt()
             when (timeType){
                 SECONDS -> {
                     expiry.seconds = expiry.seconds.plus(tempDuration)
                 }
+            }
+            if (now > expiry){
+                now.seconds = now.seconds.plus(tempDuration)
+                expiry = now
             }
 
             return expiry.toLocaleString()
