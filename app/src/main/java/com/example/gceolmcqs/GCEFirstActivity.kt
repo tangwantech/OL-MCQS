@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -30,8 +31,6 @@ class GCEFirstActivity : AppCompatActivity() {
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
         pref = getSharedPreferences(resources.getString(R.string.app_name), MODE_PRIVATE)
-
-//        this.overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
 
         setupViewModel()
         setupObservers()
@@ -66,7 +65,7 @@ class GCEFirstActivity : AppCompatActivity() {
                         }
 
                         override fun onError(e: ParseException) {
-                            println("exception raised: ${e.localizedMessage}")
+//                            println("exception raised: ${e.localizedMessage}")
                             e.localizedMessage?.let { displayErrorDialog(it)}
                         }
 
@@ -176,22 +175,6 @@ class GCEFirstActivity : AppCompatActivity() {
         }
     }
 
-//    private fun getJsonFromAssets(): String? {
-//        val charset: Charset = Charsets.UTF_8
-//
-//        return try {
-//            val jsonFile = assets.open("subject_data.json")
-//            val size = jsonFile.available()
-//            val buffer = ByteArray(size)
-//
-//            jsonFile.read(buffer)
-//            jsonFile.close()
-//            String(buffer, charset)
-//
-//        } catch (e: IOException) {
-//            null
-//        }
-//    }
 
     private fun saveTermsOfServiceAcceptedStatus(){
         pref.edit().apply {

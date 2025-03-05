@@ -38,8 +38,23 @@ class RemoteRepoManager(private val deviceId: String) {
         private fun signInUser(callback: OnDeviceDataExistsListener){
 
             ParseUser.logInInBackground(deviceId, deviceId){user, e ->
-                if(user == null){
-//                Device id does not exist in database. Therefore app has never been installed on device
+//                if(user == null){
+////                Device id does not exist in database. Therefore app has never been installed on device
+//                    signUpDevice{
+//                        if (it == null){
+////                        signup successful and device id now exists in database
+//                            callback.onDeviceDataExists()
+//                        }else{
+////                        error occurred during signup
+////                            println("signup error: ${it.localizedMessage}")
+//                            callback.onError(it)
+//                        }
+//                    }
+//                }
+                if (e == null){
+//                signIn was successful because device id exists in database
+                    callback.onDeviceDataExists()
+                }else{
                     signUpDevice{
                         if (it == null){
 //                        signup successful and device id now exists in database
@@ -50,13 +65,8 @@ class RemoteRepoManager(private val deviceId: String) {
                             callback.onError(it)
                         }
                     }
-                }
-                if (e == null){
-//                signIn was successful because device id exists in database
-                    callback.onDeviceDataExists()
-                }else{
 //                    println("user error: ${e.localizedMessage}")
-                    callback.onError(e)
+//                    callback.onError(e)
                 }
 
             }
