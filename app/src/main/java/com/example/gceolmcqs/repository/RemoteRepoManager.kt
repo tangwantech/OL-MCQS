@@ -10,15 +10,7 @@ import com.parse.ParseException
 import com.parse.ParseObject
 import com.parse.ParseQuery
 import com.parse.ParseUser
-import com.parse.SaveCallback
 import com.parse.SignUpCallback
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.TimeoutCancellationException
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withTimeout
-import kotlinx.coroutines.withTimeoutOrNull
 
 class RemoteRepoManager(private val deviceId: String) {
     companion object{
@@ -26,20 +18,24 @@ class RemoteRepoManager(private val deviceId: String) {
         fun setDeviceID(deviceId: String){
             this.deviceId = deviceId
         }
-        fun verifyDeviceIdInAppDatabase(callback: OnVerifyDataExistsListener){
+        fun verifyDeviceIdInRemoteDatabase(callback: OnDeviceDataExistsListener){
             if (ParseUser.getCurrentUser() != null){
-//            app is currently installed, user has accepted terms of use, and device is registered
+//            app is currently installed,
+//            user has accepted terms of use
+//            and device exists in remote database
 //                println("user exist")
                 callback.onDeviceDataExists()
             }else{
-//            app has just been installed. Checks if app was previously installed on device
+//            app has just been installed.
+//            User has accepted terms
+//            Checks if app was previously installed on device
 //                println("Signing up user")
                 signInUser(callback)
             }
 
         }
 
-        private fun signInUser(callback: OnVerifyDataExistsListener){
+        private fun signInUser(callback: OnDeviceDataExistsListener){
 
             ParseUser.logInInBackground(deviceId, deviceId){user, e ->
                 if(user == null){
@@ -160,7 +156,7 @@ class RemoteRepoManager(private val deviceId: String) {
         fun onError()
     }
 
-    interface OnVerifyDataExistsListener{
+    interface OnDeviceDataExistsListener{
         fun onDeviceDataExists()
         fun onError(e: ParseException)
     }

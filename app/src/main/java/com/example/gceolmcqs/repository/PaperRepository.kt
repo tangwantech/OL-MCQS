@@ -5,10 +5,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.gceolmcqs.MCQConstants
 import com.example.gceolmcqs.datamodels.PaperData
+import com.example.gceolmcqs.datamodels.QuestionData
 import com.example.gceolmcqs.datamodels.SectionData
 import com.example.gceolmcqs.datamodels.SectionResultData
 import com.example.gceolmcqs.datamodels.UserMarkedAnswersSheetData
-import com.google.gson.Gson
 
 class PaperRepository {
     companion object{
@@ -85,7 +85,21 @@ class PaperRepository {
         }
 
         fun getSectionDataAt(position: Int): SectionData {
-            return paperData!!.sections[position]
+            val tempSectionData = paperData!!.sections[position].copy()
+            println(tempSectionData.questions.size)
+            for (i in 0..1){
+                tempSectionData.questions.shuffle()
+            }
+            if (tempSectionData.questions.size > tempSectionData.numberOfQuestions){
+                val temp = tempSectionData.questions.subList(0, tempSectionData.numberOfQuestions)
+                val arraylist = ArrayList<QuestionData>()
+                arraylist.addAll(temp)
+                tempSectionData.questions = arraylist
+                println(tempSectionData.questions.size)
+
+            }
+            return  tempSectionData
+//            return paperData!!.sections[position]
         }
 
         fun getNumberOfSections(): Int{
@@ -93,7 +107,6 @@ class PaperRepository {
         }
 
         fun updateSectionScoreAt(sectionIndex: Int, score: Int){
-//            updateSectionsAnsweredAt(sectionIndex)
             sectionsScores.value!![sectionIndex] = score
             updatePaperScore(sectionsScores.value!!)
 
@@ -166,13 +179,7 @@ class PaperRepository {
         fun getSectionResultData(): SectionResultData = sectionResultData!!
 
         fun getTotalNumberOfQuestions():Int{
-            var tempNumOfQuestions = 0
-            for (index in 0..< paperData!!.numberOfSections){
-                tempNumOfQuestions += paperData!!.sections[index].questions.size
-            }
-//            return paperData!!.numberOfQuestions
-//            println("Total number of questions: $tempNumOfQuestions")
-            return tempNumOfQuestions
+            return paperData!!.numberOfQuestions
         }
 
 
@@ -201,8 +208,8 @@ class PaperRepository {
                     sectionNameBundleList!![index].apply {
                         putString("sectionName", sectionDataModel.title)
                         sectionDataModel.questions.size
-//                        putString("numberOfQuestions", sectionDataModel.numberOfQuestions.toString())
-                        putString("numberOfQuestions", sectionDataModel.questions.size.toString())
+                        putString("numberOfQuestions", sectionDataModel.numberOfQuestions.toString())
+//                        putString("numberOfQuestions", sectionDataModel.questions.size.toString())
                     }
 
                 }

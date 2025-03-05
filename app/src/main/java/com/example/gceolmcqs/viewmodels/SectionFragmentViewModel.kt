@@ -5,14 +5,13 @@ import android.text.format.Time
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.gceolmcqs.ActivationExpiryDatesGenerator
 import com.example.gceolmcqs.MCQConstants
 import com.example.gceolmcqs.datamodels.*
 import com.example.gceolmcqs.repository.PaperRepository
-import com.example.gceolmcqs.repository.RemoteRepoManager
 
 
 class SectionFragmentViewModel : ViewModel() {
+//    private var originalSectionData: SectionData? = null
     private var sectionData: SectionData? = null
     private var userSelections = ArrayList<UserSelection>()
     private val letters: Array<String> = Array(4) { "" }
@@ -73,13 +72,9 @@ class SectionFragmentViewModel : ViewModel() {
     }
 
     private fun shuffleSectionQuestions(){
-//        for (i in 0..2){
-//            sectionData?.questions?.shuffle()
-//        }
         sectionData?.questions?.shuffle()
 
     }
-
 
     private fun setSectionDuration() {
 //        sectionDuration = sectionData!!.numberOfQuestions * MCQConstants.MILLI_SEC_PER_QUESTION
@@ -121,7 +116,7 @@ class SectionFragmentViewModel : ViewModel() {
     }
 
     fun getNumberOfQuestionsInSection(): Int {
-        return sectionData!!.questions.size
+        return sectionData!!.numberOfQuestions
     }
 
 
@@ -161,16 +156,6 @@ class SectionFragmentViewModel : ViewModel() {
 
     }
 
-//    fun getQuestion(): QuestionData {
-//        when(sectionData!!.title){
-//            MCQConstants.SECTION_I, MCQConstants.SECTION_II, MCQConstants.SECTION_V, MCQConstants.SECTION_VI ->{
-//                sectionData!!.questions[questionIndex.value!!].selectableOptions.shuffle()
-//
-//            }
-//        }
-//        return sectionData!!.questions[questionIndex.value!!]
-//    }
-
     fun getSectionQuestions(): ArrayList<QuestionData>{
         when(sectionData!!.title){
             MCQConstants.SECTION_I, MCQConstants.SECTION_II, MCQConstants.SECTION_V, MCQConstants.SECTION_VI ->{
@@ -179,7 +164,8 @@ class SectionFragmentViewModel : ViewModel() {
                 }
             }
         }
-        return sectionData?.questions!!
+
+        return sectionData!!.questions
     }
 
     private fun updateUserMarkedAnswerSheet() {
@@ -211,10 +197,6 @@ class SectionFragmentViewModel : ViewModel() {
         return sectionData!!.title
     }
 
-//    fun updateQuestionAlternativeSelected(questionIndex: Int, selectableOptionIndex: Int){
-//        updateUserSelection(questionIndex, selectableOptionIndex)
-//    }
-
     fun updateUserSelection(questionIndex: Int, optionSelectedIndex: Int) {
         val userSelection = UserSelection(
             letters[optionSelectedIndex],
@@ -225,12 +207,6 @@ class SectionFragmentViewModel : ViewModel() {
         appendLetterToFourOptions(questionIndex)
 
         userMarkedAnswerSheet[questionIndex].userSelection = userSelection
-
-//        updateIndexQuestionOptionSelected(optionSelectedIndex)
-//        if (!isQuestionAnswered.value!!) {
-//            updateIsQuestionAnswered()
-//
-//        }
         updateNumberOfQuestionsAnswered()
         evaluateUserSelections(questionIndex)
     }

@@ -5,7 +5,8 @@ class MCQConstants{
 
         const val OL_MCQ_DATA = "OLMCQDATA"
         const val APP_DATA = "appData"
-        const val APP_DATA_OBJECT_KEY = "K13A8pBeYh"
+//        const val APP_DATA_OBJECT_KEY = "K13A8pBeYh"
+        const val APP_DATA_OBJECT_KEY = "173Z5Ydwa4"
 
         const val A = "A"
         const val B = "B"
@@ -117,8 +118,8 @@ class MCQConstants{
 
         val SUBJECTS_AVAILABLE = arrayListOf("Biology")
         const val MCQ_DAY = "MCQ DAY"
-        const val MCQ_WEEK = "MCQ WEEK"
-        const val MCQ_MONTH = "MCQ MONTH"
+        const val MCQ_WEEK = "MCQ 7 DAYS"
+        const val MCQ_MONTH = "MCQ 30 DAYS"
         const val TRIAL = "TRIAL"
 
     }

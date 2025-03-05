@@ -1,32 +1,20 @@
 package com.example.gceolmcqs
 
-import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
-import android.os.CountDownTimer
-import android.provider.Settings
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.gceolmcqs.AssertReader
-import com.example.gceolmcqs.MCQConstants
-import com.example.gceolmcqs.MainActivity
 import com.example.gceolmcqs.viewmodels.SplashActivityViewModel
-import com.example.gceolmcqs.R
 import com.example.gceolmcqs.databinding.ActivitySplashBinding
 import com.example.gceolmcqs.databinding.TermsOfUseLayoutBinding
-import com.example.gceolmcqs.repository.AppDataRepository
 import com.example.gceolmcqs.repository.RemoteRepoManager
 import com.parse.ParseException
 import kotlinx.coroutines.*
-import java.io.IOException
-import java.nio.charset.Charset
-import java.util.Timer
 
 class GCEFirstActivity : AppCompatActivity() {
     private val serverRetryLimit = 2
@@ -63,7 +51,7 @@ class GCEFirstActivity : AppCompatActivity() {
                 displayErrorDialog(getString(R.string.network_timeout))
             }
         })
-        viewModel.verifyDeviceIdInAppDatabase(object: RemoteRepoManager.OnVerifyDataExistsListener{
+        viewModel.verifyDeviceIdInAppDatabase(object: RemoteRepoManager.OnDeviceDataExistsListener{
             override fun onDeviceDataExists() {
                 val isAvailable = viewModel.verifyAppDataAvailability()
 //                gotoMainActivity()

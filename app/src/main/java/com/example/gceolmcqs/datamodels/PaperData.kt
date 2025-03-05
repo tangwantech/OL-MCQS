@@ -9,10 +9,10 @@ data class PaperData(
 ) : java.io.Serializable
 
 data class SectionData(
-    val title: String,
-    val numberOfQuestions: Int,
-    val directions: String,
-    val questions: ArrayList<QuestionData>
+    var title: String,
+    var numberOfQuestions: Int,
+    var directions: String,
+    var questions: ArrayList<QuestionData>
 ) : java.io.Serializable
 
 data class QuestionData(

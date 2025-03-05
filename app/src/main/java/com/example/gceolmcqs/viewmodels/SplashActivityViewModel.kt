@@ -9,9 +9,9 @@ import com.example.gceolmcqs.repository.RemoteRepoManager.OnAppDataAvailableList
 
 class SplashActivityViewModel : ViewModel() {
 
-    fun verifyDeviceIdInAppDatabase(callback: RemoteRepoManager.OnVerifyDataExistsListener){
+    fun verifyDeviceIdInAppDatabase(callback: RemoteRepoManager.OnDeviceDataExistsListener){
 
-        RemoteRepoManager.verifyDeviceIdInAppDatabase(callback)
+        RemoteRepoManager.verifyDeviceIdInRemoteDatabase(callback)
     }
 
 
