@@ -164,7 +164,6 @@ class SectionFragmentViewModel : ViewModel() {
                 }
             }
         }
-
         return sectionData!!.questions
     }
 
