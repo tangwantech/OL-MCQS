@@ -157,8 +157,8 @@ class SectionFragmentViewModel : ViewModel() {
     }
 
     fun getSectionQuestions(): ArrayList<QuestionData>{
-        when(sectionData!!.title){
-            MCQConstants.SECTION_I, MCQConstants.SECTION_II, MCQConstants.SECTION_V, MCQConstants.SECTION_VI ->{
+        when(sectionData!!.sectionType){
+            MCQConstants.FOUR_ALTS ->{
                 for (index in 0..< getNumberOfQuestionsInSection()){
                     sectionData!!.questions[index].selectableOptions.shuffle()
                 }

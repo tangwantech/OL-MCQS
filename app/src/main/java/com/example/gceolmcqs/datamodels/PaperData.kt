@@ -9,6 +9,7 @@ data class PaperData(
 ) : java.io.Serializable
 
 data class SectionData(
+    var sectionType: String,
     var title: String,
     var numberOfQuestions: Int,
     var directions: String,

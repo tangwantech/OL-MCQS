@@ -6,7 +6,7 @@ class MCQConstants{
         const val OL_MCQ_DATA = "OLMCQDATA"
         const val APP_DATA = "appData"
 //        const val APP_DATA_OBJECT_KEY = "K13A8pBeYh"
-        const val APP_DATA_OBJECT_KEY = "173Z5Ydwa4"
+        const val APP_DATA_OBJECT_KEY = "ussBnoWiFu"
 
         const val A = "A"
         const val B = "B"
@@ -86,7 +86,7 @@ class MCQConstants{
         const val SECTION_II = "Section II"
         const val SECTION_V = "Section V"
         const val SECTION_VI = "Section VI"
-
+        const val FOUR_ALTS = "fourAlts"
         const val MILLI_SEC_PER_QUESTION = 108000L
         const val COUNT_DOWN_INTERVAL = 1000L
         const val TIME_TO_ANIMATE_TIMER = 60000L
