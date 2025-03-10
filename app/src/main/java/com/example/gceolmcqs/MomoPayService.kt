@@ -83,7 +83,7 @@ class MomoPayService(private val context: Context) {
             .build()
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                println("failed generating token due to ${e.message}")
+//                println("failed generating token due to ${e.message}")
 //                transactionStatusListener.onTransactionFailed()
                 transactionStatusListener.onNetWorkError()
                 call.cancel()
