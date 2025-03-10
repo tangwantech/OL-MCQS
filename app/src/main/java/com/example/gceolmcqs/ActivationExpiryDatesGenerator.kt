@@ -3,103 +3,119 @@ package com.example.gceolmcqs
 import com.example.gceolmcqs.datamodels.ActivationExpiryDates
 import java.util.*
 import kotlin.math.roundToInt
+import java.text.SimpleDateFormat
+
 
 class ActivationExpiryDatesGenerator {
 
-   fun checkExpiry(activatedOn: String, expiresOn: String): Boolean{
+    fun checkExpiry(activatedOn: String, expiresOn: String): Boolean {
         val currentDate = Date()
-        val activationDate = Date(Date.parse(activatedOn))
-        val expiryDate = Date(Date.parse(expiresOn))
-        return currentDate > activationDate && currentDate < expiryDate
-   }
-//    fun checkGraceExtensionExpiry(activatedOn: String, expiresOn: String): Boolean{
-//        val currentDate = Date()
-//        val activationDate = Date(Date.parse(activatedOn))
-//        val expiryDate = Date(Date.parse(expiresOn))
-//        return currentDate < expiryDate
-//    }
+        val activationDate = parseDate(activatedOn)
+        val expiryDate = parseDate(expiresOn)
+
+        return currentDate.after(activationDate) && currentDate.before(expiryDate)
+    }
 
     companion object {
         const val SECONDS = "seconds"
         const val MINUTES = "minutes"
         const val HOURS = "hours"
         const val DAYS = "days"
-        fun generateActivationExpiryDates(timeType: String=MCQConstants.HOURS, duration: Int): ActivationExpiryDates {
 
-            val activationDate = Date()
-            val expiry = Date()
+        // Standard Date Format (Ensures consistency)
+        private val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH)
 
-            when(timeType){
-                SECONDS -> {
-                    expiry.seconds = expiry.seconds.plus(duration)
-                }
-                MINUTES -> {
-                    expiry.minutes = expiry.minutes.plus(duration)
-                }
-
-                HOURS -> {
-                    expiry.hours = expiry.hours.plus(duration)
-                }
-
+        /**
+         * Parses a date string, ensuring it's always in the correct format.
+         */
+        private fun parseDate(dateString: String): Date {
+            return try {
+                dateFormat.parse(dateString) ?: Date()
+            } catch (e: Exception) {
+                // If parsing fails, return the current date
+                e.printStackTrace()
+                Date()
             }
-
-            return ActivationExpiryDates( activationDate.toLocaleString(), expiry.toLocaleString())
         }
 
-        fun getTimeRemaining(activatedOn: String, expiresOn: String): Long{
+        /**
+         * Generates activation and expiry dates based on duration.
+         */
+        fun generateActivationExpiryDates(timeType: String = HOURS, duration: Int): ActivationExpiryDates {
+            val activationDate = Date()
+            val expiry = Calendar.getInstance()
+
+            when (timeType) {
+                SECONDS -> expiry.add(Calendar.SECOND, duration)
+                MINUTES -> expiry.add(Calendar.MINUTE, duration)
+                HOURS -> expiry.add(Calendar.HOUR, duration)
+            }
+
+            return ActivationExpiryDates(
+                dateFormat.format(activationDate),  // Always store dates in a standard format
+                dateFormat.format(expiry.time)
+            )
+        }
+
+        /**
+         * Returns the time remaining before expiry.
+         */
+        fun getTimeRemaining(activatedOn: String, expiresOn: String): Long {
             val dateNow = Date()
-            val activationDate = Date(activatedOn)
-            val expiry = Date(expiresOn)
-            return if(dateNow < activationDate || dateNow > expiry){
+            val activationDate = parseDate(activatedOn)
+            val expiry = parseDate(expiresOn)
+
+            return if (dateNow.before(activationDate) || dateNow.after(expiry)) {
                 0
-            }else{
-//                expiry.time - activationDate.time
+            } else {
                 expiry.time - dateNow.time
             }
-
         }
 
-        fun getGraceActivatedAndExpiryDate(oldDate: String, packageType: String = MCQConstants.MCQ_DAY): ActivationExpiryDates{
-            val expiry = Date(Date.parse(oldDate))
-            var tempDuration = 0
-            when (packageType){
-                MCQConstants.TRIAL -> {
-                    tempDuration = (MCQConstants.TRIAL_DURATION * MCQConstants.GRACE_DURATION_DISCOUNT).roundToInt()
-                }
-
-                MCQConstants.MCQ_DAY ->{
-                    tempDuration = (24 * MCQConstants.GRACE_DURATION_DISCOUNT).roundToInt()
-                    println(tempDuration)
-                }
-                MCQConstants.MCQ_WEEK ->{
-                    tempDuration = (168 * MCQConstants.GRACE_DURATION_DISCOUNT).roundToInt()
-                }
-                MCQConstants.MCQ_MONTH ->{
-                    tempDuration = (720 * MCQConstants.GRACE_DURATION_DISCOUNT).roundToInt()
-                }
+        /**
+         * Computes grace period expiry date.
+         */
+        fun getGraceActivatedAndExpiryDate(oldDate: String, packageType: String = MCQConstants.MCQ_DAY): ActivationExpiryDates {
+            val expiry = Calendar.getInstance().apply {
+                time = parseDate(oldDate)
             }
-            expiry.hours = expiry.hours.plus(tempDuration)
-            return ActivationExpiryDates( oldDate, expiry.toLocaleString())
+            val tempDuration = when (packageType) {
+                MCQConstants.TRIAL -> (MCQConstants.TRIAL_DURATION * MCQConstants.GRACE_DURATION_DISCOUNT).roundToInt()
+                MCQConstants.MCQ_DAY -> (24 * MCQConstants.GRACE_DURATION_DISCOUNT).roundToInt()
+                MCQConstants.MCQ_WEEK -> (168 * MCQConstants.GRACE_DURATION_DISCOUNT).roundToInt()
+                MCQConstants.MCQ_MONTH -> (720 * MCQConstants.GRACE_DURATION_DISCOUNT).roundToInt()
+                else -> 0
+            }
+
+            expiry.add(Calendar.HOUR, tempDuration)
+
+            return ActivationExpiryDates(
+                oldDate,
+                dateFormat.format(expiry.time)
+            )
         }
 
-        fun generateNewExpiryDate(oldDate: String, duration: Long, timeType: String = SECONDS): String{
-            val now = Date()
-            var expiry = Date(Date.parse(oldDate))
+        /**
+         * Generates a new expiry date.
+         */
+        fun generateNewExpiryDate(oldDate: String, duration: Long, timeType: String = SECONDS): String {
+            val now = Calendar.getInstance()
+            val expiry = Calendar.getInstance().apply {
+                time = parseDate(oldDate)
+            }
+
             val tempDuration = (duration / 1000).toInt()
-            when (timeType){
-                SECONDS -> {
-                    expiry.seconds = expiry.seconds.plus(tempDuration)
-                }
-            }
-            if (now > expiry){
-                now.seconds = now.seconds.plus(tempDuration)
-                expiry = now
+            when (timeType) {
+                SECONDS -> expiry.add(Calendar.SECOND, tempDuration)
             }
 
-            return expiry.toLocaleString()
+            if (now.time.after(expiry.time)) {
+                now.add(Calendar.SECOND, tempDuration)
+                expiry.time = now.time
+            }
+
+            return dateFormat.format(expiry.time)
         }
-
     }
-
-
 }
+
