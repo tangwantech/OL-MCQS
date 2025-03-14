@@ -17,10 +17,10 @@ class ActivationExpiryDatesGenerator {
     }
 
     companion object {
-        const val SECONDS = "seconds"
-        const val MINUTES = "minutes"
-        const val HOURS = "hours"
-        const val DAYS = "days"
+        private const val SECONDS = "seconds"
+        private const val MINUTES = "minutes"
+        private const val HOURS = "hours"
+        private const val DAYS = "days"
 
         // Standard Date Format (Ensures consistency)
         private val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH)
