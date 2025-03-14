@@ -4,6 +4,7 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -40,11 +41,28 @@ class MainActivity : AppCompatActivity(),
         setupViewModel()
         setupRecyclerView()
         setupObservers()
+//        setupAppUsageReminderSharedPreference()
+//        startReminderService()
+
 
 
     }
 
+    private fun startReminderService(){
+        val serviceIntent = Intent(this, AppReminderService::class.java)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(serviceIntent)
+        } else {
+            startService(serviceIntent)
+        }
 
+    }
+
+    private fun setupAppUsageReminderSharedPreference(){
+        val sharedPreferences: SharedPreferences =
+            getSharedPreferences(MCQConstants.APP_USAGE_PREFS, MODE_PRIVATE)
+        sharedPreferences.edit().putLong(MCQConstants.LAST_USED, System.currentTimeMillis()).apply()
+    }
 
     private fun setupViewModel() {
         viewModel = ViewModelProvider(this)[MainActivityViewModel::class.java]

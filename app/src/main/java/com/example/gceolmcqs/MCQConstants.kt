@@ -121,6 +121,8 @@ class MCQConstants{
         const val MCQ_WEEK = "MCQ 7 DAYS"
         const val MCQ_MONTH = "MCQ 30 DAYS"
         const val TRIAL = "TRIAL"
-
+        const val APP_USAGE_PREFS = "AppUsagePrefs"
+        const val APP_PACKAGE_NAME = "com.example.gceolmcqs"
+        const val LAST_USED = "last_used_gceolmcqs"
     }
 }
