@@ -48,7 +48,10 @@ class SectionNavigationFragmentViewModel : ViewModel() {
     }
 
     fun getSectionsScores(): ArrayList<Int>{
-        return PaperRepository.getSectionsScores()
+        val temp = ArrayList<Int>().apply {
+            addAll(PaperRepository.getSectionsScores())
+        }
+        return temp
     }
 
     fun resetPaperRepo(){
