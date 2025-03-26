@@ -9,6 +9,7 @@ import com.example.gceolmcqs.datamodels.TransactionStatus
 
 import kotlinx.coroutines.*
 import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
@@ -42,35 +43,36 @@ class MomoPayService(private val context: Context) {
     ) {
 
         this.subscriptionFormData = subscriptionFormData
-        generateAccessToken(transactionStatusListener)
+//        generateAccessToken(transactionStatusListener)
 
-//        testUpdateTransactionSuccessful(transactionStatusListener)
+        testUpdateTransactionSuccessful(transactionStatusListener)
 
     }
 
     private fun generateAccessToken(transactionStatusListener: TransactionStatusListener) {
 
         // Create a custom TrustManager that trusts the server's SSL certificate
-        val trustAllCertificates = object : X509TrustManager {
-            override fun getAcceptedIssuers(): Array<X509Certificate> = arrayOf()
-            override fun checkClientTrusted(chain: Array<X509Certificate>, authType: String) {}
-            override fun checkServerTrusted(chain: Array<X509Certificate>, authType: String) {}
-        }
+//        val trustAllCertificates = object : X509TrustManager {
+//            override fun getAcceptedIssuers(): Array<X509Certificate> = arrayOf()
+//            override fun checkClientTrusted(chain: Array<X509Certificate>, authType: String) {}
+//            override fun checkServerTrusted(chain: Array<X509Certificate>, authType: String) {}
+//        }
 
 // Create an SSLContext with the custom TrustManager to use in your network calls
-        val sslContext = SSLContext.getInstance("TLS")
-        sslContext.init(
-            null,
-            arrayOf<TrustManager>(trustAllCertificates),
-            java.security.SecureRandom()
-        )
+//        val sslContext = SSLContext.getInstance("TLS")
+//        sslContext.init(
+//            null,
+//            arrayOf<TrustManager>(trustAllCertificates),
+//            java.security.SecureRandom()
+//        )
 
 // Apply the SSLContext to your HTTP client (assuming you're using Retrofit or similar)
 
         client = OkHttpClient.Builder()
-            .sslSocketFactory(sslContext.socketFactory, trustAllCertificates)
-            .hostnameVerifier { _, _ -> true }
+//            .sslSocketFactory(sslContext.socketFactory, trustAllCertificates)
+//            .hostnameVerifier { _, _ -> true }
             .build()
+
 
         val requestBody = FormBody.Builder()
             .add(MCQConstants.USER_NAME, context.getString(R.string.campay_app_user_name))
@@ -81,6 +83,7 @@ class MomoPayService(private val context: Context) {
             .url(context.getString(R.string.campay_token_url))
             .post(requestBody)
             .build()
+
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
 //                println("failed generating token due to ${e.message}")
@@ -94,7 +97,8 @@ class MomoPayService(private val context: Context) {
             override fun onResponse(call: Call, response: Response) {
                 try {
                     val responseBody = response.body?.string()
-//                    println(responseBody)
+                    println(responseBody)
+
                     val json = JSONObject(responseBody!!)
                     val transaction = TransactionStatus()
                     val tokenString = json[TOKEN].toString()

@@ -358,6 +358,9 @@ class MainActivity : AppCompatActivity(),
         viewModel.resetUsageTimer()
     }
 
+
+    
+
     private fun updateUsageBonusTime(){
         val subjectIndex = viewModel.getIndexOfCurrentSubject()
         subjectIndex?.let{
