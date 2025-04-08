@@ -20,6 +20,10 @@ import com.example.gceolmcqs.databinding.ActivityMainBinding
 
 import com.example.gceolmcqs.repository.RemoteRepoManager
 import com.example.gceolmcqs.viewmodels.MainActivityViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity(),
     HomeRecyclerViewAdapter.OnHomeRecyclerItemListener
@@ -41,11 +45,57 @@ class MainActivity : AppCompatActivity(),
         setupViewModel()
         setupRecyclerView()
         setupObservers()
+//        checkInternetConnectivity()
 //        setupAppUsageReminderSharedPreference()
 //        startReminderService()
 
 
 
+    }
+
+
+    private  fun checkInternetConnectivity(){
+        val internetAvailable = CheckInternetConnectivity().isInternetAvailable(this)
+        CoroutineScope(Dispatchers.IO).launch {
+            val isConnected = CheckInternetConnectivity().hasRealInternetAccess()
+            println("isConnected: $isConnected")
+            withContext(Dispatchers.Main){
+                if (isConnected){
+                    checkForLatestAppVersion()
+                }else{
+                    val latestVersion = pref.getString(MCQConstants.VERSION_STR, null)
+                    if (latestVersion != null){
+                        val installedVersion = VersionChecker().getInstalledVersion(packageManager, packageName)
+                        if (installedVersion != latestVersion){
+                            displayUpdateAppDialog(latestVersion)
+                        }
+                    }
+                }
+            }
+        }
+
+
+    }
+
+    private fun checkForLatestAppVersion(){
+        val installedVersion = VersionChecker().getInstalledVersion(packageManager, packageName)
+        viewModel.checkForLatestVersionAvailable(object: VersionChecker.OnCheckVersionListener{
+            override fun onResult(version: String) {
+                saveVersionToSharedPref(version)
+                if (installedVersion != version){
+                    displayUpdateAppDialog(version)
+                }
+            }
+
+            override fun onError(error: String?) {
+
+            }
+
+        })
+    }
+
+    private fun saveVersionToSharedPref(latestVersion: String){
+        pref.edit().putString(MCQConstants.VERSION_STR, latestVersion).apply()
     }
 
     private fun startReminderService(){
@@ -117,7 +167,7 @@ class MainActivity : AppCompatActivity(),
         startActivity(intent)
     }
 
-    private fun rateUs() {
+    private fun gotoAppURL() {
         val uri = Uri.parse(MCQConstants.APP_URL)
         val intent = Intent(Intent.ACTION_VIEW, uri)
         intent.addFlags(
@@ -235,6 +285,7 @@ class MainActivity : AppCompatActivity(),
         viewModel.updateSubjectPackageDataList()
         updateUsageBonusTime()
         homeRecyclerViewAdapter.notifyDataSetChanged()
+        checkInternetConnectivity()
 
     }
 
@@ -254,7 +305,7 @@ class MainActivity : AppCompatActivity(),
                 shareApp()
             }
             R.id.rateUs -> {
-                rateUs()
+                gotoAppURL()
             }
             R.id.about -> {
                 gotoAboutUs()
@@ -451,6 +502,19 @@ class MainActivity : AppCompatActivity(),
             setCancelable(false)
         }.create()
         dialog?.show()
+    }
+
+    private fun displayUpdateAppDialog(latestVersion: String){
+        AlertDialog.Builder(this).apply {
+            setMessage("New version for GCE OL MCQS is available. Please kindly update to the latest version")
+            setPositiveButton("update"){_, _ ->
+                gotoAppURL()
+            }
+            setNegativeButton(getString(R.string.cancel)){_, _ ->
+                finish()
+            }
+            setCancelable(false)
+        }.create().show()
     }
 
 }

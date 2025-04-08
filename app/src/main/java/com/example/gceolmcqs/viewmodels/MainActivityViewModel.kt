@@ -3,13 +3,16 @@ package com.example.gceolmcqs.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.gceolmcqs.ActivationExpiryDatesGenerator
 import com.example.gceolmcqs.AppDataUpdater
 import com.example.gceolmcqs.SubjectPackageActivator
 import com.example.gceolmcqs.UsageTimer
+import com.example.gceolmcqs.VersionChecker
 import com.example.gceolmcqs.datamodels.*
 import com.example.gceolmcqs.repository.AppDataRepository
 import com.example.gceolmcqs.repository.RemoteRepoManager
+import kotlinx.coroutines.launch
 
 class MainActivityViewModel : ViewModel() {
     private val subjectPackageDataList = ArrayList<SubjectPackageData>()
@@ -96,6 +99,13 @@ class MainActivityViewModel : ViewModel() {
         val newExpiryDate = ActivationExpiryDatesGenerator.generateNewExpiryDate(subjectPackageData.expiresOn!!, bonusTime)
         subjectPackageData = SubjectPackageActivator.activateBonus(subjectPackageData, newExpiryDate)
         updateSubjectPackageDataInRemoteDb(subjectPackageData, updateCallBack)
+    }
+
+    fun checkForLatestVersionAvailable(onCheckVersionListener: VersionChecker.OnCheckVersionListener){
+        viewModelScope.launch {
+            VersionChecker().getLatestVersion(onCheckVersionListener)
+        }
+
     }
 
 

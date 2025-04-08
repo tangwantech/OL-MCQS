@@ -5,6 +5,9 @@ class MCQConstants{
 
         const val OL_MCQ_DATA = "OLMCQDATA"
         const val APP_DATA = "appData"
+        const val VERSION_CLASS = "VERSION"
+        const val VERSION_STR = "version"
+
 //        const val APP_DATA_OBJECT_KEY = "K13A8pBeYh"
 //        const val APP_DATA_OBJECT_KEY = "ussBnoWiFu"
         const val APP_DATA_OBJECT_KEY = "BAFTIyf8dm"

@@ -27,11 +27,7 @@ class AboutActivity : AppCompatActivity() {
     }
 
     private fun setVersionNumber(){
-        val versionName = try {
-            packageManager.getPackageInfo(packageName, 0).versionName
-        } catch (e: PackageManager.NameNotFoundException){
-            "Unknown"
-        }
+        val versionName = VersionChecker().getInstalledVersion(packageManager, packageName)
         binding.tvVersion.text = getString(R.string.version, versionName)
     }
 
