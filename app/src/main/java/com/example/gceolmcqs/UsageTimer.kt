@@ -65,5 +65,7 @@ class UsageTimer {
         fun isBonusTimeAvailable(bonusTime: Long): Boolean {
             return bonusTime > 0
         }
+
+
     }
 }

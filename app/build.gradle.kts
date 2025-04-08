@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.gceolmcqs"
-        minSdk = 26
+        minSdk = 24
         targetSdk = 34
         versionCode = 8
         versionName = "1.7"

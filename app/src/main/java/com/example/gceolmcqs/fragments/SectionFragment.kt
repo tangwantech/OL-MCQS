@@ -99,7 +99,7 @@ class SectionFragment : Fragment(),
             setView(view)
             setPositiveButton(requireContext().resources.getString(R.string.ok)){_, _ ->
                 isPositiveBtnClicked = true
-                startTimer()
+//                startTimer()
             }
             setCancelable(false)
         }.create()

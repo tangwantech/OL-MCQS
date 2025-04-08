@@ -161,6 +161,14 @@ class ResourceImages {
             images["potometer_west_mock_2023.jpg"] = R.drawable.potometer_west_mock_2023
             images["joint_west_mock_2023.jpg"] = R.drawable.joint_west_mock_2023
 
+//            Adamawa mock
+//            2025
+            images["villus_adamawa_2025.jpg"] = R.drawable.villus_adamawa_2025
+            images["motor_neurone_adamawa_2025.jpg"] = R.drawable.motor_neurone_adamawa_2025
+            images["ls_kidney_adamawa_2025.jpg"] = R.drawable.ls_kidney_adamawa_2025
+            images["enzyme_action_adamawa_2025.jpg"] = R.drawable.enzyme_action_adamawa_2025
+
+
 
 //            Topics
 //            Transport in plants
