@@ -6,7 +6,9 @@ class MCQConstants{
         const val OL_MCQ_DATA = "OLMCQDATA"
         const val APP_DATA = "appData"
 //        const val APP_DATA_OBJECT_KEY = "K13A8pBeYh"
-        const val APP_DATA_OBJECT_KEY = "ussBnoWiFu"
+//        const val APP_DATA_OBJECT_KEY = "ussBnoWiFu"
+        const val APP_DATA_OBJECT_KEY = "BAFTIyf8dm"
+        const val APP_VERSION_KEY = "NrYprrj2BK"
 
         const val A = "A"
         const val B = "B"
@@ -61,7 +63,7 @@ class MCQConstants{
         const val APP_URL = "https://gce-ol-mcqs.en.uptodown.com/android/download"
         const val PRIVACY_POLICY = "https://gceolmcqs.w3spaces.com/Privacy_Policy_GCE_OL_MCQS.pdf"
 
-        const val TRANSACTION_STATUS_URL = "https://www.campay.net/api/transaction/"
+        const val TRANSACTION_STATUS_URL = "https://demo.campay.net/api/transaction/"
 
         const val AUTHORIZATION = "Authorization"
         const val CONTENT_TYPE = "Content-Type"
@@ -91,7 +93,7 @@ class MCQConstants{
         const val COUNT_DOWN_INTERVAL = 1000L
         const val TIME_TO_ANIMATE_TIMER = 60000L
 
-        const val TRIAL_DURATION = 24
+        const val TRIAL_DURATION = 4
         const val GRACE_DURATION_DISCOUNT = 0.2
         const val BONUS_TIME_DISCOUNT = 0.165
         const val DELAY_DURATION = 3000

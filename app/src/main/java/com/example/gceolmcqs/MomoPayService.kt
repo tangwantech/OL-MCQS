@@ -43,9 +43,9 @@ class MomoPayService(private val context: Context) {
     ) {
 
         this.subscriptionFormData = subscriptionFormData
-//        generateAccessToken(transactionStatusListener)
+        generateAccessToken(transactionStatusListener)
 
-        testUpdateTransactionSuccessful(transactionStatusListener)
+//        testUpdateTransactionSuccessful(transactionStatusListener)
 
     }
 

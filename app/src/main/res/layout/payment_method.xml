@@ -16,14 +16,15 @@
             android:id="@+id/rbMtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/mtn_momo"
-            />
+
+            android:drawableStart="@drawable/mtnlogo"/>
 
         <RadioButton
             android:id="@+id/rbOrange"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/orange_momo"/>
+
+            android:drawableStart="@drawable/orange"/>
 
     </RadioGroup>
 

@@ -170,15 +170,15 @@ class SubscriptionActivity: AppCompatActivity(),
             dialogView.findViewById(R.id.tvRequestToPayPackage)
         val tvRequestToPayPackagePrice: TextView =
             dialogView.findViewById(R.id.tvRequestToPayAmount)
-        val tvTransactionId: TextView = dialogView.findViewById(R.id.tvTransactionId)
+//        val tvTransactionId: TextView = dialogView.findViewById(R.id.tvTransactionId)
 
 //        viewModel.getMomoPartner() == MCQConstants.MTN_MOMO
         if (momoPartner == MCQConstants.OPERATOR_MTN) {
-            tvRequestToPayTitle.setBackgroundColor(resources.getColor(R.color.mtn))
+            tvRequestToPayTitle.setBackgroundColor(resources.getColor(R.color.mtn, null))
             tvRequestToPayMessage.text = resources.getString(R.string.mtn_request_to_pay_message)
 
         } else {
-            tvRequestToPayTitle.setBackgroundColor(resources.getColor(R.color.orange))
+            tvRequestToPayTitle.setBackgroundColor(resources.getColor(R.color.orange, null))
             tvRequestToPayMessage.text = resources.getString(R.string.orange_request_to_pay_message)
         }
 
@@ -254,8 +254,9 @@ class SubscriptionActivity: AppCompatActivity(),
             setMessage(getString(R.string.verify_internet_connection))
             setPositiveButton(getString(R.string.ok)){_, _ ->
                 exitActivity()
-                setCancelable(false)
+
             }
+            setCancelable(false)
         }.create()
         dialog?.show()
     }
@@ -293,11 +294,11 @@ class SubscriptionActivity: AppCompatActivity(),
             setMessage(resources.getString(R.string.verify_payment_info))
             setView(view)
             setCancelable(false)
-            setPositiveButton(resources.getString(R.string.pay)  ){btn, _ ->
+            setPositiveButton(resources.getString(R.string.pay)  ){_, _ ->
                 showProcessingRequestDialog()
                 viewModel.initiatePayment()
             }
-            setNegativeButton(resources.getString(R.string.cancel)){btn, _ ->
+            setNegativeButton(resources.getString(R.string.cancel)){_, _ ->
                 exitActivity()
             }
         }.create()
