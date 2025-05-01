@@ -1,6 +1,5 @@
 package com.example.gceolmcqs
 
-import com.parse.ParseException
 import com.parse.ParseObject
 import com.parse.ParseQuery
 import com.parse.ParseUser
@@ -8,8 +7,8 @@ import com.parse.ParseUser
 class AppDataUpdater {
     companion object{
         fun update(onAppDataUpdateListener: AppDataUpdateListener) {
-            val parseQuery = ParseQuery.getQuery<ParseObject>(MCQConstants.OL_MCQ_DATA)
-            parseQuery.getInBackground(MCQConstants.APP_DATA_OBJECT_KEY){parseObject, e ->
+            val parseQuery = ParseQuery.getQuery<ParseObject>(MCQConstants.OL_DATA_CLASS)
+            parseQuery.getInBackground(MCQConstants.APP_DATA_KEY){ parseObject, e ->
                 if (e == null){
                     val appData = parseObject.getString(MCQConstants.APP_DATA)
                     val currentData = ParseUser.getCurrentUser().getString(MCQConstants.APP_DATA)

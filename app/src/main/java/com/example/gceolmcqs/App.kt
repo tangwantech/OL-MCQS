@@ -7,7 +7,7 @@ import com.example.gceolmcqs.datamodels.CampayCredential
 import com.example.gceolmcqs.repository.RemoteRepoManager
 import com.google.gson.Gson
 import com.parse.Parse
-import net.compay.android.CamPay
+//import net.compay.android.CamPay
 import java.util.UUID
 
 class App: Application() {
@@ -47,13 +47,13 @@ class App: Application() {
     }
 
 
-    private fun initCampay() {
-        CamPay.init(
-            getString(R.string.campay_app_user_name),
-            getString(R.string.campay_app_pass_word),
-            CamPay.Environment.DEV // environment
-        )
-    }
+//    private fun initCampay() {
+//        CamPay.init(
+//            getString(R.string.campay_app_user_name),
+//            getString(R.string.campay_app_pass_word),
+//            CamPay.Environment.DEV // environment
+//        )
+//    }
 
 
 }

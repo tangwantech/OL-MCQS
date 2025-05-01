@@ -84,6 +84,10 @@ class MainActivity : AppCompatActivity(),
                 saveVersionToSharedPref(version)
                 if (installedVersion != version){
                     displayUpdateAppDialog(version)
+                }else{
+//                    updateAppData()
+                    startUpdateToAppData()
+
                 }
             }
 
@@ -97,6 +101,11 @@ class MainActivity : AppCompatActivity(),
     private fun saveVersionToSharedPref(latestVersion: String){
         pref.edit().putString(MCQConstants.VERSION_STR, latestVersion).apply()
     }
+
+    private fun saveAppDataUpdateStatusToSharedPref(status: Boolean){
+        pref.edit().putBoolean(MCQConstants.APP_DATA_UPDATE_STATUS, status).apply()
+    }
+
 
     private fun startReminderService(){
         val serviceIntent = Intent(this, AppReminderService::class.java)
@@ -153,10 +162,6 @@ class MainActivity : AppCompatActivity(),
         startActivity(intent)
     }
 
-    private fun gotoSpinActivity(position: Int){
-        val intent = SpinActivity.getIntent(this, position)
-        startActivity(intent)
-    }
 
     private fun shareApp() {
 //        val uri = Uri.parse(MCQConstants.APP_URL)
@@ -183,11 +188,19 @@ class MainActivity : AppCompatActivity(),
         }
     }
 
+    private fun startUpdateToAppData(){
+        val appDataUpdateStatus = pref.getBoolean(MCQConstants.APP_DATA_UPDATE_STATUS, false)
+        if (!appDataUpdateStatus){
+            updateAppData()
+        }
+    }
+
     private fun updateAppData(){
 
-        checkingForUpdateDialog()
+        checkingForUpdateToAppDataDialog()
         viewModel.updateAppData(object: AppDataUpdater.AppDataUpdateListener{
             override fun onAppDataUpdated() {
+                saveAppDataUpdateStatusToSharedPref(true)
 //                NetworkTimeout.stopTimer()
 //                checkingDialog.dismiss()
                 displayAppDataUpDatedDialog()
@@ -201,6 +214,7 @@ class MainActivity : AppCompatActivity(),
             override fun onAppDataUpToDate() {
 //                NetworkTimeout.stopTimer()
 //                checkingDialog.dismiss()
+                saveAppDataUpdateStatusToSharedPref(true)
                 displayAppDataIsUpToDateDialog()
             }
         })
@@ -239,7 +253,7 @@ class MainActivity : AppCompatActivity(),
         dialog?.show()
     }
 
-    private fun checkingForUpdateDialog(){
+    private fun checkingForUpdateToAppDataDialog(){
         if(dialog != null){
             dialog?.dismiss()
         }
@@ -506,7 +520,7 @@ class MainActivity : AppCompatActivity(),
 
     private fun displayUpdateAppDialog(latestVersion: String){
         AlertDialog.Builder(this).apply {
-            setMessage("New version for GCE OL MCQS is available. Please kindly update to the latest version")
+            setMessage(getString(R.string.update_app_message))
             setPositiveButton("update"){_, _ ->
                 gotoAppURL()
             }

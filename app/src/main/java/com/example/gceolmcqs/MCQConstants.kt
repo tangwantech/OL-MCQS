@@ -3,15 +3,20 @@ package com.example.gceolmcqs
 class MCQConstants{
     companion object{
 
-        const val OL_MCQ_DATA = "OLMCQDATA"
+        const val OL_DATA_CLASS = "OLMCQDATA"
         const val APP_DATA = "appData"
+        const val APP_DATA_KEY = "BAFTIyf8dm"
+        const val APP_DATA_UPDATE_STATUS = "status"
+
         const val VERSION_CLASS = "VERSION"
         const val VERSION_STR = "version"
+        const val APP_VERSION_KEY = "NrYprrj2BK"
+
 
 //        const val APP_DATA_OBJECT_KEY = "K13A8pBeYh"
 //        const val APP_DATA_OBJECT_KEY = "ussBnoWiFu"
-        const val APP_DATA_OBJECT_KEY = "BAFTIyf8dm"
-        const val APP_VERSION_KEY = "NrYprrj2BK"
+
+
 
         const val A = "A"
         const val B = "B"
@@ -96,7 +101,7 @@ class MCQConstants{
         const val COUNT_DOWN_INTERVAL = 1000L
         const val TIME_TO_ANIMATE_TIMER = 60000L
 
-        const val TRIAL_DURATION = 4
+        const val TRIAL_DURATION = 5000
         const val GRACE_DURATION_DISCOUNT = 0.2
         const val BONUS_TIME_DISCOUNT = 0.165
         const val DELAY_DURATION = 3000
