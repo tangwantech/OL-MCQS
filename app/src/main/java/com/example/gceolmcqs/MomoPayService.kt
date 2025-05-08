@@ -52,25 +52,25 @@ class MomoPayService(private val context: Context) {
     private fun generateAccessToken(transactionStatusListener: TransactionStatusListener) {
 
         // Create a custom TrustManager that trusts the server's SSL certificate
-//        val trustAllCertificates = object : X509TrustManager {
-//            override fun getAcceptedIssuers(): Array<X509Certificate> = arrayOf()
-//            override fun checkClientTrusted(chain: Array<X509Certificate>, authType: String) {}
-//            override fun checkServerTrusted(chain: Array<X509Certificate>, authType: String) {}
-//        }
+        val trustAllCertificates = object : X509TrustManager {
+            override fun getAcceptedIssuers(): Array<X509Certificate> = arrayOf()
+            override fun checkClientTrusted(chain: Array<X509Certificate>, authType: String) {}
+            override fun checkServerTrusted(chain: Array<X509Certificate>, authType: String) {}
+        }
 
 // Create an SSLContext with the custom TrustManager to use in your network calls
-//        val sslContext = SSLContext.getInstance("TLS")
-//        sslContext.init(
-//            null,
-//            arrayOf<TrustManager>(trustAllCertificates),
-//            java.security.SecureRandom()
-//        )
+        val sslContext = SSLContext.getInstance("TLS")
+        sslContext.init(
+            null,
+            arrayOf<TrustManager>(trustAllCertificates),
+            java.security.SecureRandom()
+        )
 
 // Apply the SSLContext to your HTTP client (assuming you're using Retrofit or similar)
 
         client = OkHttpClient.Builder()
-//            .sslSocketFactory(sslContext.socketFactory, trustAllCertificates)
-//            .hostnameVerifier { _, _ -> true }
+            .sslSocketFactory(sslContext.socketFactory, trustAllCertificates)
+            .hostnameVerifier { _, _ -> true }
             .build()
 
 
