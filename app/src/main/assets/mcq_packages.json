@@ -1,0 +1,23 @@
+{
+  "packages": [
+    {
+      "packageName": "MCQ DAY",
+      "price": "75",
+      "duration": 24,
+      "isChecked": false
+    },
+    {
+      "packageName": "MCQ WEEK",
+      "price": "250",
+      "duration": 168,
+      "isChecked": false
+    },
+    {
+      "packageName": "MCQ MONTH",
+      "price": "550",
+      "duration": 720,
+      "isChecked": false
+    }
+  ]
+}
+

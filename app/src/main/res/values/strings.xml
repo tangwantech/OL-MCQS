@@ -1,0 +1,209 @@
+<resources>
+    <string name="app_name">GCE OL MCQS"</string>
+    <string name="recycler_item_text">Item test text</string>
+    <string name="home">Home</string>
+    <string name="current_package">Current package</string>
+    <string name="packages">Packages</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+    <string name="rating">Rating</string>
+    <string name="mcq_day">MCQ Day</string>
+    <string name="mcq_week">MCQ Week</string>
+    <string name="mcq_month">MCQ Month</string>
+    <string name="type">Type</string>
+    <string name="status">Status:</string>
+    <string name="trial">TRIAL</string>
+    <string name="active">ACTIVE</string>
+    <string name="expired">EXPIRED</string>
+    <string name="activate_on">Activated on:</string>
+    <string name="expires_on">Expires on:</string>
+    <string name="price">Price</string>
+    <string name="momo_number">MoMo Number</string>
+    <string name="subscribe">Subscribe</string>
+
+    <string name="activated_on_value">Oct 6, 2022 00:22:49 PM</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="momo_partner">MoMo Partner</string>
+    <string name="activate">Activate</string>
+    <string name="momo_number_hint">656242856</string>
+    <string name="mtn">MTN</string>
+    <string name="select">Select</string>
+    <string name="select_package">Select package</string>
+    <string name="pay_with">Pay with</string>
+    <string name="enter_number">Enter MOMO number</string>
+    <string name="processing_transaction">Processing Transaction</string>
+    <string name="payment_status_image">payment status image</string>
+    <string name="transaction_cancelled">Transaction Cancelled</string>
+    <string name="transaction_expired">Transaction Expired</string>
+    <string name="no_internet_connection">No internet connection</string>
+    <string name="verify_internet_connection">Please verify that you have an active internet connection and then try again</string>
+    <string name="retry">Retry</string>
+    <string name="ok">OK</string>
+    <string name="pending_transaction">Pending transaction</string>
+    <string name="time_remaining">Time remaining</string>
+    <string name="result">Result</string>
+    <string name="sections_answered">Sections answered</string>
+    <string name="tvPaperScore">Total Score</string>
+    <string name="questions_answered">Questions answered</string>
+    <string name="score">Score:</string>
+    <string name="percentage">Percentage</string>
+    <string name="wrong">Wrong</string>
+    <string name="correct">Correct</string>
+    <string name="no_answer_selected">No answer was selected</string>
+    <string name="next_section">Next section</string>
+    <string name="correction">Correction</string>
+    <string name="package_expired_message">Your package has expired. Please subscribe to a new package</string>
+    <string name="mtn_request_to_pay_message">Please dial *126# and enter your PIN to complete payment</string>
+    <string name="orange_request_to_pay_message">Please dial #150*5O# and enter your PIN to complete payment</string>
+    <string name="transaction_successful">Transaction was successful</string>
+    <string name="transaction_failed">Transaction failed</string>
+
+    <string name="activation_successful">activation successful</string>
+    <string name="activation_failed">activation failed</string>
+    <string name="package_type">Package:</string>
+    <string name="amount_to_pay">Amount to pay:</string>
+    <string name="transaction_id">Transaction ID:</string>
+
+
+    <!-- Change BOTH strings as required -->
+    <string name="back4app_server_url">https://parseapi.back4app.com/</string>
+    <string name="back4app_app_id">k5qCXIjDC4S1MMJtpKWsJwyadC2Hb7zI2PoKei4j</string>
+    <string name="back4app_client_key">BQusbF13972k5Px17VylOsTpWhajMB171Zp0YnkG</string>
+
+
+    <string name="campay_app_id">wC0GZDVBg_PuHYDwlo5rJeewzit0JSfQfLD_2_swn5twtDLLIpY6dGySSaKCVS6D4bFuWBGpM22_LmKmap2S1w</string>
+    <string name="campay_app_user_name">C5rI-IiRJrKe4Nor0pq2VSKi3Ie4T7Ycf1Yx07kYxgrFcIE4qAiGgN-GKilhZRG1xuwUYgWEI8rzw9bgTnjAkQ</string>
+    <string name="campay_app_pass_word">mKIfDgXPx3H03TocyIkxYdQg94GXKWl2b2fPcDWkVDhRggGkPKYX4hAbuiXs_3y19F2hHMeq9HW2yjZg82EmKQ</string>
+    <string name="campay_token_url">https://www.campay.net/api/token/</string>
+    <string name="campay_requestToPay_url">https://www.campay.net/api/collect/</string>
+
+
+    <string name="statistics">Statistics</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="share">Share app</string>
+    <string name="about">About</string>
+    <string name="amount">Amount</string>
+    <string name="subject">Subject</string>
+    <string name="no_data_message">No data available</string>
+    <string name="excellent">EXCELLENT</string>
+    <string name="next_question">Next question</string>
+    <string name="retry_limit_message">"Your have reached the maximum number of retries allowed"</string>
+    <string name="subjects">Subjects</string>
+    <string name="retry_message">Your current score for this section will be set to zero</string>
+    <string name="_continue">Continue</string>
+    <string name="cancel">Cancel</string>access to all contents
+    <string name="payment_received">Payment received successfully</string>
+    <string name="content_access_denied_Message">This content is not available with TRIAL package. Please subscribe to another package to gain access to all contents</string>
+    <string name="grade">Grade</string>
+    <string name="lowest">Lowest</string>
+    <string name="highest">Highest</string>
+    <string name="average">Average</string>
+    <string name="last">Last</string>
+    <string name="mcqs">MCQs</string>
+    <string name="do_not_show_this_message_again">Do not show this message again</string>
+    <string name="instruction">Replace with instruction text Replace with instruction text Replace with instruction text</string>
+
+    <string name="initialise_error_message">Application failed to initialize. Please verify that you have an active internet connection and try again</string>
+    <string name="error">Error</string>
+    <string name="exit_message">Do you want to exit?</string>
+    <string name="activating_package_message">Activating package…</string>
+    <string name="has_been_answered">has been answered</string>
+    <string name="activated_successfully">activated successfully</string>
+    <string name="processing_request">Processing request</string>
+    <string name="pay">Pay</string>
+
+    <string name="exit">Exit</string>
+    <string name="minimum_percentage">40%</string>
+    <string name="rate_us">Rate us</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="failed_to_activate_package">Failed to activate</string>
+    <string name="subjects_available">Subjects Available:</string>
+    <string name="duration">Duration:</string>
+    <string name="start_off_message">Start off by activating a trial package for all available subjects</string>
+    <string name="question">Question</string>
+    <string name="restart">Restart</string>
+    <string name="subscription">subscription</string>
+    <string name="see_explanation">See Explanation</string>
+    <string name="accept">Accept</string>
+    <string name="decline">Decline</string>
+    <string name="company">Tangwan Tech</string>
+    <string name="email">Email: tangwantech@gmail.com</string>
+    <string name="next">Next</string>
+    <string name="correct_answer">Correct answer:</string>
+    <string name="expires_in">Expires in: %1$s</string>
+    <string name="tap_to_select_package">Tap to select package</string>
+    <string name="tap_to_select_payment_method">Tap to select payment method</string>
+    <string name="terms_agreement">By using the services provided by GCE OL MCQS ("Service Provider"), you agree to be bound by this Agreement</string>
+    <string name="terms_of_service">Terms of service</string>
+    <string name="agreement">Agreement</string>
+    <string name="selected_package">Selected Package:</string>
+    <string name="select_payment_method">Select payment method</string>
+    <string name="mtn_momo">MTN MOMO</string>
+    <string name="orange_momo">ORANGE MOMO</string>
+    <string name="no_active_internet_connection">1. You might not have an active internet connection.</string>
+    <string name="invalid_mobile_money_number">2. You may have entered an invalid mobile money number.</string>
+    <string name="insufficient_funds_in_your_account">1. You may not have sufficient funds in your account.</string>
+    <string name="canceled_the_transaction">3. You may have canceled the transaction.</string>
+    <string name="verify_payment_info">Please ensure that the following information is correct before making your payment</string>
+    <string name="highest_score">Highest Score</string>
+    <string name="share_message">Have you been searching for an android app to help you or your loved ones practice answering multiple choice questions for GCE Biology OL Biology? Look no further. GCE OL MCQS has got you covered. Download GCE OL MCQS now and enjoy your journey to success.</string>
+    <string name="section_questions">section questions</string>
+    <string name="time_left_value">%1$s : %2$s</string>
+    <string name="question_value">%1$s. %2$s</string>
+    <string name="selectable_alternative">%1$s. %2$s</string>
+    <string name="section_score">Score: %1$s</string>
+    <string name="initialising">Initialising</string>
+    <string name="network_timeout">Network timeout. Please verify you have an active internet connection</string>
+    <string name="update_app_data">Update app data</string>
+    <string name="mins_tag">%1$s mins</string>
+    <string name="bonus_message">Congratulations! You\'ve earned a bonus of %1$s minutes</string>
+    <string name="redeem_now">Redeem now</string>
+    <string name="redeem_later">Redeem later</string>
+    <string name="spin_points">Spin points</string>
+    <string name="bonus_time">Bonus time: %1$s</string>
+    <string name="your_revision_companion">Your ultimate revision companion</string>
+    <string name="app_data_updated_successfully">App data updated successfully. Please exit and restart app for changes to take effect</string>
+    <string name="checking_for_latest_update">Checking for the latest app data.</string>
+    <string name="version">version %1$s</string>
+    <string name="currentYear">2025</string>
+    <string name="activating_bonus">"Redeeming bonus "</string>
+    <string name="bonus_activated">Bonus redeemed successfully</string>
+    <string name="failed_to_activate_bonus">Failed to redeem bonus. Please very you have an active internet connection and try again</string>
+    <string name="redeem_bonus">Redeem bonus</string>
+    <string name="please_verify_internet_connection">Network timeout. Please verify that you have an active internet connection and try again</string>
+    <string name="app_usage_reminder">Reminder to Use GCE OL MCQS</string>
+    <string name="app_usage_reminder_message">You haven\'t used GCE OL MCQS for a while. Tap to open it now!</string>
+    <string name="update_app_message">New version for GCE OL MCQS is available. Please kindly update to the latest version</string>
+    <string name="lesson_notes">Lesson Notes</string>
+    <string name="paper_1">Paper 1</string>
+    <string name="paper_2">Paper 2</string>
+    <string name="dictionary">Dictionary</string>
+    <string name="biology_dictionary">Biology dictionary</string>
+    <string name="chapters">Chapters</string>
+
+
+    <string-array name="paper_instruction">
+        <item>contains</item>
+        <item>questions divided into</item>
+        <item>sections.</item>
+        <item>Please read and understand each question before selecting your answer. If you change your mind about a selected answer, you can always select another.</item>
+        <item>There is no option to go back to a previous question.</item>
+        <item>You must score at least</item>
+        <item>percent in order to see corrections to all wrong answers at the end of each section.</item>
+    </string-array>
+
+    <string-array name="momo_partners">
+        <item>MTN MOMO</item>
+        <item>ORANGE MOMO</item>
+    </string-array>
+    <string-array name="sections">
+        <item>section I</item>
+        <item>section II</item>
+        <item>section III</item>
+        <item>section IV</item>
+        <item>section V</item>
+        <item>section VI</item>
+    </string-array>
+</resources>

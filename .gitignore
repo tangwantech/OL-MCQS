@@ -13,8 +13,8 @@
 .externalNativeBuild
 .cxx
 local.properties
-*.json
+#*.json
 app/release
-app/src/main/assets
-app/src/main/res/values/strings.xml
-app/src/main/res/values-night/strings.xml
+#app/src/main/assets
+#app/src/main/res/values/strings.xml
+#app/src/main/res/values-night/strings.xml
