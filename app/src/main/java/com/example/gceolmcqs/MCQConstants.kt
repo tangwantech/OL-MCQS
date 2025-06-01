@@ -103,7 +103,7 @@ class MCQConstants{
         const val COUNT_DOWN_INTERVAL = 1000L
         const val TIME_TO_ANIMATE_TIMER = 60000L
 
-        const val TRIAL_DURATION = 25
+        const val TRIAL_DURATION = 15
         const val GRACE_DURATION_DISCOUNT = 0.2
         const val BONUS_TIME_DISCOUNT = 0.165
         const val DELAY_DURATION = 3000
