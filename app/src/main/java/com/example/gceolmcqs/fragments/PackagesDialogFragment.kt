@@ -15,12 +15,14 @@ import com.example.gceolmcqs.R
 import com.example.gceolmcqs.adapters.PackagesDialogRecyclerAdapter
 import com.example.gceolmcqs.datamodels.PackageFormData
 import com.example.gceolmcqs.viewmodels.PackageDialogViewModel
+import com.example.gceolmcqs.viewmodels.SubscriptionActivityViewModel
 
 class PackagesDialogFragment : DialogFragment(), PackagesDialogRecyclerAdapter.ItemSelectListener {
     private lateinit var packageDialogListener: PackageDialogListener
     private lateinit var viewModel: PackageDialogViewModel
     private var rvAdapter: PackagesDialogRecyclerAdapter? = null
     private var btnNext: Button? = null
+
 
     private fun initViewModel(){
         viewModel = ViewModelProvider(requireActivity())[PackageDialogViewModel::class.java]

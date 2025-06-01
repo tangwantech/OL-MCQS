@@ -3,6 +3,8 @@ package com.example.gceolmcqs
 class MCQConstants{
     companion object{
 
+        val PACKAGE_TYPES_KEY = ""
+        val PACKAGE_TYPES = "packageTypes"
         const val OL_DATA_CLASS = "OLMCQDATA"
         const val APP_DATA = "appData"
         const val APP_DATA_KEY = "BAFTIyf8dm"
