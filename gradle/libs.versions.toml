@@ -22,6 +22,8 @@ parse = "1.26.0"
 androidSdk = "latest.release"
 cardview = "1.0.0"
 
+fragmentKtx = "1.8.6"
+
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -43,6 +45,7 @@ parse = {group ="com.github.parse-community.Parse-SDK-Android", name = "parse", 
 android-sdk = { module = "com.github.CamPay.android-sdk:android-sdk", version.ref = "androidSdk" }
 androidx-cardview = { module = "androidx.cardview:cardview", version.ref = "cardview" }
 
+androidx-fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "fragmentKtx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,11 +24,13 @@ class PackagesDialogFragment : DialogFragment(), PackagesDialogRecyclerAdapter.I
     private var rvAdapter: PackagesDialogRecyclerAdapter? = null
     private var btnNext: Button? = null
 
+    private val subscriptionActivityViewModel by activityViewModels<SubscriptionActivityViewModel>()
 
     private fun initViewModel(){
         viewModel = ViewModelProvider(requireActivity())[PackageDialogViewModel::class.java]
-        val json = AssertReader.getJsonFromAssets(requireContext(), "mcq_packages.json")
-        viewModel.setPackages(json!!)
+//        val json = AssertReader.getJsonFromAssets(requireContext(), "mcq_packages.json")
+//        viewModel.setPackages(json!!)
+        viewModel.setPackages(subscriptionActivityViewModel.getPackageTypes())
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

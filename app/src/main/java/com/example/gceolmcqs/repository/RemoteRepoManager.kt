@@ -155,10 +155,6 @@ class RemoteRepoManager {
             return data != null
         }
 
-        fun initAppData(){
-
-        }
-
         fun queryPackageTypesFromRemoteServer(listener: OnQueryPackagesTypeListener){
             val parseQuery = ParseQuery.getQuery<ParseObject>(MCQConstants.PACKAGE_TYPES)
             parseQuery.getInBackground(MCQConstants.PACKAGE_TYPES_KEY){parseObject, e ->
@@ -192,6 +188,11 @@ class RemoteRepoManager {
     interface OnQueryPackagesTypeListener{
         fun onResult(result: String)
         fun onError(error: String)
+    }
+
+    interface OnQueryListener{
+        fun onSuccess()
+        fun onError()
     }
 
 

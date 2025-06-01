@@ -55,14 +55,14 @@ class MainActivity : AppCompatActivity(),
 
 
     private  fun checkInternetConnectivity(){
-        val internetAvailable = CheckInternetConnectivity().isInternetAvailable(this)
-        CoroutineScope(Dispatchers.IO).launch {
-            val isConnected = CheckInternetConnectivity().hasRealInternetAccess()
-            println("isConnected: $isConnected")
-            withContext(Dispatchers.Main){
-                if (isConnected){
-                    checkForLatestAppVersion()
-                }else{
+        val params = hashMapOf("" to "")
+        ConnectivityTester.checkConnection(this, params, object : ConnectivityTester.OnTestConnectionListener{
+            override fun onConnectionAvailable() {
+                checkForLatestAppVersion()
+            }
+
+            override fun onConnectionUnavailable() {
+                runOnUiThread {
                     val latestVersion = pref.getString(MCQConstants.VERSION_STR, null)
                     if (latestVersion != null){
                         val installedVersion = VersionChecker().getInstalledVersion(packageManager, packageName)
@@ -72,7 +72,8 @@ class MainActivity : AppCompatActivity(),
                     }
                 }
             }
-        }
+
+        })
 
 
     }
@@ -107,21 +108,21 @@ class MainActivity : AppCompatActivity(),
     }
 
 
-    private fun startReminderService(){
-        val serviceIntent = Intent(this, AppReminderService::class.java)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundService(serviceIntent)
-        } else {
-            startService(serviceIntent)
-        }
-
-    }
-
-    private fun setupAppUsageReminderSharedPreference(){
-        val sharedPreferences: SharedPreferences =
-            getSharedPreferences(MCQConstants.APP_USAGE_PREFS, MODE_PRIVATE)
-        sharedPreferences.edit().putLong(MCQConstants.LAST_USED, System.currentTimeMillis()).apply()
-    }
+//    private fun startReminderService(){
+//        val serviceIntent = Intent(this, AppReminderService::class.java)
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            startForegroundService(serviceIntent)
+//        } else {
+//            startService(serviceIntent)
+//        }
+//
+//    }
+//
+//    private fun setupAppUsageReminderSharedPreference(){
+//        val sharedPreferences: SharedPreferences =
+//            getSharedPreferences(MCQConstants.APP_USAGE_PREFS, MODE_PRIVATE)
+//        sharedPreferences.edit().putLong(MCQConstants.LAST_USED, System.currentTimeMillis()).apply()
+//    }
 
     private fun setupViewModel() {
         viewModel = ViewModelProvider(this)[MainActivityViewModel::class.java]
@@ -324,9 +325,9 @@ class MainActivity : AppCompatActivity(),
             R.id.about -> {
                 gotoAboutUs()
             }
-            R.id.updateAppData -> {
-                updateAppData()
-            }
+//            R.id.updateAppData -> {
+//                updateAppData()
+//            }
             R.id.exit -> {
                 showExitDialog()
             }

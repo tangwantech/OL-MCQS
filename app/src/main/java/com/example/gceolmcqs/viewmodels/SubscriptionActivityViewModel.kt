@@ -28,6 +28,8 @@ class SubscriptionActivityViewModel: ViewModel() {
     private val _momoPartner = MutableLiveData<String>()
     val momoPartner: LiveData<String> = _momoPartner
 
+    private var packageTypes: String? = null
+
     fun initSubscriptionFormData(subjectIndex: Int, subjectName: String){
         _subscriptionData.subjectPosition = subjectIndex
         _subscriptionData.subject = subjectName
@@ -144,6 +146,24 @@ class SubscriptionActivityViewModel: ViewModel() {
             }
 
         })
+    }
+
+    fun queryPackageTypesFromRemoteRepo(listener: RemoteRepoManager.OnQueryListener){
+        RemoteRepoManager.queryPackageTypesFromRemoteServer(object: RemoteRepoManager.OnQueryPackagesTypeListener{
+            override fun onResult(result: String) {
+                packageTypes = result
+                listener.onSuccess()
+            }
+
+            override fun onError(error: String) {
+               listener.onError()
+            }
+
+        })
+    }
+
+    fun getPackageTypes(): String{
+        return packageTypes!!
     }
 
 

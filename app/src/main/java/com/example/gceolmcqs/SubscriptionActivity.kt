@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -11,11 +12,13 @@ import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.DialogFragment
 
 import androidx.lifecycle.ViewModelProvider
+import com.example.gceolmcqs.databinding.ActivitySubscriptionBinding
 
 import com.example.gceolmcqs.datamodels.PackageFormData
 
 import com.example.gceolmcqs.fragments.PackagesDialogFragment
 import com.example.gceolmcqs.fragments.PaymentMethodDialogFragment
+import com.example.gceolmcqs.repository.RemoteRepoManager
 
 import com.example.gceolmcqs.viewmodels.SubscriptionActivityViewModel
 import com.google.android.material.textfield.TextInputEditText
@@ -30,14 +33,6 @@ class SubscriptionActivity: AppCompatActivity(),
     PaymentMethodDialogFragment.OnPaymentMethodDialogListeners,
     PackagesDialogFragment.PackageDialogListener{
 
-//    private var processingAlertDialog: AlertDialog? = null
-//    private var requestToPayDialog: AlertDialog? = null
-//    private var failedToActivatePackageDialog: AlertDialog? = null
-//    private var activatingPackageDialog: AlertDialog? = null
-//    private var packageActivatedDialog: AlertDialog? = null
-//    private var paymentReceivedDialog: AlertDialog? = null
-//    private var momoNumberInputDialog: AlertDialog? = null
-
     private var dialog: AlertDialog? = null
 
 //    private var packagesDialog: DialogFragment? = null
@@ -46,14 +41,49 @@ class SubscriptionActivity: AppCompatActivity(),
     private var currentRefNum: String? = null
 
     private lateinit var viewModel: SubscriptionActivityViewModel
+    private lateinit var binding: ActivitySubscriptionBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = ActivitySubscriptionBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         val subjectName = intent.getStringExtra(MCQConstants.SUBJECT_NAME)
         title = "$subjectName subscription"
         setupViewModel()
         setupViewObservers()
-        showPackagesDialog()
+        queryPackageTypesFromRemoteRepo()
+    }
+
+    private fun queryPackageTypesFromRemoteRepo(){
+        val params = hashMapOf("" to "")
+        ConnectivityTester.checkConnection(this, params, object : ConnectivityTester.OnTestConnectionListener{
+            override fun onConnectionAvailable() {
+                viewModel.queryPackageTypesFromRemoteRepo(object: RemoteRepoManager.OnQueryListener{
+                    override fun onSuccess() {
+                        runOnUiThread {
+                            binding.progressCircular.visibility = View.GONE
+                            showPackagesDialog()
+                        }
+                    }
+
+                    override fun onError() {
+                    }
+
+                })
+            }
+
+            override fun onConnectionUnavailable() {
+                runOnUiThread {
+                    binding.progressCircular.visibility = View.GONE
+                    showNetWorkErrorDialog()
+                }
+            }
+
+        })
+
+
+
     }
 
 
@@ -85,7 +115,6 @@ class SubscriptionActivity: AppCompatActivity(),
         viewModel.momoPartner.observe(this){
             when (it){
                 MCQConstants.OPERATOR_MTN -> {
-                    println("MTN oooooooh")
                     showRequestUserToPayDialog(MCQConstants.OPERATOR_MTN)
                 }
                 MCQConstants.OPERATOR_ORANGE -> {
@@ -251,7 +280,7 @@ class SubscriptionActivity: AppCompatActivity(),
             dialog?.dismiss()
         }
         dialog = AlertDialog.Builder(this).apply {
-            setMessage(getString(R.string.verify_internet_connection))
+            setMessage(getString(R.string.no_internet_connection))
             setPositiveButton(getString(R.string.ok)){_, _ ->
                 exitActivity()
 

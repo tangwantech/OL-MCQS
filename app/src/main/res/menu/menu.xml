@@ -21,10 +21,10 @@
 <!--        android:title="@string/privacy_policy"-->
 <!--        app:showAsAction="never"/>-->
 
-    <item
-        android:id="@+id/updateAppData"
-        android:title="@string/update_app_data"
-        app:showAsAction="never"/>
+<!--    <item-->
+<!--        android:id="@+id/updateAppData"-->
+<!--        android:title="@string/update_app_data"-->
+<!--        app:showAsAction="never"/>-->
 
     <item
         android:id="@+id/about"

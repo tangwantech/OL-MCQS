@@ -3,8 +3,8 @@ package com.example.gceolmcqs
 class MCQConstants{
     companion object{
 
-        val PACKAGE_TYPES_KEY = ""
-        val PACKAGE_TYPES = "packageTypes"
+        const val PACKAGE_TYPES_KEY = "NeGDvsC7eH"
+        const val PACKAGE_TYPES = "PackageTypes"
         const val OL_DATA_CLASS = "OLMCQDATA"
         const val APP_DATA = "appData"
         const val APP_DATA_KEY = "BAFTIyf8dm"
@@ -103,7 +103,7 @@ class MCQConstants{
         const val COUNT_DOWN_INTERVAL = 1000L
         const val TIME_TO_ANIMATE_TIMER = 60000L
 
-        const val TRIAL_DURATION = 5000
+        const val TRIAL_DURATION = 2
         const val GRACE_DURATION_DISCOUNT = 0.2
         const val BONUS_TIME_DISCOUNT = 0.165
         const val DELAY_DURATION = 3000
